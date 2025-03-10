@@ -6,11 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 10:19:04 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 16:13:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:21:00 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+int	ft_strichr(const char *s, int c);
 
 /*check for the value 'c' in the string 's',
 if found returns the pos (index + 1) of the first instance of 'c'*/

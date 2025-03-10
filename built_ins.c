@@ -6,36 +6,43 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:42:26 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/09 22:13:34 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:44:11 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(char *cmd);
+int	ft_echo(char *cmd, char **shv, char **env);
 int	ft_cd(char *cmd);
 int	ft_pwd(char *cmd);
 
 //echo     -n     ahahaha
-int	ft_echo(char *cmd)
+int	ft_echo(char *cmd, char **shv, char **env)
 {
-	int	i;
+	char	*exp_str;
+	int		i;
 
 	i = 4;
 	while (cmd[i] != '\0' && cmd[i] == ' ')
 		i++;
 	if (cmd[i] == '\0')
 		return (-1);
-	if (cmd[i] == '-' && cmd[i + 1] == 'n')
+	if (cmd[i] == '-' && cmd[i + 1] == 'n' && cmd[i + 2] == ' ')
 	{
-		i += 2;
+		i += 3;
 		while (cmd[i] != '\0' && cmd[i] == ' ')
 			i++;
 		if (cmd[i] == '\0')
 			return (-1);
-		return (ft_printf("%s", &cmd[i]));
+		exp_str = expand_string(&cmd[i], shv, env);
+		ft_printf("%s", exp_str);
+		free(exp_str);
+		return (1);
 	}
-	return (ft_printf("%s\n", &cmd[i]));
+	exp_str = expand_string(&cmd[i], shv, env);
+	ft_printf("%s\n", exp_str);
+	free(exp_str);
+	return (1);
 }
 
 /*	EACCES Search permission is denied for any component of the pathname.

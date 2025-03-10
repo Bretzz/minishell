@@ -6,11 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 13:31:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:53:00 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+size_t	ft_strlen_space(const char *s);
 
 size_t	ft_mtxlen(const void **mtx)
 {
@@ -34,6 +36,18 @@ size_t	ft_strlen_nl(const char *s)
 	return (i);
 }
 
+size_t	ft_strlen_space(const char *s)
+{
+	size_t	i;
+
+	if (s == NULL)
+		return (0);
+	i = 0;
+	while (s[i] && s[i] != ' ')
+		i++;
+	return (i);
+}
+
 static size_t	ft_strlen_temp(const char *s)
 {
 	size_t	i;
@@ -42,18 +56,6 @@ static size_t	ft_strlen_temp(const char *s)
 		return (0);
 	i = 0;
 	while (s[i])
-		i++;
-	return (i);
-}
-
-static size_t	ft_strlen_space(const char *s)
-{
-	size_t	i;
-
-	if (s == NULL)
-		return (0);
-	i = 0;
-	while (s[i] && s[i] != ' ')
 		i++;
 	return (i);
 }

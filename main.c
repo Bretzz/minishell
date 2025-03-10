@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 15:02:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:45:58 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	ft_putchar(int c)
 
 /* returns 0 if commant isn't builtin, 1 if it is
 2 if it's ecoh -n. */
-int		exec_builtin(char *cmd)
+int		exec_builtin(char *cmd, char **shv, char **env)
 {
 	if (!ft_strncmp("echo", cmd, 4))
-		return(ft_echo(cmd));
+		return(ft_echo(cmd, shv, env));
 	else if (!ft_strncmp("cd", cmd, 2))
 		return (ft_cd(cmd));
 	else if (!ft_strncmp("pwd", cmd, 3))
@@ -38,36 +38,36 @@ int		exec_builtin(char *cmd)
 	return (0);
 }
 
-void	handle_command(char *cmd, char **env)
+void	handle_command(char *cmd, char ***shv, char **env)
 {
 	pid_t	pid;
 	int		fd[2];
 	
 	fd[0] = 0;
 	fd[1] = 1;
-	if (!exec_builtin(cmd))
-	{
-		pid = fork();
-		if (pid == 0)
-			ft_execve(fd, cmd, env);
-		waitpid(pid, NULL, WUNTRACED);
-	}
+	if (exec_builtin(cmd, *shv, env))
+		return ;
+	if (handle_vars(cmd, shv, env))
+		return ;
+	pid = fork();
+	if (pid == 0)
+		ft_execve(fd, cmd, env);
+	waitpid(pid, NULL, WUNTRACED);
 }
 
 int	main(void)
 {
 	char	*cmd;
-	char	**sh_vars;
+	char	**shv;
 	
-	sh_vars = NULL;
+	shv = NULL;
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	while (1)
 	{
 		cmd = readline("minishell% ");
 		if (cmd == NULL)
 			return (1);
-		handle_vars(cmd, &sh_vars, __environ);
-	//	handle_command(cmd, __environ);
+		handle_command(cmd, &shv, __environ);
 		add_history(cmd);
 		free(cmd);
 	}
