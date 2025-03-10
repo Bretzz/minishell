@@ -29,9 +29,10 @@ LIBFT			= $(LIBFT_DIR)/libft.a
 SRCS_DIR		=
 SRC_FILES		= main.c \
 				ft_readline.c \
-				ft_execve.c built_ins.c\
+				ft_execve.c built_ins.c \
+				handle_vars.c \
 				pipex_stolen.c \
-				free_stuff.c free_space.c \
+				print_stuff.c free_stuff.c free_space.c \
 				ft_realloc.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))

@@ -6,13 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:40:03 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/09 22:50:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:50:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_realloc(void *ptr, size_t size);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 /*
 DSCRIPTION
@@ -35,17 +35,17 @@ RETURN VALUE
 	a pointer suitable to be passed to free() is returned.  If realloc() fails, the
 	original block is left untouched; it is not freed or moved.
 */
-void	*ft_realloc(void *ptr, size_t size)
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*ret;
 
 	if (ptr == NULL)
-		return(malloc(size));
-	else if (ptr != NULL && size == 0)
+		return(malloc(new_size));
+	else if (ptr != NULL && new_size == 0)
 		return (free(ptr), NULL);
-	ret = malloc(size);
+	ret = malloc(new_size);
 	if (ret == NULL)
 		return (NULL);
-	ft_memcpy(ret, ptr, size);
+	ft_memcpy(ret, ptr, old_size);
 	return (ret);
 }

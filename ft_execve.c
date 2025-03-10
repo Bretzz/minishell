@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 19:08:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:19:42 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	clean_exit(char **arr, char *str, int *fd, int code)
 {
-	ft_free_arr(arr);
+	ft_free_arr((void **)arr);
 	free(str);
 	close(fd[0]);
 	close(fd[1]);
@@ -50,7 +50,7 @@ int	ft_execve(int *fd, const char *cmd, char **env)
 	execve(path, args, env);
 	close(fd[0]);
 	close(fd[1]);
-	ft_free_arr(args);
+	ft_free_arr((void **)args);
 	free(path);
 	exit(EXIT_FAILURE);
 }

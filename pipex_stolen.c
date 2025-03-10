@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:37:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 20:42:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:20:00 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	**ft_split_tail(char *str, char c, char *tail)
 		arr[i] = ft_strjoin_free(arr[i], tail);
 		if (arr[i] == NULL)
 		{
-			ft_free_arr(arr);
+			ft_free_arr((void **)arr);
 			return (NULL);
 		}
 		i++;
@@ -89,7 +89,7 @@ char	*find_env_path(char *cmd, char **env)
 	while (paths[i] != NULL && access(paths[i], X_OK) != 0)
 		i++;
 	cmd_path = ft_strdup(paths[i]);
-	ft_free_arr(paths);
+	ft_free_arr((void **)paths);
 	free(cmd);
 	return (cmd_path);
 }

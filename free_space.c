@@ -6,11 +6,23 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/09 23:45:52 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 13:31:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+size_t	ft_mtxlen(const void **mtx)
+{
+	size_t	i;
+
+	if (mtx == NULL)
+		return (0);
+	i = 0;
+	while (mtx[i] != NULL)
+		i++;
+	return (i);
+}
 
 size_t	ft_strlen_nl(const char *s)
 {
