@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 14:01:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:02:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ void	handle_command(char *cmd, char **env)
 int	main(void)
 {
 	char	*cmd;
-	char	**shell_var;
+	char	**sh_vars;
 	
-	shell_var = NULL;
+	sh_vars = NULL;
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	while (1)
 	{
 		cmd = readline("minishell% ");
 		if (cmd == NULL)
 			return (1);
-		handle_vars(cmd, &shell_var, __environ);
+		handle_vars(cmd, &sh_vars, __environ);
 	//	handle_command(cmd, __environ);
 		add_history(cmd);
 		free(cmd);
