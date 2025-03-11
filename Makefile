@@ -31,9 +31,9 @@ SRC_FILES		= main.c \
 				ft_readline.c \
 				ft_execve.c built_ins.c \
 				handle_vars.c expand_string.c get_value.c \
-				pipex_stolen.c \
-				print_stuff.c free_stuff.c free_space.c \
-				ft_realloc.c
+				pipex_stolen.c the_matrix.c \
+				print_stuff.c free_space.c \
+				ft_realloc.c ft_freentf.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 

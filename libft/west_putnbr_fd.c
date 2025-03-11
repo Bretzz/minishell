@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:26:58 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 16:18:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:52:18 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,3 @@ int	west_putnbr_fd(int fd, int nb)
 	count += west_putchar_fd(fd, digit);
 	return (count);
 }
-
