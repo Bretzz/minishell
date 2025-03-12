@@ -6,36 +6,46 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:42:26 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/09 22:13:34 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:13:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(char *cmd);
+int	ft_echo(char *cmd, char **shv, char **env);
 int	ft_cd(char *cmd);
 int	ft_pwd(char *cmd);
+int	ft_export(char *cmd, char ***shv, char ***env);
+int	ft_unset(char *cmd, char ***shv, char ***env);
+int	ft_env(char **env);
 
 //echo     -n     ahahaha
-int	ft_echo(char *cmd)
+int	ft_echo(char *cmd, char **shv, char **env)
 {
-	int	i;
+	char	*exp_str;
+	int		i;
 
 	i = 4;
 	while (cmd[i] != '\0' && cmd[i] == ' ')
 		i++;
 	if (cmd[i] == '\0')
 		return (-1);
-	if (cmd[i] == '-' && cmd[i + 1] == 'n')
+	if (cmd[i] == '-' && cmd[i + 1] == 'n' && cmd[i + 2] == ' ')
 	{
-		i += 2;
+		i += 3;
 		while (cmd[i] != '\0' && cmd[i] == ' ')
 			i++;
 		if (cmd[i] == '\0')
 			return (-1);
-		return (ft_printf("%s", &cmd[i]));
+		exp_str = expand_string(&cmd[i], (const char **)shv, (const char **)env);
+		ft_printf("%s", exp_str);
+		free(exp_str);
+		return (1);
 	}
-	return (ft_printf("%s\n", &cmd[i]));
+	exp_str = expand_string(&cmd[i], (const char **)shv, (const char **)env);
+	ft_printf("%s\n", exp_str);
+	free(exp_str);
+	return (1);
 }
 
 /*	EACCES Search permission is denied for any component of the pathname.
@@ -115,4 +125,84 @@ int	ft_pwd(char *cmd)
 	count = ft_printf("%s\n", dir);
 	free(dir);
 	return (count);
+}
+
+
+//env no, shv no
+//env no, shv si
+//env si, shv no
+//env si, shv si
+int	ft_export(char *cmd, char ***shv, char ***env)
+{
+	int	eq;
+	int	index;
+
+	cmd += 7;
+	if (*env == NULL)
+		return (-1);
+	//index = is_there(env, cmd);
+	eq = ft_strichr(cmd, '=');
+	if (eq != 0)
+	{
+		*env = var_append(*env, cmd); //protect the malloc fail
+		return (1);
+	}
+	if (*shv== NULL)
+		return (-1);
+	index = is_there((const char **)*shv, cmd);
+	if (index < 0)
+		return (-1);
+	*env = var_append(*env, *shv[index]); //remember to drop_index on shv //protect the malloc fail
+	return (1);
+}
+
+int	ft_unset(char *cmd, char ***shv, char ***env)
+{
+	int		index;
+	char	**mtx;
+
+	cmd += 6;
+	if (*env == NULL)
+		return (-1);
+	index = is_there((const char **)*env, cmd);
+	if (index >= 0)
+	{
+		ft_printf("found var in env\n");
+		mtx = (char **)drop_index((void **)*env, index);
+		if (mtx == NULL)
+			return (1);
+		*env = mtx;
+		return (1);
+	}
+	index = is_there((const char **)*shv, cmd);
+	if (index >= 0)
+	{
+		ft_printf("found var in shv\n");
+		mtx = (char **)drop_index((void **)*shv, index);
+		if (mtx == NULL)
+			return (1);
+		*shv = mtx;
+		return (1);
+	}
+	ft_printf("no var found\n");
+	//ft_printf("I should do something, but I don't :D\n");
+	return (1);
+}
+
+int	ft_env(char **env)
+{
+	int	i;
+
+	if (env == NULL)
+	{
+		ft_printf("%p\n", env);
+		return (-1);
+	}
+	i = 0;
+	while (env[i] != NULL)
+	{
+		ft_printf("%s\n", env[i]);
+		i++;
+	}
+	return (1);
 }

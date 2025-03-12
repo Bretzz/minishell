@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:46:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 16:18:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:51:43 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,3 @@ int	nest_putuns_fd(int fd, unsigned int nb)
 	count += west_putchar_fd(fd, digit);
 	return (count);
 }
-

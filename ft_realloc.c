@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:40:03 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 14:50:57 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:05:29 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	ret = malloc(new_size);
 	if (ret == NULL)
 		return (NULL);
-	ft_memcpy(ret, ptr, old_size);
+	ft_memmove(ret, ptr, old_size);
 	return (ret);
 }

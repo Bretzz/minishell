@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:51:09 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 17:13:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:21:11 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ t_list		*ft_lstnew(void *content);
 //libft: helpers
 
 int			ft_wdcount(const char *s, int c);
+int			ft_strichr(const char *s, int c);
 
 #endif

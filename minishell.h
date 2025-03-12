@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 16:34:46 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:51:47 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,12 @@ char	*find_env_path(char *cmd, char **env);
 
 //handle stuff
 
-void	handle_vars(char *cmd, char ***sh_vars, char **__environ);
+int		handle_vars(char *cmd, char ***shv, char ***env);
+char	**var_append(char **mtx, char *var);
+int		is_there(const char **mtx, const char *target);
+
+char	*get_value(const char *target, const char **shv, const char **env);
+char 	*expand_string(char *str, const char **shv, const char **env);
 
 //ft_execve.c
 
@@ -88,21 +93,27 @@ int		ft_execve(int *fd, const char *cmd, char **env);
 
 //built_ins.c
 
-int		ft_echo(char *cmd);
+int		ft_echo(char *cmd, char **shv, char **env);
 int		ft_cd(char *cmd);
 int		ft_pwd(char *cmd);
+int		ft_export(char *cmd, char ***shv, char ***env);
+int		ft_unset(char *cmd, char ***shv, char ***env);
+int		ft_env(char **env);
 
 //free_stuff.c
 
-void	ft_free_charr(char **arr);
-void	ft_free_arr(void **arr);
+int		ft_freentf(const char *s, ...);
 
 //usefull stuff
 
+void	**drop_index(void **mtx, int index);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+size_t	ft_strlen_space(const char *s);
+size_t	ft_mtxlen(const void **mtx);
+
 char	*ft_strjoin_free_space_nl(char *s1, char *s2);
 size_t	ft_strlen_nl(const char *s);
-size_t	ft_mtxlen(const void **mtx);
+
 void	ft_print_charr(const char **arr);
 
 #endif
