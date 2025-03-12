@@ -61,7 +61,17 @@ GIDEF			=	"""$\
 					$(NAME).tar$\
 					"""
 
-all: $(NAME)
+all: loading $(NAME)
+loading:
+	@clear
+	@i=1; while [ $$i -le 50 ]; do \
+		clear; \
+		printf "Ɛ"; \
+		for j in $$(seq 1 $$i); do printf "="; done; \
+		printf "ɔ\n"; \
+		sleep 0.025; \
+		i=$$((i + 1)); \
+	done
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
@@ -74,6 +84,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
 $(NAME): $(LIBFT) $(OBJS)
+	@sl -le
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
