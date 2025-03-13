@@ -6,14 +6,15 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/13 12:50:37 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:32:43 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# include "libft/libft.h"
 
-# include "libft.h"
+// # include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -32,35 +33,17 @@
 // 	struct s_list 	*next;
 // }				t_list;
 
-typedef struct s_cmd_old
-{
-	char            **argv;         // Nome comando + argomenti
-	char            *infile;        // eventuale file di input
-	char            *outfile;       // eventuale file di output
-	int            	 append;         // 1 se è ">>", 0 se è ">"
-	int            	 here_doc;       // 1 se è "<<", 0 se è "<"
-	struct s_cmd_old    *next;          // prossimo comando nella pipeline
-}   t_cmd_old;
-
-typedef struct s_cmd
-{
-	t_token			*words;         // Nome comando + argomenti
-	char			infile[1024];        // eventuale file di input
-	char			outfile[1024];       // eventuale file di output
-	int            	 append;
-}   t_cmd;
-
 typedef enum e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,
-	TOKEN_RED_INPUT,    // "<"
-	TOKEN_RED_OUTPUT,   // ">"
-	TOKEN_HERE_DOC,          // "<<"
-	TOKEN_APPEND,         // ">>"
-	TOKEN_SEMICOL,        // ";"
+	TOKEN_RED_INPUT,    // <
+	TOKEN_RED_OUTPUT,   // >
+	TOKEN_HERE_DOC,     // <<
+	TOKEN_APPEND,       // >>
+	TOKEN_SEMICOL,      // ;
 	TOKEN_S_QUOTE,		// '
-	TOKEN_D_QUOTE,		// ""
+	TOKEN_D_QUOTE,		// "
 	// ...eventuali altri tipi
 }   t_token_type;
 
@@ -71,6 +54,27 @@ typedef struct s_token
 	struct s_token  *next;
 }   t_token;
 			  
+
+typedef struct s_cmd_old
+{
+	char            **argv;         // Nome comando + argomenti
+	char            *infile;        // eventuale file di input
+	char            *outfile;       // eventuale file di output
+	int            	 append;         // 1 se è ">>", 0 se è ">"
+	int            	 here_doc;       // 1 se è "<<", 0 se è "<"
+	struct s_cmd_old    *next;          // prossimo comando nella pipeline
+}   t_cmd_old;
+
+#define MAX_ARGS 100
+
+typedef struct s_cmd
+{
+    char *words[MAX_ARGS];   // Array di argomenti (comando + parametri)
+    char infile[1024];       // File di input, se presente
+    char outfile[1024];      // File di output, se presente
+    int  append;             // Flag: O_WRONLY|O_CREAT|O_APPEND per ">>" oppure O_WRONLY|O_CREAT|O_TRUNC per ">"
+} t_cmd;
+
 
 typedef struct s_var
 {
@@ -88,6 +92,7 @@ char	*get_next_word(const char *line, int *i);
 void	add_token(t_token **tokens, t_token_type type, char *value);
 t_token	*tokenizer(char *line);
 void	print_tokens(t_token *tokens);
+char *get_rekd(t_token_type type);
 
 
 //ft_readline.c

@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/13 12:13:29 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:23:24 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	skip_spaces(const char *line, int *i)
 
 int	is_operator(const char *line, int i)
 {
-	if (line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>' || line[i] == '/' || line[i] == '"')
+	if (line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>' )
 		return (1);
 	return (0);
 }
@@ -147,6 +147,24 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 	}
 }
 
+char *get_rekd(t_token_type type)
+{
+    if (type == TOKEN_PIPE)
+        return (ft_strdup("|"));
+    else if (type == TOKEN_SEMICOL)
+        return (ft_strdup(";"));
+    else if (type == TOKEN_RED_INPUT)
+        return (ft_strdup("<"));
+    else if (type == TOKEN_RED_OUTPUT)
+        return (ft_strdup(">"));
+    else if (type == TOKEN_APPEND)
+        return (ft_strdup(">>"));
+    else if (type == TOKEN_HERE_DOC)
+        return (ft_strdup("<<"));
+    return (NULL);
+}
+
+
 t_token	*tokenizer(char *line)
 {
 	t_token		*tokens;
@@ -159,11 +177,11 @@ t_token	*tokenizer(char *line)
 		skip_spaces(line, &i);
 		if (line[i] == '\0')
 			break ;
-		if (is_operator(line, i))
+			if (is_operator(line, i))
 			add_token(&tokens, get_next_operator(line, &i), NULL);
 		else
 			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i));
-	}
+			}
 	return (tokens);
 }
 
