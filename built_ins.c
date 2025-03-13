@@ -6,45 +6,74 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:42:26 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 18:13:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:45:15 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(char *cmd, char **shv, char **env);
+int	ft_echo(t_cmd cmd, char **shv, char **env);
 int	ft_cd(char *cmd);
 int	ft_pwd(char *cmd);
 int	ft_export(char *cmd, char ***shv, char ***env);
 int	ft_unset(char *cmd, char ***shv, char ***env);
 int	ft_env(char **env);
 
-//echo     -n     ahahaha
-int	ft_echo(char *cmd, char **shv, char **env)
+static char	*get_full_str(t_token *words, char **shv, char **env)
 {
 	char	*exp_str;
-	int		i;
+	char	*full_str;
 
-	i = 4;
-	while (cmd[i] != '\0' && cmd[i] == ' ')
-		i++;
-	if (cmd[i] == '\0')
-		return (-1);
-	if (cmd[i] == '-' && cmd[i + 1] == 'n' && cmd[i + 2] == ' ')
+	full_str = NULL;
+	while (words && words->type == TOKEN_WORD)
 	{
-		i += 3;
-		while (cmd[i] != '\0' && cmd[i] == ' ')
-			i++;
-		if (cmd[i] == '\0')
-			return (-1);
-		exp_str = expand_string(&cmd[i], (const char **)shv, (const char **)env);
-		ft_printf("%s", exp_str);
+		exp_str = expand_string(words->value, (const char **)shv, (const char **)env);
+		full_str = ft_strjoin_free_space(full_str, exp_str);
+		if (exp_str == NULL || full_str == NULL)
+			ft_printfd(2, "echo: malloc failure\n");
 		free(exp_str);
+		words = words->next;
+	}
+	return (full_str);
+}
+
+static int	put_words_fd(int fd, t_token *words, char **shv, char **env)
+{
+	char **full_str;
+	
+	full_str = get_full_str(words, shv, env);
+	if (full_str == NULL)
+		return (-1);
+	ft_printfd(fd, "%s", full_str);
+	return (free(full_str), 1);
+}
+
+//echo     -n     ahahaha
+/* TODO: handle PIPE and tell march that append is the O_FLAG fo read
+(either O_WRITE | O_TRUNCATE or O_WRITE | O_APPEND ) */
+int	ft_echo(t_cmd cmd, char **shv, char **env)
+{
+	int	fd;
+
+	if (cmd.words->value == '\0')
+		return (-1);
+	
+	fd = 1;
+	//get output fd
+	if (ft_strncmp("STDOUT", cmd.outfile, 5) != 0
+		&& ft_strncmp("PIPE", cmd.outfile, 4) != 0)
+		if (access(cmd.outfile, cmd.append) == 0)
+			fd = open(cmd.outfile, cmd.append);
+
+	if (ft_strncmp("-n", cmd.words->value, 2) != 0)
+	{
+		put_words_fd(fd, cmd.words, shv, env);
+		ft_printfd(fd, "\n");
 		return (1);
 	}
-	exp_str = expand_string(&cmd[i], (const char **)shv, (const char **)env);
-	ft_printf("%s\n", exp_str);
-	free(exp_str);
+	put_words_fd(fd, cmd.words->next, shv, env);
+	if (fd > 2)
+		close(fd);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 18:53:00 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:18:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ size_t	ft_mtxlen(const void **mtx)
 	return (i);
 }
 
-size_t	ft_strlen_nl(const char *s)
+/* size_t	ft_strlen_nl(const char *s)
 {
 	size_t	i;
 
@@ -34,7 +34,7 @@ size_t	ft_strlen_nl(const char *s)
 	while (s[i] && s[i] != '\n')
 		i++;
 	return (i);
-}
+} */
 
 size_t	ft_strlen_space(const char *s)
 {
@@ -60,7 +60,39 @@ static size_t	ft_strlen_temp(const char *s)
 	return (i);
 }
 
-char	*ft_strjoin_free_space_nl(char *s1, char *s2)
+char	*ft_strjoin_free_space(char *s1, char *s2)
+{
+	int		i;
+	int		j;
+	char	*twelve;
+	size_t	size;
+
+	if (s1 == NULL)
+	{
+		s1 = (char *)malloc(1 * sizeof(char));
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
+	if (s2 == NULL)
+		return (s1);
+	size = ft_strlen(s1) + ft_strlen(s2) + 2;
+	twelve = (char *)malloc(size * sizeof(char));
+	if (twelve == NULL)
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		twelve[i] = s1[i];
+	twelve[i++] = ' ';
+	j = 0;
+	while (s2[j] != '\0')
+		twelve[i++] = s2[j++];
+	twelve[i] = '\0';
+	free(s1);
+	return (twelve);
+}
+
+char	*ft_strjoin_free_nl_space(char *s1, char *s2)
 {
 	int		i;
 	int		j;

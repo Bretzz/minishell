@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/13 17:32:43 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:40:24 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 size_t	ft_strlen_space(const char *s);
 size_t	ft_mtxlen(const void **mtx);
 
-char	*ft_strjoin_free_space_nl(char *s1, char *s2);
-size_t	ft_strlen_nl(const char *s);
+char	*ft_strjoin_free_space(char *s1, char *s2);
+char	*ft_strjoin_free_nl_space(char *s1, char *s2);
 
 void	ft_print_charr(const char **arr);
 
