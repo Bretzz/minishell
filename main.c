@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/13 11:52:20 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:04:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,33 @@ int	ft_putchar(int c)
 
 /* returns 0 if command isn't builtin, 1 if it is
 2 if it's echo -n. */
-int		exec_builtin(char *cmd, char ***shv, char ***env)
+int		exec_builtin(char *who, t_cmd cmd, char ***shv, char ***env)
 {
-	if (!ft_strncmp("echo", cmd, 4))
+	if (!ft_strncmp("echo", who, 4))
 		return(ft_echo(cmd, *shv, *env));
-	else if (!ft_strncmp("cd", cmd, 2))
+	else if (!ft_strncmp("cd", who, 2))
 		return (ft_cd(cmd));
-	else if (!ft_strncmp("pwd", cmd, 3))
+	else if (!ft_strncmp("pwd", who, 3))
 		return (ft_pwd(cmd));
-	else if (!ft_strncmp("export", cmd, 6))
+	else if (!ft_strncmp("export", who, 6))
 		return (ft_export(cmd, shv, env));
-	else if (!ft_strncmp("unset", cmd, 5))
+	else if (!ft_strncmp("unset", who, 5))
 		return (ft_unset(cmd, shv, env));
-	else if (!ft_strncmp("env", cmd, 3))
+	else if (!ft_strncmp("env", who, 3))
 		return (ft_env(*env));
-	else if (!ft_strncmp("exit", cmd, 4))
-		return (ft_freentf("122", cmd, *shv, *env), exit(EXIT_SUCCESS), 1);
+	else if (!ft_strncmp("exit", who, 4))
+		return (ft_freentf("22", *shv, *env), exit(EXIT_SUCCESS), 1); //need to free command list
 	return (0);
 }
 
-void	handle_command(char *cmd, char ***shv, char ***env)
+void	handle_command(t_cmd cmd, char ***shv, char ***env)
 {
 	pid_t	pid;
 	int		fd[2];
 	
 	fd[0] = 0;
 	fd[1] = 1;
-	if (exec_builtin(cmd, shv, env))
+	if (exec_builtin(cmd.words->value, cmd, shv, env))
 		return ;
 	if (handle_vars(cmd, shv, env))
 		return ;
