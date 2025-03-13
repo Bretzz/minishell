@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/12 14:51:47 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:50:37 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,43 +32,63 @@
 // 	struct s_list 	*next;
 // }				t_list;
 
+typedef struct s_cmd_old
+{
+	char            **argv;         // Nome comando + argomenti
+	char            *infile;        // eventuale file di input
+	char            *outfile;       // eventuale file di output
+	int            	 append;         // 1 se è ">>", 0 se è ">"
+	int            	 here_doc;       // 1 se è "<<", 0 se è "<"
+	struct s_cmd_old    *next;          // prossimo comando nella pipeline
+}   t_cmd_old;
+
 typedef struct s_cmd
 {
-    char            **argv;         // Nome comando + argomenti
-    char            *infile;        // eventuale file di input
-    char            *outfile;       // eventuale file di output
-    int             append;         // 1 se è ">>", 0 se è ">"
-    int             here_doc;       // 1 se è "<<", 0 se è "<"
-    struct s_cmd    *next;          // prossimo comando nella pipeline
+	t_token			*words;         // Nome comando + argomenti
+	char			infile[1024];        // eventuale file di input
+	char			outfile[1024];       // eventuale file di output
+	int            	 append;
 }   t_cmd;
 
 typedef enum e_token_type
 {
-    TOKEN_WORD,
-    TOKEN_PIPE,
-    TOKEN_RED_INPUT,    // "<"
-    TOKEN_RED_OUTPUT,   // ">"
-    TOKEN_HERE_DOC,          // "<<"
-    TOKEN_APPEND,         // ">>"
-    TOKEN_SEMICOL,        // ";"
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_RED_INPUT,    // "<"
+	TOKEN_RED_OUTPUT,   // ">"
+	TOKEN_HERE_DOC,          // "<<"
+	TOKEN_APPEND,         // ">>"
+	TOKEN_SEMICOL,        // ";"
 	TOKEN_S_QUOTE,		// '
 	TOKEN_D_QUOTE,		// ""
-    // ...eventuali altri tipi
+	// ...eventuali altri tipi
 }   t_token_type;
 
 typedef struct s_token
 {
-    t_token_type    type;    // uno dei valori dell'enum
-    char            *value;  // la stringa associata (es. "ls", "grep", "file.txt", ecc.)
-    struct s_token  *next;
+	t_token_type    type;    // uno dei valori dell'enum
+	char            *value;  // la stringa associata (es. "ls", "grep", "file.txt", ecc.)
+	struct s_token  *next;
 }   t_token;
-              
+			  
 
 typedef struct s_var
 {
 	char	*name;
 	char	*value;
 }				t_var;
+
+// parsing
+void	skip_spaces(const char *line, int *i);
+int	is_operator(const char *line, int i);
+t_token_type	pipe_or_die(const char *line, int *i);
+t_token_type	get_next_operator(const char *line, int *i);
+char	*remove_quotes(char *str);
+char	*get_next_word(const char *line, int *i);
+void	add_token(t_token **tokens, t_token_type type, char *value);
+t_token	*tokenizer(char *line);
+void	print_tokens(t_token *tokens);
+
 
 //ft_readline.c
 

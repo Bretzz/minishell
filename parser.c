@@ -6,83 +6,31 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/11 15:22:50 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:37:29 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-s_cmd cmd;
-
 void	*parser(char *str)
 {
-	while(str[i])
+	t_token	*tokens;
+	tokens = tokenizer(str);
+	while (tokens->next)
 	{
-		if(str[i] == '<')
-			red_input()
-		else if(str[i] == '>')
-			red_output()
-		else if(str[i] == '<<')
-			delimeter_input()
-		else if(str[i] == '>>')
-			red_output_append()
-		i++;
+		//if token.type
+		tokens = tokens->next;
 	}
 }
 
 
-//tokenize crea un array di tokens facendo split
-//split oppure subset gestione del $
-
-void *tokenize(char *str, char **set2)
+int	main(int argc, char *argv[])
 {
-	int i;
-	char *set[5] = {" ", "|", "<", "<<", ">", ">>"};
-	i = 0;
-	
-	while(str[i])
-	{
-		if()
-	}	
-	
+	t_token	*tokens;
+
+	// (void)argc;
+	// tokens = parser(argv[1]);
+	// print_tokens(tokens);
+	return (0);
 }
 
-void	skip_spaces(char *line, int i)
-{
-	
-}
-
-int	is_operator(char *line, int i)
-{
-	
-}
-
-void	add_token(t_list	tokens, fun(){}
-{
-	
-}
-t_list *tokenize_line(char *line)
-{
-	t_list  *tokens;
-	int	i;
-
-	i = 0;
-	tokens = NULL;
-	while (line[i])
-	{
-		skip_spaces(line, &i);
-		if (line[i] == '\0')
-			break ;
-		if (is_operator(line, i))
-			add_token(&tokens, get_next_operator(line, &i));
-		else
-			add_token(&tokens, get_next_word(line, &i));
-	}
-	return (tokens);
-}
-
-
-char *set[5] = {' ', '|', '<', '>', '\'', '\"',};
-
-if s[i] == *set[0]
-	

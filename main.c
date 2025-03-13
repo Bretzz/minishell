@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 17:37:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:52:20 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	ft_putchar(int c)
 	return (write(STDOUT_FILENO, &c, 1));
 }
 
-/* returns 0 if commant isn't builtin, 1 if it is
-2 if it's ecoh -n. */
+/* returns 0 if command isn't builtin, 1 if it is
+2 if it's echo -n. */
 int		exec_builtin(char *cmd, char ***shv, char ***env)
 {
 	if (!ft_strncmp("echo", cmd, 4))

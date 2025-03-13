@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/11 20:07:30 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/13 12:13:29 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	skip_spaces(const char *line, int *i)
 
 int	is_operator(const char *line, int i)
 {
-	if (line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
+	if (line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>' || line[i] == '/' || line[i] == '"')
 		return (1);
 	return (0);
 }
@@ -147,7 +147,7 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 	}
 }
 
-t_token	*tokenize_line(char *line)
+t_token	*tokenizer(char *line)
 {
 	t_token		*tokens;
 	int			i;
@@ -195,12 +195,12 @@ void	print_tokens(t_token *tokens)
 	}
 }
 
-int	main(int argc, char *argv[])
-{
-	t_token	*tokens;
+// int	main(int argc, char *argv[])
+// {
+// 	t_token	*tokens;
 
-	(void)argc;
-	tokens = tokenize_line(argv[1]);
-	print_tokens(tokens);
-	return (0);
-}
+// 	(void)argc;
+// 	tokens = tokenizer(argv[1]);
+// 	print_tokens(tokens);
+// 	return (0);
+// }
