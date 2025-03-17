@@ -1,0 +1,3 @@
+EXPORT
+	1. unset the exported variable
+	2. without arg do 'env'

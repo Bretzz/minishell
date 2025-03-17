@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/17 16:21:54 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:57:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ t_token_type	get_next_operator(const char *line, int *i)
 	return (TOKEN_WORD);
 }
 
+/* str is a dynamic allocated memory addres, it will be free'd later */
 char	*remove_quotes(char *str)
 {
 	int		len;
@@ -94,6 +95,7 @@ char	*remove_quotes(char *str)
 	return (newstr);
 }
 
+/* returns a dynamicly allocated mem addres */
 char	*get_next_word(const char *line, int *i)
 {
 	int		start;
@@ -134,7 +136,7 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 	if (value == NULL)
 		new->value = NULL;
 	else
-		new->value = ft_strdup(value);
+		new->value = value/* ft_strdup(value) */;
 	new->next = NULL;
 	if (!(*tokens))
 		*tokens = new;
@@ -183,6 +185,19 @@ t_token	*tokenizer(char *line)
 			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i));
 			}
 	return (tokens);
+}
+
+void	free_tokens(t_token *tokens)
+{
+	t_token	*tmp;
+	
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
+		free(tmp->value);
+		free(tmp);	
+	}
 }
 
 void	print_tokens(t_token *tokens)

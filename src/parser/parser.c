@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/17 18:36:36 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/17 21:09:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 */
 
 /* Inizializza una struttura t_cmd, azzerando l'array degli argomenti e le stringhe di redirezione */
+/* ! ! ! REPLACED WITH FT_BZERO ! ! ! */
 t_cmd create_cmd(void)
 {
 	t_cmd cmd;
@@ -63,6 +64,7 @@ void add_arg_to_cmd(t_cmd *cmd, char *arg)
 	while (cmd->words[i] != NULL)
 		i++;
 	cmd->words[i] = ft_strdup(arg);
+	//ft_strlcpy(cmd->words[i], arg, ft_strlen(arg));
 	//ft_memmove(&cmd->words[i], arg, ft_strlen(arg));
 }
 
@@ -111,7 +113,10 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 			current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
 		}
 		else if (redirType == TOKEN_HERE_DOC)
-			ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
+		{
+			ft_strlcpy(current_cmd->infile, "<< ", 4);
+			ft_strlcat(current_cmd->infile, (*tokens)->next->value, 1024);
+		}
 	}
 	/* Avanza tokens di due posizioni: l'operatore e il nome del file */
 	if (*tokens)
@@ -127,67 +132,96 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 //     return (0);
 // }
 
+/* frees the cmd array */
+void	free_cmd(t_cmd *cmd_arr)
+{
+	int	i[2];
+
+	if (cmd_arr == NULL)
+		return ;
+	i[0] = 0;
+	while (cmd_arr[i[0]].words[0]
+		/* &&cmd_arr[i[0]].words[0][0] != '\0' */) //element i[0] exist
+	{
+		i[1] = 0;
+		while (cmd_arr[i[0]].words[i[1]]
+			/* && cmd_arr[i[0]].words[i[1]][0] != '\0' */)
+			free(cmd_arr[i[0]].words[i[1]++]);
+		//free(cmd_arr[i[0]]);
+		i[0]++;
+	}
+	free(cmd_arr);
+}
+
 t_cmd *parse_tokens(char *line)
 {
-	t_token *tokens;
+	t_token *tokens[2];
 	t_cmd *cmd_array;
 	t_cmd current_cmd;
 	int cmd_index;
 
-	tokens = tokenizer(line);
+	tokens[0] = tokenizer(line);
+	tokens[1] = tokens[0];
 	/* print_tokens(tokens);
 	printf("\n\n"); */
 	cmd_array = ft_calloc(sizeof(t_cmd), MAX_CMDS);
 	if (!cmd_array)
 		return (NULL);
 	cmd_index = 0;
-	current_cmd = create_cmd();
-	while (tokens)
+	//current_cmd = create_cmd();
+	ft_bzero(&current_cmd, sizeof(t_cmd));
+	while (tokens[0])
 	{
 		//ft_printf("looking at '%s'\n", tokens->value);
-		if (tokens->type == TOKEN_WORD)
+		if (tokens[0]->type == TOKEN_WORD)
 		{
-			process_word(tokens, &current_cmd);
-			tokens = tokens->next;
+			process_word(tokens[0], &current_cmd);
+			tokens[0] = tokens[0]->next;
 			continue;
 		}
-		if (tokens->type == TOKEN_RED_INPUT ||
-			tokens->type == TOKEN_RED_OUTPUT ||
-			tokens->type == TOKEN_APPEND)
+		if (tokens[0]->type == TOKEN_RED_INPUT ||
+			tokens[0]->type == TOKEN_RED_OUTPUT ||
+			tokens[0]->type == TOKEN_APPEND ||
+			tokens[0]->type == TOKEN_HERE_DOC)
 		{
-			process_redirection(&tokens, &current_cmd);
+			process_redirection(&tokens[0], &current_cmd);
 			continue;
 		}
 		/* Gestione dei separatori (pipe e punto e virgola) */
-		if (tokens->type == TOKEN_PIPE)
+		if (tokens[0]->type == TOKEN_PIPE)
 		{
 			/* Imposta l'outfile del comando corrente con "|" */
 			{
-				char *pipe_str = get_rekd(TOKEN_PIPE);
+				/* char *pipe_str = get_rekd(TOKEN_PIPE);
 				ft_strlcpy(current_cmd.outfile, pipe_str, 1024);
-				free(pipe_str);
+				free(pipe_str); */
+				ft_strlcpy(current_cmd.outfile, "|", 2);
 			}
 			append_cmd(cmd_array, &cmd_index, current_cmd);
 			/* Crea un nuovo comando e imposta il suo infile con "|" */
-			current_cmd = create_cmd();
+			//current_cmd = create_cmd();
+			ft_bzero(&current_cmd, sizeof(t_cmd));
 			{
-				char *pipe_str = get_rekd(TOKEN_PIPE);
+				/* char *pipe_str = get_rekd(TOKEN_PIPE);
 				ft_strlcpy(current_cmd.infile, pipe_str, 1024);
-				free(pipe_str);
+				free(pipe_str); */
+				ft_strlcpy(current_cmd.infile, "|", 2);
 			}
-			tokens = tokens->next;
+			tokens[0] = tokens[0]->next;
 			continue;
 		}
-		else if (tokens->type == TOKEN_SEMICOL)
+		else if (tokens[0]->type == TOKEN_SEMICOL)
 		{
 			append_cmd(cmd_array, &cmd_index, current_cmd);
-			current_cmd = create_cmd();
-			tokens = tokens->next;
+			//current_cmd = create_cmd();
+			ft_bzero(&current_cmd, sizeof(t_cmd));
+			tokens[0] = tokens[0]->next;
 			continue;
 		}
-		tokens = tokens->next;
+		tokens[0] = tokens[0]->next;
 	}
 	append_cmd(cmd_array, &cmd_index, current_cmd);
+	free_tokens(tokens[1]);
 	return (cmd_array);
 }
 
@@ -233,11 +267,9 @@ int	ft_cmdlen(t_cmd *cmd_array)
 //     int num_cmds;
 	
 //     cmd_array = parse_tokens(line);
-// 	ft_printf("blblbllb\n");
 
 // //	int num_cmds2 = ft_mtxlen((const void **)&cmd_array);
 // 	num_cmds = 	ft_cmdlen(cmd_array);
-// 	ft_printf("blblbllb\n");
 
 //     //line = "echo ciao > file"; // Prova prima con ">"; poi con ">>"
 //     /* Dovrai sapere quanti comandi hai processato; per test puoi 

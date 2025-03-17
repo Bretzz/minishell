@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:49:52 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 15:08:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/17 20:07:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ static void	free_mtx_mtx(void ***mtx)
 	free(mtx);
 }
 
+//da chiedere a Pasquale
 int	ft_freentf(const char *s, ...)
 {
 	va_list	arg;
+
 	if (!s)
 		return (0);
 	va_start(arg, s);

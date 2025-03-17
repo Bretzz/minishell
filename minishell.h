@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 17:44:01 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/17 21:08:42 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,6 @@ typedef struct s_token
 }   t_token;
 			  
 
-typedef struct s_cmd_old
-{
-	char            **argv;         // Nome comando + argomenti
-	char            *infile;        // eventuale file di input
-	char            *outfile;       // eventuale file di output
-	int            	 append;         // 1 se è ">>", 0 se è ">"
-	int            	 here_doc;       // 1 se è "<<", 0 se è "<"
-	struct s_cmd_old    *next;          // prossimo comando nella pipeline
-}   t_cmd_old;
-
 #define MAX_ARGS 100
 
 typedef struct s_cmd
@@ -83,8 +73,13 @@ typedef struct s_var
 }				t_var;
 
 // parsing
-t_cmd *parse_tokens(char *line);
-int	ft_cmdlen(t_cmd *cmd_array);
+t_cmd	*parse_tokens(char *line);
+int		ft_cmdlen(t_cmd *cmd_array);
+void	free_cmd(t_cmd *cmd_arr);
+
+//tokens
+t_token	*tokenizer(char *line);
+void	free_tokens(t_token *tokens);
 
 void	skip_spaces(const char *line, int *i);
 int	is_operator(const char *line, int i);
@@ -118,6 +113,7 @@ char 	*expand_string(char *str, const char **shv, const char **env);
 //ft_execve.c
 
 int		ft_execve(int *fd, t_cmd cmd, char **env);
+pid_t	wrapper(int *fd, t_cmd cmd);
 
 //built_ins.c
 

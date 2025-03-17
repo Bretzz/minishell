@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 18:35:16 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/17 21:09:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	clean_exit(t_cmd *cmd_arr, char *line, char **shv, char **env, int code)
+{
+	free_cmd(cmd_arr);
+	ft_freentf("122", line, shv, env);
+	exit(code);
+}
 
 int	ft_putchar(int c)
 {
@@ -21,7 +28,6 @@ int	ft_putchar(int c)
 2 if it's echo -n. */
 int		exec_builtin(t_cmd cmd, char ***shv, char ***env)
 {
-
 	if (!ft_strncmp("echo", cmd.words[0], 4))
 		return(ft_echo(cmd, (const char**) *shv, (const char**) *env));
 	else if (!ft_strncmp("cd", cmd.words[0], 2))
@@ -35,28 +41,63 @@ int		exec_builtin(t_cmd cmd, char ***shv, char ***env)
 	else if (!ft_strncmp("env", cmd.words[0], 3))
 		return (ft_env(*env));
 	else if (!ft_strncmp("exit", cmd.words[0], 4))
-		return (ft_freentf("22", *shv, *env), exit(EXIT_SUCCESS), 1); //need to free command list
+		return (-1); //need to free command list
 	return (0);
 }
 
-void	handle_command(t_cmd cmd, char ***shv, char ***env)
+static int	handle_command(t_cmd cmd, char ***shv, char ***env)
 {
 	pid_t	pid;
 	int		fd[2];
+	int		ret;
 
-	fd[0] = 0;
-	fd[1] = 1;
-	if (exec_builtin(cmd, shv, env))
-		return ;
+
+	ret = exec_builtin(cmd, shv, env);
+	if (ret != 0)
+		return (ret);
 	if (handle_vars(cmd, shv, env))
-		return ;
-	pid = fork();
+		return (1);
+	pid = wrapper(&fd[0], cmd);
 	if (pid == 0)
-		ft_execve(fd, cmd, *env);
+	{
+		ret = ft_execve(fd, cmd, *env); //fix return command value (127 on command not found)
+		if (ret == 127)
+			return (-2);
+		return (-1);
+	}
 	waitpid(pid, NULL, WUNTRACED);
+	return (1);
 }
 
-char	**env_copy(char **his_env)
+static int	handle_line(char *line, char ***shv, char ***env)
+{
+	int	i;
+	int	len;
+	int	ret;
+	t_cmd *cmd_arr;
+	
+	if (line == NULL)
+		return (0);
+	cmd_arr = parse_tokens((char *)line);
+	len = ft_cmdlen(cmd_arr);
+	i = 0;
+	while(i < len)
+	{
+		ret = handle_command(cmd_arr[i], shv, env);
+		if (ret == -1)
+			clean_exit(cmd_arr, line, *shv, *env, EXIT_SUCCESS);
+		if (ret == -2)
+			clean_exit(cmd_arr, line, *shv, *env, 127);
+		
+		//free(cmd_arr[i].words);
+		i ++;
+	}
+	free_cmd(cmd_arr);
+	//add_history(line);
+	return (1);
+}
+
+static char	**env_copy(char **his_env)
 {
 	int	i;
 	char **my_env;
@@ -76,43 +117,6 @@ char	**env_copy(char **his_env)
 	return (my_env);
 }
 
-// static void	free_cmd(t_cmd *cmd_arr)
-// {
-// 	int	i;
-
-// 	if (cmd_arr == NULL)
-// 		return ;
-// 	i = 0;
-// 	while (cmd_arr[i].words[0][0] != '\0')
-// 	{
-// 		ft_freentf("2", cmd_arr[i].words);
-// 		i++;
-// 	}
-// 	free(cmd_arr);
-// }
-
-static int	handle_line(const char *line, char ***shv, char ***env)
-{
-	int	i;
-	int	len;
-	t_cmd *cmd_array;
-
-	if (line == NULL)
-		return (0);
-	cmd_array = parse_tokens((char *)line);
-	len = ft_cmdlen(cmd_array);
-	i = 0;
-	while(i < len)
-	{
-		handle_command(cmd_array[i], shv, env);
-		//free(cmd_array[i].words);
-		i ++;
-	}
-	free/* _cmd */(cmd_array);
-	//add_history(line);
-	return (1);
-}
-
 int	main(void)
 {
 	char	*line;
@@ -123,7 +127,6 @@ int	main(void)
 	env = env_copy(__environ);
 	if (env == NULL)
 		return (1);
-	
 		
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	while (1)
