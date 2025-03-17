@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/13 17:23:24 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/17 16:21:54 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ char *get_rekd(t_token_type type)
         return (ft_strdup("<<"));
     return (NULL);
 }
-
+ 
 
 t_token	*tokenizer(char *line)
 {
@@ -177,7 +177,7 @@ t_token	*tokenizer(char *line)
 		skip_spaces(line, &i);
 		if (line[i] == '\0')
 			break ;
-			if (is_operator(line, i))
+		if (is_operator(line, i))
 			add_token(&tokens, get_next_operator(line, &i), NULL);
 		else
 			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i));

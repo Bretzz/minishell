@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/13 17:40:24 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/17 17:44:01 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ typedef struct s_var
 }				t_var;
 
 // parsing
+t_cmd *parse_tokens(char *line);
+int	ft_cmdlen(t_cmd *cmd_array);
+
 void	skip_spaces(const char *line, int *i);
 int	is_operator(const char *line, int i);
 t_token_type	pipe_or_die(const char *line, int *i);
@@ -105,7 +108,7 @@ char	*find_env_path(char *cmd, char **env);
 
 //handle stuff
 
-int		handle_vars(char *cmd, char ***shv, char ***env);
+int		handle_vars(t_cmd cmd, char ***shv, char ***env);
 char	**var_append(char **mtx, char *var);
 int		is_there(const char **mtx, const char *target);
 
@@ -114,15 +117,15 @@ char 	*expand_string(char *str, const char **shv, const char **env);
 
 //ft_execve.c
 
-int		ft_execve(int *fd, const char *cmd, char **env);
+int		ft_execve(int *fd, t_cmd cmd, char **env);
 
 //built_ins.c
 
-int		ft_echo(char *cmd, char **shv, char **env);
-int		ft_cd(char *cmd);
-int		ft_pwd(char *cmd);
-int		ft_export(char *cmd, char ***shv, char ***env);
-int		ft_unset(char *cmd, char ***shv, char ***env);
+int		ft_echo(t_cmd cmd, const char **shv, const char **env);
+int		ft_cd(t_cmd cmd);
+int		ft_pwd(t_cmd cmd);
+int		ft_export(t_cmd cmd, char ***shv, char ***env);
+int		ft_unset(t_cmd cmd, char ***shv, char ***env);
 int		ft_env(char **env);
 
 //free_stuff.c

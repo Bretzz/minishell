@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 17:21:28 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/17 17:42:08 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		handle_vars(char *cmd, char ***shv, char ***env);
+int		handle_vars(t_cmd cmd, char ***shv, char ***env);
 char	**var_append(char **mtx, char *var);
 int		is_there(const char **mtx, const char *target);
 
@@ -103,7 +103,7 @@ char	**var_append(char **mtx, char *var)
 TODO:
 	1. replacement of old value in exists. DONE
 	2. expand_string function. */
-int	handle_vars(char *cmd, char ***shv, char ***env)
+int	handle_vars(t_cmd cmd, char ***shv, char ***env)
 {
 	char	*eq;
 	char	**mtx;
@@ -111,15 +111,15 @@ int	handle_vars(char *cmd, char ***shv, char ***env)
 
 	(void)env;
 	//ft_printf("cmd=%s\n", cmd);
-	eq = ft_strchr(cmd, '=');
+	eq = ft_strchr(cmd.words[0], '=');
 	//ft_printf("eq=%s\n", eq);
-	if (eq != NULL && eq != cmd)
+	if (eq != NULL && eq != cmd.words[0])
 	{
-		index = is_there((const char **)*env, cmd);
+		index = is_there((const char **)*env, cmd.words[0]);
 		if (index < 0)
-			mtx = var_append(*shv, cmd);
+			mtx = var_append(*shv, cmd.words[0]);
 		else
-			mtx = var_append(*env, cmd);
+			mtx = var_append(*env, cmd.words[0]);
 		if (mtx == NULL)
 			return (0);
 		if (index < 0)
@@ -129,10 +129,10 @@ int	handle_vars(char *cmd, char ***shv, char ***env)
 		return (1);
 	}
 		/* *shell_var = ft_strjoin_free_space_nl(*shell_var, cmd); */
-	else if (!ft_strncmp("$", cmd, 1))
-	{
-		ft_printf("%s\n", expand_string(cmd, (const char **)*shv, (const char **)*env));
-		return (1);
-	}
+	// else if (!ft_strncmp("$", cmd.words[0], 1))
+	// {
+	// 	ft_printf("%s\n", expand_string(cmd.words[0], (const char **)*shv, (const char **)*env));
+	// 	return (1);
+	// }
 	return (0);
 }

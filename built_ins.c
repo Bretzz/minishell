@@ -3,75 +3,76 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:42:26 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/13 15:45:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/17 17:38:28 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(t_cmd cmd, char **shv, char **env);
-int	ft_cd(char *cmd);
-int	ft_pwd(char *cmd);
-int	ft_export(char *cmd, char ***shv, char ***env);
-int	ft_unset(char *cmd, char ***shv, char ***env);
+int	ft_echo(t_cmd cmd, const char **shv, const char **env);
+int	ft_cd(t_cmd cmd);
+int	ft_pwd(t_cmd cmd);
+int	ft_export(t_cmd cmd, char ***shv, char ***env);
+int	ft_unset(t_cmd cmd, char ***shv, char ***env);
 int	ft_env(char **env);
 
-static char	*get_full_str(t_token *words, char **shv, char **env)
-{
-	char	*exp_str;
-	char	*full_str;
+// static char	*get_full_str(t_token *words, char **shv, char **env)
+// {
+// 	char	*exp_str;
+// 	char	*full_str;
 
-	full_str = NULL;
-	while (words && words->type == TOKEN_WORD)
+// 	full_str = NULL;
+// 	while (words && words->type == TOKEN_WORD)
+// 	{
+// 		exp_str = expand_string(words->value, (const char **)shv, (const char **)env);
+// 		full_str = ft_strjoin_free_space(full_str, exp_str);
+// 		if (exp_str == NULL || full_str == NULL)
+// 			ft_printfd(2, "echo: malloc failure\n");
+// 		free(exp_str);
+// 		words = words->next;
+// 	}
+// 	return (full_str);
+// }
+/* takes */
+
+static void put_echo_words(int fd, char **words, const char **shv, const char **env)
+{
+	int i;
+	char *exp_str;
+
+	i = 0;
+
+	while (words[i] && words[i][0] != '\0')
 	{
-		exp_str = expand_string(words->value, (const char **)shv, (const char **)env);
-		full_str = ft_strjoin_free_space(full_str, exp_str);
-		if (exp_str == NULL || full_str == NULL)
-			ft_printfd(2, "echo: malloc failure\n");
+		exp_str = expand_string(words[i], shv, env);
+		ft_printfd(fd, "%s", exp_str);
+		if (words[i+1] && words[i+1][0] != '\0')
+			ft_printfd(fd, " ");
 		free(exp_str);
-		words = words->next;
+		i++;
 	}
-	return (full_str);
 }
-
-static int	put_words_fd(int fd, t_token *words, char **shv, char **env)
-{
-	char **full_str;
-	
-	full_str = get_full_str(words, shv, env);
-	if (full_str == NULL)
-		return (-1);
-	ft_printfd(fd, "%s", full_str);
-	return (free(full_str), 1);
-}
-
 //echo     -n     ahahaha
 /* TODO: handle PIPE and tell march that append is the O_FLAG fo read
 (either O_WRITE | O_TRUNCATE or O_WRITE | O_APPEND ) */
-int	ft_echo(t_cmd cmd, char **shv, char **env)
+int	ft_echo(t_cmd cmd, const char **shv, const char **env)
 {
 	int	fd;
 
-	if (cmd.words->value == '\0')
+	if (cmd.words[1][0] == '\0')
 		return (-1);
 	
 	fd = 1;
-	//get output fd
-	if (ft_strncmp("STDOUT", cmd.outfile, 5) != 0
-		&& ft_strncmp("PIPE", cmd.outfile, 4) != 0)
-		if (access(cmd.outfile, cmd.append) == 0)
-			fd = open(cmd.outfile, cmd.append);
-
-	if (ft_strncmp("-n", cmd.words->value, 2) != 0)
+	if (!ft_strncmp("-n", cmd.words[1], 2))
 	{
-		put_words_fd(fd, cmd.words, shv, env);
-		ft_printfd(fd, "\n");
+		put_echo_words(fd, &cmd.words[2], shv, env);
 		return (1);
 	}
-	put_words_fd(fd, cmd.words->next, shv, env);
+	put_echo_words(fd, &cmd.words[1], shv, env);
+	ft_printfd(fd, "\n");
 	if (fd > 2)
 		close(fd);
 	return (1);
@@ -102,17 +103,18 @@ int	ft_echo(t_cmd cmd, char **shv, char **env)
 			symbolic link produced an intermediate result with a length that exceeds
 			{PATH_MAX}.
 RETURNS: -1 on error, 1 on successfull execution. */
-int	ft_cd(char *cmd)
+int	ft_cd(t_cmd cmd)
 {
 	int		ret;
-	char	*path;
 
-	path = ft_strchr(cmd, ' ');
-	if (path == NULL)
-		return (1);
-	path++;
-	ft_printf("new-dir=%s\n", path);
-	ret = chdir(path);
+	if (cmd.words[2] && cmd.words[2][0] != '\0' )
+	{
+		ft_printfd(2, "minishell: cd: too many argument\n");
+		return (-1);
+		//better error handling
+	}
+	ft_printf("new-dir=%s\n", cmd.words[1]);
+	ret = chdir(cmd.words[1]);
 	if (ret == -1)
 	{
 		//handle errno
@@ -139,7 +141,7 @@ int	ft_cd(char *cmd)
 			the working directory, including the terminating null byte.  You need to
 			allocate a bigger array and try again. 
 RETURNS: 0 on error, the number of char printed on successful execution. */
-int	ft_pwd(char *cmd)
+int	ft_pwd(t_cmd cmd)
 {
 	int		count;
 	char	*dir;
@@ -161,39 +163,37 @@ int	ft_pwd(char *cmd)
 //env no, shv si
 //env si, shv no
 //env si, shv si
-int	ft_export(char *cmd, char ***shv, char ***env)
+int	ft_export(t_cmd cmd, char ***shv, char ***env)
 {
 	int	eq;
 	int	index;
 
-	cmd += 7;
 	if (*env == NULL)
 		return (-1);
 	//index = is_there(env, cmd);
-	eq = ft_strichr(cmd, '=');
+	eq = ft_strichr(cmd.words[1], '=');
 	if (eq != 0)
 	{
-		*env = var_append(*env, cmd); //protect the malloc fail
+		*env = var_append(*env, cmd.words[1]); //protect the malloc fail
 		return (1);
 	}
 	if (*shv== NULL)
 		return (-1);
-	index = is_there((const char **)*shv, cmd);
+	index = is_there((const char **)*shv, cmd.words[1]);
 	if (index < 0)
 		return (-1);
 	*env = var_append(*env, *shv[index]); //remember to drop_index on shv //protect the malloc fail
 	return (1);
 }
 
-int	ft_unset(char *cmd, char ***shv, char ***env)
+int	ft_unset(t_cmd cmd, char ***shv, char ***env)
 {
 	int		index;
 	char	**mtx;
 
-	cmd += 6;
 	if (*env == NULL)
 		return (-1);
-	index = is_there((const char **)*env, cmd);
+	index = is_there((const char **)*env, cmd.words[1]);
 	if (index >= 0)
 	{
 		ft_printf("found var in env\n");
@@ -203,7 +203,7 @@ int	ft_unset(char *cmd, char ***shv, char ***env)
 		*env = mtx;
 		return (1);
 	}
-	index = is_there((const char **)*shv, cmd);
+	index = is_there((const char **)*shv, cmd.words[1]);
 	if (index >= 0)
 	{
 		ft_printf("found var in shv\n");
