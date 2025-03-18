@@ -39,15 +39,18 @@ SRC_FILES		= main.c \
 				handle_vars.c expand_string.c \
 				get_value.c the_matrix.c \
 				\
-				print_stuff.c free_space.c \
+				print_stuff.c free_space.c cleanup.c \
 				ft_realloc.c ft_freentf.c ft_readline.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 
+EXE_DIR			= exec/
+EXE_BUILT		= 
+
 #folders containing source files [*.c]
 VPATH			= src \
 				  src/built_ins \
-				  src/exec \
+				  src/cmds \
 				  src/parser \
 				  src/utils \
 				  src/vars
@@ -91,12 +94,23 @@ $(OBJS_DIR):
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR) 
 	@$(CC) $(CFLAGS) $(INK) $(DEFS) -c $< -o $@
 
+$(EXE_DIR):
+	@mkdir -p $(EXE_DIR)
+
+$(EXE_DIR)%: $(EXE_BUILT)%.c | $(EXE_DIR) $(LIBFT)
+	@$(CC) $(CFLAGS) $< $(LIBFT) $(INK) $(DEFS) -o $@
+
 $(LIBFT):
 	@echo "${BOLD}creating libft...${RESET}"
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
 $(NAME): $(LIBFT) $(OBJS)
 	@sl -le
+	@echo "${BOLD}compiling $(NAME)...${RESET}"
+	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
+	&& echo "${LIGHT_GREEN}DONE${RESET}"
+
+fastbutreallylongtowrite: $(LIBFT) $(OBJS)
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 17:22:30 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:53:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ static char	*single_expand(int i, char *str, const char **shv, const char **env)
 	char	*new_str;
 	int		var_len;
 
-	exp_val = get_value(&str[i + 1], (const char **)shv, (const char **)env);
+	if (!ft_strncmp("?", &str[i + 1], ft_strlen_space(&str[i + 1])))
+		exp_val = ft_itoa(g_pipe_status);
+	else
+		exp_val = get_value(&str[i + 1], (const char **)shv, (const char **)env);
 	if (exp_val == NULL)
 	{
 		new_str = cut_string(str, ft_substr(str, i, ft_strlen_space(&str[i])));

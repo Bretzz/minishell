@@ -6,13 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 20:41:03 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:42:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(t_cmd cmd);
+int	ft_cd(int *fd, t_cmd cmd);
 
 /*	EACCES Search permission is denied for any component of the pathname.
 
@@ -39,14 +39,15 @@ int	ft_cd(t_cmd cmd);
 			symbolic link produced an intermediate result with a length that exceeds
 			{PATH_MAX}.
 RETURNS: -1 on error, 1 on successfull execution. */
-int	ft_cd(t_cmd cmd)
+int	ft_cd(int *fd, t_cmd cmd)
 {
 	int		ret;
 
 	if (cmd.words[2] && cmd.words[2][0] != '\0' )
 	{
-		ft_printfd(2, "minishell: cd: too many argument\n");
-		return (-1);
+		ft_printfd(STDERR_FILENO, "minishell: cd: Too many argument\n");
+		multicose(fd);
+		return (1);
 		//better error handling
 	}
 	ft_printf("new-dir=%s\n", cmd.words[1]);
@@ -54,7 +55,7 @@ int	ft_cd(t_cmd cmd)
 	if (ret == -1)
 	{
 		//handle errno
-		return (-1);
+		return (1); //return errno
 	}
-	return (1);
+	return (0);
 }

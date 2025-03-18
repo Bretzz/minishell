@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/17 18:57:46 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 12:56:10 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 	}
 }
 
+/* ! ! ! UNUSED FUNCTION ! ! ! */
 char *get_rekd(t_token_type type)
 {
     if (type == TOKEN_PIPE)

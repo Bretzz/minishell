@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 19:40:15 by topiana-         ###   ########.fr       */
+/*   Created: 2025/03/18 19:27:18 by topiana-          #+#    #+#             */
+/*   Updated: 2025/03/18 20:18:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(int *fd, char **env);
-
-int	ft_env(int *fd, char **env)
+void	safeclose(int fd)
 {
-	int	i;
+	if (fd > 2)
+		close(fd);
+}
 
-	if (env == NULL)
-	{
-		ft_printfd(STDERR_FILENO, "%p\n", env); //should never happen
-		multicose(fd);
-		return (-1);
-	}
-	i = 0;
-	while (env[i] != NULL)
-	{
-		ft_printfd(fd[1], "%s\n", env[i]);
-		i++;
-	}
-	multicose(fd);
-	return (0);
+/* expected a pointer to a space with at least 2 integers.
+checks's weather the value is bigger than 2,
+if it is close(3)s the corresponding file descriptor. */
+void	multicose(int *fd)
+{
+	safeclose(fd[0]);
+	safeclose(fd[1]);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 17:42:08 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:53:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,10 @@ int	handle_vars(t_cmd cmd, char ***shv, char ***env)
 			*env = mtx;
 		return (1);
 	}
-		/* *shell_var = ft_strjoin_free_space_nl(*shell_var, cmd); */
-	// else if (!ft_strncmp("$", cmd.words[0], 1))
-	// {
-	// 	ft_printf("%s\n", expand_string(cmd.words[0], (const char **)*shv, (const char **)*env));
-	// 	return (1);
-	// }
+	else if (!ft_strncmp("$?", cmd.words[0], 3))
+	{
+		ft_printf("%d\n", g_pipe_status);
+		return (1);
+	}
 	return (0);
 }

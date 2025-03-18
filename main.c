@@ -6,11 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 21:09:04 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:15:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_pipe_status = 0;
 
 static void	clean_exit(t_cmd *cmd_arr, char *line, char **shv, char **env, int code)
 {
@@ -24,73 +26,99 @@ int	ft_putchar(int c)
 	return (write(STDOUT_FILENO, &c, 1));
 }
 
-/* returns 0 if command isn't builtin, 1 if it is
-2 if it's echo -n. */
-int		exec_builtin(t_cmd cmd, char ***shv, char ***env)
+static int	is_builtin(char *cmd)
 {
-	if (!ft_strncmp("echo", cmd.words[0], 4))
-		return(ft_echo(cmd, (const char**) *shv, (const char**) *env));
-	else if (!ft_strncmp("cd", cmd.words[0], 2))
-		return (ft_cd(cmd));
-	else if (!ft_strncmp("pwd", cmd.words[0], 3))
-		return (ft_pwd(cmd));
-	else if (!ft_strncmp("export", cmd.words[0], 6))
-		return (ft_export(cmd, shv, env));
-	else if (!ft_strncmp("unset", cmd.words[0], 5))
-		return (ft_unset(cmd, shv, env));
-	else if (!ft_strncmp("env", cmd.words[0], 3))
-		return (ft_env(*env));
-	else if (!ft_strncmp("exit", cmd.words[0], 4))
-		return (-1); //need to free command list
+	if (!ft_strncmp("echo", cmd, 5))
+		return(1);
+	else if (!ft_strncmp("cd", cmd, 3))
+		return (1);
+	else if (!ft_strncmp("pwd", cmd, 4))
+		return (1);
+	else if (!ft_strncmp("export", cmd, 7))
+		return (1);
+	else if (!ft_strncmp("unset", cmd, 6))
+		return (1);
+	else if (!ft_strncmp("env", cmd, 4))
+		return (1);
+	else if (!ft_strncmp("exit", cmd, 5))
+		return (1);
 	return (0);
 }
 
+/* run after an is_builtin() call
+returns the command 'exit code', -1 on dangerous errors. */
+static int	exec_builtin(int *fd, t_cmd cmd, char ***shv, char ***env)
+{
+	if (!ft_strncmp("echo", cmd.words[0], 5))
+		return(ft_echo(fd, cmd, (const char **)*shv, (const char **)*env));
+	else if (!ft_strncmp("cd", cmd.words[0], 3))
+		return (ft_cd(fd, cmd));
+	else if (!ft_strncmp("pwd", cmd.words[0], 4))
+		return (ft_pwd(fd, cmd));
+	else if (!ft_strncmp("export", cmd.words[0], 7))
+		return (ft_export(fd, cmd, shv, env));
+	else if (!ft_strncmp("unset", cmd.words[0], 6))
+		return (ft_unset(fd, cmd, shv, env));
+	else if (!ft_strncmp("env", cmd.words[0], 4))
+		return (ft_env(fd, *env));
+	else if (!ft_strncmp("exit", cmd.words[0], 5))
+		return (multicose(fd), -1); //need to free command list
+	return (0);
+}
+
+/* executes the command, setting g_pipe_status to the exit code of the command executed.
+throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */
 static int	handle_command(t_cmd cmd, char ***shv, char ***env)
 {
-	pid_t	pid;
-	int		fd[2];
-	int		ret;
+	pid_t		pid;
+	int			ret;
+	int			fd[2];
+	static int	oldfd[2]; // backup of the previous pipe
 
-
-	ret = exec_builtin(cmd, shv, env);
-	if (ret != 0)
-		return (ret);
 	if (handle_vars(cmd, shv, env))
-		return (1);
-	pid = wrapper(&fd[0], cmd);
+		return (-1);
+	if (is_builtin(cmd.words[0]))
+	{
+		miniwrapper(fd, oldfd, cmd);
+		ret = exec_builtin(fd, cmd, shv, env);
+		if (ret < 0)
+		{
+			g_pipe_status = 0;
+			return (EXIT_SUCCESS);
+		}
+		return (-1); // continue cycling trough commands
+	}
+	pid = wrapper(fd, oldfd, cmd);
 	if (pid == 0)
 	{
-		ret = ft_execve(fd, cmd, *env); //fix return command value (127 on command not found)
-		if (ret == 127)
-			return (-2);
-		return (-1);
+		ret = ft_execve(fd, cmd, *env);
+		return (ret);
 	}
-	waitpid(pid, NULL, WUNTRACED);
-	return (1);
+	waitpid(pid, &ret, WUNTRACED);
+	g_pipe_status = ((ret) & 0xff00) >> 8;
+	//ft_printf("status=%d\n", g_pipe_status);
+	return (-1);
 }
 
 static int	handle_line(char *line, char ***shv, char ***env)
 {
 	int	i;
 	int	len;
-	int	ret;
+	int	errno;
 	t_cmd *cmd_arr;
 	
 	if (line == NULL)
 		return (0);
 	cmd_arr = parse_tokens((char *)line);
 	len = ft_cmdlen(cmd_arr);
+	//ft_printf("found %d command(s)\n", len);
 	i = 0;
 	while(i < len)
 	{
-		ret = handle_command(cmd_arr[i], shv, env);
-		if (ret == -1)
-			clean_exit(cmd_arr, line, *shv, *env, EXIT_SUCCESS);
-		if (ret == -2)
-			clean_exit(cmd_arr, line, *shv, *env, 127);
-		
-		//free(cmd_arr[i].words);
-		i ++;
+		errno = handle_command(cmd_arr[i], shv, env);
+		if (errno >= 0)
+			clean_exit(cmd_arr, line, *shv, *env, errno);
+		i++;
 	}
 	free_cmd(cmd_arr);
 	//add_history(line);

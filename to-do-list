@@ -1,3 +1,26 @@
 EXPORT
 	1. unset the exported variable
-	2. without arg do 'env'
+	2. without arg do 'env' (DO EXPORT)
+
+NOTE: variables can be 'shell', 'export' or 'enviroment'
+
+
+PIPESTATUS
+	An array variable (see Section 6.7 [Arrays], page 100) containing a list of
+	exit status values from the processes in the most-recently-executed foreground
+	pipeline (which may contain only a single command).
+
+CURSED COMMAND:
+	c2r3p6% ls | << prut cat | grep la | > pippo; cat pippo
+	heredoc> lol
+	heredoc> alalready excluded?
+	heredoc> prut
+	playlists
+	alalready excluded?
+playlist: file found by ls, and grep'd
+alalready excluded?: found in heredoc and grep'd
+
+
+check precise command: 'exitt' != 'exit' (DONE)
+
+"<< LIMITER" witout a command just reprints the heredoc (like "<< LIMITER cat")

@@ -6,15 +6,14 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 21:08:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 20:18:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "libft/libft.h"
 
-// # include "libft.h"
+# include "libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -25,13 +24,15 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-// typedef struct s_list
-// {
-// 	char		 	*input;
-// 	char 			*output;
-// 	char 			*command;
-// 	struct s_list 	*next;
-// }				t_list;
+# define MAX_ARGS 100
+
+/* PROGRAM LOCATION FLAGS */
+# define STDL 0 /* Standard Location: STDIN STDOUT execution */
+# define FILE 1 /* redirecting either input, output or both into a file */
+# define PIPE 2 /* reding/writing from/into a pipe */
+# define HERE_DOC 3 /* recieving input from an HERE_DOC */
+
+extern int g_pipe_status;
 
 typedef enum e_token_type
 {
@@ -52,18 +53,17 @@ typedef struct s_token
 	t_token_type    type;    // uno dei valori dell'enum
 	char            *value;  // la stringa associata (es. "ls", "grep", "file.txt", ecc.)
 	struct s_token  *next;
-}   t_token;
-			  
+}   t_token;			  
 
-#define MAX_ARGS 100
 
 typedef struct s_cmd
 {
-    char *words[MAX_ARGS];   // Array di argomenti (comando + parametri)
-    char infile[1024];       // File di input, se presente
-    char outfile[1024];      // File di output, se presente
-    int  append;             // Flag: O_WRONLY|O_CREAT|O_APPEND per ">>" oppure O_WRONLY|O_CREAT|O_TRUNC per ">"
-} t_cmd;
+    char	*words[MAX_ARGS];   // Array di argomenti (comando + parametri)
+    char	infile[1024];       // File di input, se presente
+    char	outfile[1024];      // File di output, se presente
+    int		append;             // Flag: O_WRONLY|O_CREAT|O_APPEND per ">>" oppure O_WRONLY|O_CREAT|O_TRUNC per ">"
+	int		redir[2];			// (flag[0]: input, flag[1]: output) Flag: PIPE_OUT: pipe dopo il comando, PIPE_IN: pipe prima del comando, HERE_DOC: heredoc prima del comando, FILE: input or output file, STDL: nessuna redirection.
+}	t_cmd;
 
 
 typedef struct s_var
@@ -113,16 +113,17 @@ char 	*expand_string(char *str, const char **shv, const char **env);
 //ft_execve.c
 
 int		ft_execve(int *fd, t_cmd cmd, char **env);
-pid_t	wrapper(int *fd, t_cmd cmd);
+pid_t	wrapper(int *fd, int *oldfd, t_cmd cmd);
+int		miniwrapper(int *fd, int *oldfd, t_cmd cmd);
 
 //built_ins.c
 
-int		ft_echo(t_cmd cmd, const char **shv, const char **env);
-int		ft_cd(t_cmd cmd);
-int		ft_pwd(t_cmd cmd);
-int		ft_export(t_cmd cmd, char ***shv, char ***env);
-int		ft_unset(t_cmd cmd, char ***shv, char ***env);
-int		ft_env(char **env);
+int		ft_echo(int *fd, t_cmd cmd, const char **shv, const char **env);
+int		ft_cd(int *fd, t_cmd cmd);
+int		ft_pwd(int *fd, t_cmd cmd);
+int		ft_export(int *fd, t_cmd cmd, char ***shv, char ***env);
+int		ft_unset(int *fd, t_cmd cmd, char ***shv, char ***env);
+int		ft_env(int *fd, char **env);
 
 //free_stuff.c
 
@@ -139,5 +140,8 @@ char	*ft_strjoin_free_space(char *s1, char *s2);
 char	*ft_strjoin_free_nl_space(char *s1, char *s2);
 
 void	ft_print_charr(const char **arr);
+
+void	safeclose(int fd);
+void	multicose(int *fd);
 
 #endif

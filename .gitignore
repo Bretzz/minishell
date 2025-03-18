@@ -1,0 +1,16 @@
+#default rules
+.git
+.vscode
+**/temp
+**/obj/
+**/resources
+**/a.out
+**/*.a
+**/tester.c
+
+#added rules
+minishell
+minishell.tar
+.nfs*
+**/exec
+**/Readme

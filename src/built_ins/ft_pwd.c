@@ -6,13 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/17 20:30:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:42:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_pwd(t_cmd cmd);
+int	ft_pwd(int *fd, t_cmd cmd);
 
 /*	EACCES Permission to read or search a component of the filename was denied.
 
@@ -32,7 +32,7 @@ int	ft_pwd(t_cmd cmd);
 			the working directory, including the terminating null byte.  You need to
 			allocate a bigger array and try again. 
 RETURNS: 0 on error, the number of char printed on successful execution. */
-int	ft_pwd(t_cmd cmd)
+int	ft_pwd(int *fd, t_cmd cmd)
 {
 	int		count;
 	char	*dir;
@@ -42,9 +42,10 @@ int	ft_pwd(t_cmd cmd)
 	if (dir == NULL)
 	{
 		//handle errno
-		return (-1);
+		return (1); //return errno
 	}
-	count = ft_printf("%s\n", dir);
+	count = ft_printfd(fd[1], "%s\n", dir);
 	free(dir);
+	multicose(fd);
 	return (count);
 }
