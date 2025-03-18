@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:28:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 21:12:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:24:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void put_echo_words(int *fd, char **words, const char **shv, const char *
 (either O_WRITE | O_TRUNCATE or O_WRITE | O_APPEND ) */
 int	ft_echo(int *fd, t_cmd cmd, const char **shv, const char **env)
 {
+	safeclose(fd[0]);
 	if (cmd.words[1][0] == '\0') //should never happen
 		return (safeclose(fd[1]), 0);
 	

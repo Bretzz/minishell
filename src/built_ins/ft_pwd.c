@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 19:42:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:26:43 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	ft_pwd(int *fd, t_cmd cmd)
 	char	*dir;
 
 	(void)cmd;
+	safeclose(fd[0]);
 	dir = getcwd(NULL, 0);
 	if (dir == NULL)
 	{
@@ -46,6 +47,6 @@ int	ft_pwd(int *fd, t_cmd cmd)
 	}
 	count = ft_printfd(fd[1], "%s\n", dir);
 	free(dir);
-	multicose(fd);
+	safeclose(fd[1]);
 	return (count);
 }

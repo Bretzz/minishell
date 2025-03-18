@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 19:42:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/18 22:32:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,16 @@ int	ft_cd(int *fd, t_cmd cmd)
 {
 	int		ret;
 
+	multicose(fd);
 	if (cmd.words[2] && cmd.words[2][0] != '\0' )
 	{
 		ft_printfd(STDERR_FILENO, "minishell: cd: Too many argument\n");
-		multicose(fd);
 		return (1);
 		//better error handling
 	}
-	ft_printf("new-dir=%s\n", cmd.words[1]);
+	if (cmd.redir[0] != STDL || cmd.redir[1] != STDL)
+		return (1);
+	//ft_printf("new-dir=%s\n", cmd.words[1]);
 	ret = chdir(cmd.words[1]);
 	if (ret == -1)
 	{

@@ -19,7 +19,7 @@ also Ctrl-D in heredoc:
 	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
 
 also unfollowd pipe, ex: 'cat |', does weird stuff
-also ls | > out redirect inside the pipe and don't write (just parsing check)
+also ls | > out redirect inside the pipe and don't write in 'out' (just parsing check)
 
 CURSED COMMAND (ZSH):
 	c2r3p6% ls | << prut cat | grep la | > pippo; cat pippo
@@ -32,10 +32,21 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 CURSED COMMAND (BASH):
-	topiana-@c2r3p6:~/live_projects/github/minishell$ ls | << prut cat | grep la > pippo; cat pippo
+	topiana-@c2r3p6: ls | << prut cat | grep la > pippo; cat pippo
 	lalalala
 	lololo
 	prut
 	lalalala (output di pippo)
 
 check precise command: 'exitt' != 'exit' (DONE)
+
+EXTRA
+	"cd ..; pwd" changes dir
+	"pwd; cd .." doesn't
+
+"| | |"
+bash: syntax error near unexpected token `|'
+
+"mkdir a | grep c": creates the dir and closes the pipe
+"grep c | mkdir b": grep is waiting the std in, BUT DIR IS MADE INSTANTLY
+(check command priority when unrelated in pipe)
