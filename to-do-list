@@ -3,14 +3,25 @@ EXPORT
 	2. without arg do 'env' (DO EXPORT)
 
 NOTE: variables can be 'shell', 'export' or 'enviroment'
-
+(difference between
+	'unset pippo; export pippo=tuamamma'
+			and
+	'unset pippo; export pippo')
 
 PIPESTATUS
 	An array variable (see Section 6.7 [Arrays], page 100) containing a list of
 	exit status values from the processes in the most-recently-executed foreground
 	pipeline (which may contain only a single command).
 
-CURSED COMMAND:
+"<< LIMITER" witout a command just reprints the heredoc (like "<< LIMITER cat")
+also Ctrl-D in heredoc:
+	zsh: list wierd stuff
+	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
+
+also unfollowd pipe, ex: 'cat |', does weird stuff
+also ls | > out redirect inside the pipe and don't write (just parsing check)
+
+CURSED COMMAND (ZSH):
 	c2r3p6% ls | << prut cat | grep la | > pippo; cat pippo
 	heredoc> lol
 	heredoc> alalready excluded?
@@ -20,7 +31,11 @@ CURSED COMMAND:
 playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
+CURSED COMMAND (BASH):
+	topiana-@c2r3p6:~/live_projects/github/minishell$ ls | << prut cat | grep la > pippo; cat pippo
+	lalalala
+	lololo
+	prut
+	lalalala (output di pippo)
 
 check precise command: 'exitt' != 'exit' (DONE)
-
-"<< LIMITER" witout a command just reprints the heredoc (like "<< LIMITER cat")
