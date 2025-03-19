@@ -35,10 +35,12 @@ CURSED COMMAND (BASH):
 	prut
 	lalalala (output di 'cat pippo')
 
-also ls | > out redirect inside the pipe and don't write in 'out' (just parsing check)
+also "ls | > out" redirect inside the pipe and don't write in 'out' (just parsing check)
 
 "| | |"
 bash: syntax error near unexpected token `|'
+
+handle quotes (con calma)
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 

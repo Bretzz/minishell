@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 17:41:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 18:57:24 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,14 +158,6 @@ static char	**pipe_setup(void)
 {
 	char	**mtx;
 
-	/* mtx = (char **)ft_calloc(2, sizeof(char *));
-	if (mtx == NULL)
-		return (NULL);
-	mtx[0] = ft_calloc(16, sizeof(char));	
-	//mtx[0] = ft_strdup("LITTLEPIPE=0");
-	if (mtx == NULL)
-		return (NULL);
-	ft_strlcpy(mtx[0], "LITTLEPIPE=0", 13); */
 	mtx = var_append(NULL, "LITTLEPIPE=0");
 	return (mtx);
 }
