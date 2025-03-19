@@ -57,4 +57,7 @@ REDO: pwd, cd
 
 Invalid Name for vars (only [a-z,A-Z,_] allowed)
 
-norminette ft_export
+EXPORT:
+	norminette ft_export
+	also var=value to check for valname validity
+	generally check for value length < MAX_VAL_LEN
