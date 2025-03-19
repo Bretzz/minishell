@@ -110,7 +110,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
 
-fastbutreallylongtowrite: $(LIBFT) $(OBJS)
+notrainnopainnogain: $(LIBFT) $(OBJS)
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"

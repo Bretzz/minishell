@@ -5,12 +5,13 @@ MODIFICHE:
 	1. organizzato i file in maniera piu ordinata
 		per aggiungere un folder aggiungi il path relativo in VPATH e
 		il nome dei nuovi file (senza directory) in SRC_FILES
-	2. aggiunto cmd.redir[2], server per capire che tipo di redirection aspettarsi in input (redir[0]) o in output (redir[1])
+	2. aggiunto cmd.redir[2], serve per capire che tipo di redirection aspettarsi in input (redir[0]) o in output (redir[1])
 	(nel caso delle pipe quindi si puo togliere il ft_strlcpy di "|")
 	3. shv e env sono diventati vars[0] e vars[2], perche adesso abbiamo 'char **vars[3]' che contiene 3 matrici:
 		shv (vars[0])
 		exp (vars[1])
 		env (vars[2])
 	4. tutti i builtin ritornano il codice di uscita che vogliamo risulti da '$?'
-	5. wrapper e miniwrapper gestiscono le redirections per comandi esterni e builtins
+	5. in cmds/wrapper.c wrapper e miniwrapper gestiscono le redirections per comandi esterni e builtins
 	
+	exoport ab gli attribuisco l'attributo env

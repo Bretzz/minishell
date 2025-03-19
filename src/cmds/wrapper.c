@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wrapper.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:38:09 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 21:27:35 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:57:17 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ and copies pipefd into oldfd (if we piped).
 It forks, then 
 FATHER:
 	the FATHER close no-needed fds,
-	then retuns the pid of the child,
+	then returns the pid of the child,
 CHILD:
 	the CHILD closes no-needed fds then 
 	calls dup2(3) on the redirections (or throws errors).
@@ -129,14 +129,12 @@ pid_t	wrapper(int *fd, int *oldfd, t_cmd cmd)
 	//static int	oldfd[2]; // a copy of the previous pipe
 	int			pipefd[2]; // fds of the current pipe
 
-
 	pipefd[0] = 0;
 	pipefd[1] = 1;
 	fd[0] = redir_input(oldfd, cmd);
 	fd[1] = redir_output(pipefd, cmd);
 	// ft_printf("----oldfd=[%d,%d]\n", oldfd[0], oldfd[1]);
 	// ft_printf("---pipefd=[%d,%d]\n", pipefd[0], pipefd[1]);
-
 	pid = fork();
 	if (pid < 0)
 		return (-1); //send error

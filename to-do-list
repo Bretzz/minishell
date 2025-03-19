@@ -26,7 +26,7 @@ echo $var1$var2 ???? (concatenates) (DONE)
 	/		! ! ! REMOVE FT_FREENTF ! ! !			/
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 
-------------------> EXCLUSIVE PARSING PROBLEMS <------------------
+------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
 
 CURSED COMMAND (BASH):
 	topiana-@c2r3p6: ls | << prut cat | grep la > pippo; cat pippo
@@ -80,7 +80,8 @@ also unfollowd pipe, ex: 'cat |', does weird stuff:
 		PID TTY          TIME CMD
 	1774952 pts/1    00:00:00 zsh
 	1934700 pts/1    00:00:00 bash
-	1938102 pts/1    00:00:00 cat
+	1938102 pt	4. tutti i builtin ritornano il codice di uscita che vogliamo risulti da '$?'
+s/1    00:00:00 cat
 	1938103 pts/1    00:00:00 ps
 	ciao
 	topiana-@c2r3p6:~/live_projects/github/minishell$ cat | ps
@@ -135,3 +136,21 @@ alalready excluded?: found in heredoc and grep'd
 1. var value length (and varous mallocs)
 2. var name length (and various mallocs)
 3. mallocs protections (see funny printfs)
+4. autocorrezione di ecoh in echo??
+5. builtins should return the exit code wanted
+6. non uscire da minishell con ctrl C
+7. testare $? - example: unset export (var nn valida) -> 
+8. ls | > out 
+	deve creare un file out. out viene tokenizzato come word. pero non viene creato il comando 
+	Comando 0:
+	arg[0]: ls
+	infile: 
+	outfile: |
+	append flag: 0
+9. modificare makefile per compilare parser e tokenizer exec
+10. minishell tester. 1 file testo con tutti i test. 
+	runnare in automatico su bash. creare file out dei risultati
+		execve gli dici la shell su cui runnare, e l-output lo mette in append su un file.
+		check date creation of file appended is VS date di modifica del file dei test.
+		poi famo un diff
+		bellali
