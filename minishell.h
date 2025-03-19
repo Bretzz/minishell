@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 20:18:25 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 04:00:25 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define MAX_ARGS 100
+# define MAX_ARGS 100		/* Max number of arguments to a command */
+# define MAX_VAR_LEN 1024	/* Max length of a shell variable's name. */
+# define MAX_VAL_LEN 1024	/* Max length of a shell variable's value. */
 
 /* PROGRAM LOCATION FLAGS */
-# define STDL 0 /* Standard Location: STDIN STDOUT execution */
-# define FILE 1 /* redirecting either input, output or both into a file */
-# define PIPE 2 /* reding/writing from/into a pipe */
+# define STDL 0		/* Standard Location: STDIN STDOUT execution */
+# define FILE 1		/* redirecting either input, output or both into a file */
+# define PIPE 2		/* reding/writing from/into a pipe */
 # define HERE_DOC 3 /* recieving input from an HERE_DOC */
 
 extern int g_pipe_status;
@@ -103,12 +105,15 @@ char	*find_env_path(char *cmd, char **env);
 
 //handle stuff
 
-int		handle_vars(t_cmd cmd, char ***shv, char ***env);
+int		handle_vars(t_cmd cmd, char ***vars);
 char	**var_append(char **mtx, char *var);
 int		is_there(const char **mtx, const char *target);
 
-char	*get_value(const char *target, const char **shv, const char **env);
-char 	*expand_string(char *str, const char **shv, const char **env);
+char 	*expand_string(char *str, const char ***vars);
+
+char	*get_value(const char *target, const char **mtx);
+int		var_is_valid(const char *var);
+int		var_check(char *var);
 
 //ft_execve.c
 
@@ -118,12 +123,12 @@ int		miniwrapper(int *fd, int *oldfd, t_cmd cmd);
 
 //built_ins.c
 
-int		ft_echo(int *fd, t_cmd cmd, const char **shv, const char **env);
+int		ft_echo(int *fd, t_cmd cmd, const char ***vars);
 int		ft_cd(int *fd, t_cmd cmd);
 int		ft_pwd(int *fd, t_cmd cmd);
-int		ft_export(int *fd, t_cmd cmd, char ***shv, char ***env);
-int		ft_unset(int *fd, t_cmd cmd, char ***shv, char ***env);
-int		ft_env(int *fd, char **env);
+int		ft_export(int *fd, t_cmd cmd, char ***vars);
+int		ft_unset(int *fd, t_cmd cmd, char ***vars);
+int		ft_env(int *fd, const char ***vars);
 
 //free_stuff.c
 

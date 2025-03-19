@@ -19,7 +19,7 @@ CFLAGS			= -Wall -Wextra -Werror -g
 
 DEFS			=
 INK				= -I$(LIBFT_DIR) -I$(CURDIR)
-LINKS			= -lreadline -ltinfo
+LINKS			= -lreadline #-ltinfo
 
 # Libs
 LIBFT_DIR		:= libft

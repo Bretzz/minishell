@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 18:53:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 01:50:02 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *expand_string(char *str, const char **shv, const char **env);
+char *expand_string(char *str, const char ***vars);
 
 static char	*cut_string(char *str, char *target)
 {
@@ -46,12 +46,29 @@ static char	*cut_string(char *str, char *target)
 	return (new_str);
 }
 
+/* searches all the vars arrays for the var pointer by str */
+static char	*whide_search(char *str, const char ***vars)
+{
+	char	*value;
+	int		i;
+	
+	i = 2;
+	while (i >= 0)
+	{
+		value = get_value(str, vars[i]);
+		if (value != NULL)
+			return (value);
+		i--;
+	}
+	return (NULL);
+}
+
 /* takes a string (to be free'd) and the index of the var found.
 Allocates with malloc(3) a new string that's a copy of the imput string
-with the var_string '$var' replaced with it's value found in shv or env,
+with the var_string '$var' replaced with it's value found in shv, exp or env,
 then frees the input string.
 RETURNS: A pointer to the new string, NULL on malloc failures. */
-static char	*single_expand(int i, char *str, const char **shv, const char **env)
+static char	*single_expand(int i, char *str, const char ***vars)
 {
 	char	*exp_val;
 	char	*new_str;
@@ -60,7 +77,7 @@ static char	*single_expand(int i, char *str, const char **shv, const char **env)
 	if (!ft_strncmp("?", &str[i + 1], ft_strlen_space(&str[i + 1])))
 		exp_val = ft_itoa(g_pipe_status);
 	else
-		exp_val = get_value(&str[i + 1], (const char **)shv, (const char **)env);
+		exp_val = whide_search(&str[i + 1], vars);
 	if (exp_val == NULL)
 	{
 		new_str = cut_string(str, ft_substr(str, i, ft_strlen_space(&str[i])));
@@ -79,7 +96,7 @@ static char	*single_expand(int i, char *str, const char **shv, const char **env)
 /* takes a string, the shvars and the env vars as parameter.
 returns a mallocated string with the variables preceded by '$' expanded.
 RETURNS: the expanded string, NULL on malloc error. */
-char *expand_string(char *str, const char **shv, const char **env)
+char *expand_string(char *str, const char ***vars)
 {
 	char	*my_str;
 	int		i;
@@ -92,7 +109,7 @@ char *expand_string(char *str, const char **shv, const char **env)
 	{
 		//ft_printf("curr string: %s\n", my_str);
 		if (my_str[i] == '$')
-			my_str = single_expand(i--, my_str, (const char **)shv, (const char **)env);
+			my_str = single_expand(i--, my_str, vars);
 		i++;
 	}
 	return (my_str);

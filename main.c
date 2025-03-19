@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 21:15:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 03:35:26 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int g_pipe_status = 0;
 
-static void	clean_exit(t_cmd *cmd_arr, char *line, char **shv, char **env, int code)
+static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 {
 	free_cmd(cmd_arr);
-	ft_freentf("122", line, shv, env);
+	ft_freentf("1222", line, vars[0], vars[1], vars[2]);
 	exit(code);
 }
 
@@ -47,20 +47,20 @@ static int	is_builtin(char *cmd)
 
 /* run after an is_builtin() call
 returns the command 'exit code', -1 on dangerous errors. */
-static int	exec_builtin(int *fd, t_cmd cmd, char ***shv, char ***env)
+static int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 {
 	if (!ft_strncmp("echo", cmd.words[0], 5))
-		return(ft_echo(fd, cmd, (const char **)*shv, (const char **)*env));
+		return(ft_echo(fd, cmd, (const char ***)vars));
 	else if (!ft_strncmp("cd", cmd.words[0], 3))
 		return (ft_cd(fd, cmd));
 	else if (!ft_strncmp("pwd", cmd.words[0], 4))
 		return (ft_pwd(fd, cmd));
 	else if (!ft_strncmp("export", cmd.words[0], 7))
-		return (ft_export(fd, cmd, shv, env));
+		return (ft_export(fd, cmd, vars));
 	else if (!ft_strncmp("unset", cmd.words[0], 6))
-		return (ft_unset(fd, cmd, shv, env));
+		return (ft_unset(fd, cmd, vars));
 	else if (!ft_strncmp("env", cmd.words[0], 4))
-		return (ft_env(fd, *env));
+		return (ft_env(fd, (const char ***)vars));
 	else if (!ft_strncmp("exit", cmd.words[0], 5))
 		return (multicose(fd), -1); //need to free command list
 	return (0);
@@ -68,30 +68,31 @@ static int	exec_builtin(int *fd, t_cmd cmd, char ***shv, char ***env)
 
 /* executes the command, setting g_pipe_status to the exit code of the command executed.
 throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */
-static int	handle_command(t_cmd cmd, char ***shv, char ***env)
+static int	handle_command(t_cmd cmd, char ***vars)
 {
 	pid_t		pid;
 	int			ret;
 	int			fd[2];
 	static int	oldfd[2]; // backup of the previous pipe
 
-	if (handle_vars(cmd, shv, env))
+	if (handle_vars(cmd, vars))
 		return (-1);
 	if (is_builtin(cmd.words[0]))
 	{
 		miniwrapper(fd, oldfd, cmd);
-		ret = exec_builtin(fd, cmd, shv, env);
+		ret = exec_builtin(fd, cmd, vars);
 		if (ret < 0)
 		{
 			g_pipe_status = 0;
 			return (EXIT_SUCCESS);
 		}
+		g_pipe_status = ret;
 		return (-1); // continue cycling trough commands
 	}
 	pid = wrapper(fd, oldfd, cmd);
 	if (pid == 0)
 	{
-		ret = ft_execve(fd, cmd, *env);
+		ret = ft_execve(fd, cmd, vars[2]);
 		return (ret);
 	}
 	waitpid(pid, &ret, WUNTRACED);
@@ -100,7 +101,7 @@ static int	handle_command(t_cmd cmd, char ***shv, char ***env)
 	return (-1);
 }
 
-static int	handle_line(char *line, char ***shv, char ***env)
+static int	handle_line(char *line, char ***vars)
 {
 	int	i;
 	int	len;
@@ -115,9 +116,9 @@ static int	handle_line(char *line, char ***shv, char ***env)
 	i = 0;
 	while(i < len)
 	{
-		errno = handle_command(cmd_arr[i], shv, env);
+		errno = handle_command(cmd_arr[i], vars);
 		if (errno >= 0)
-			clean_exit(cmd_arr, line, *shv, *env, errno);
+			clean_exit(cmd_arr, line, vars, errno);
 		i++;
 	}
 	free_cmd(cmd_arr);
@@ -145,22 +146,22 @@ static char	**env_copy(char **his_env)
 	return (my_env);
 }
 
-int	main(void)
+int	main(int argc, char *argv[], char *__environ[])
 {
 	char	*line;
-	char	**shv;
-	char	**env;
+	char	**vars[3]; //vars[0]: shv, var[1]: exv, var[2]: env
 	
-	shv = NULL;
-	env = env_copy(__environ);
-	if (env == NULL)
+	(void)argc; (void)argv;
+	ft_bzero(vars, 3 * sizeof(char **));
+	vars[2] = env_copy(__environ);
+	if (vars[2] == NULL)
 		return (1);
 		
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	while (1)
 	{
 		line = ft_readline("minishell% ");
-		if (!handle_line(line, &shv, &env))
+		if (!handle_line(line, vars))
 			return (1);
 	//	add_history(line);
 		free(line);

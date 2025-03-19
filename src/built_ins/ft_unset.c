@@ -3,46 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 19:42:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 03:52:24 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_unset(int *fd, t_cmd cmd, char ***shv, char ***env);
+int	ft_unset(int *fd, t_cmd cmd, char ***vars);
 
-int	ft_unset(int *fd, t_cmd cmd, char ***shv, char ***env)
+static void	mass_drop(char ***vars, char *var)
 {
-	int		index;
-	char	**mtx;
+	int	index;
+	int	i;
+	
+	i = 2;
+	while (i >= 0)
+	{
+		if (vars[i] != NULL)
+		{
+			index = is_there((const char **)vars[i], var);
+			if (index >= 0)
+				vars[i] = (char **)drop_index((void **)vars[i], index);
+		}
+		i--;
+	}
+}
+
+int	ft_unset(int *fd, t_cmd cmd, char ***vars)
+{
+	int		errno;
+	int		i;
 
 	multicose(fd);
-	if (*env == NULL) //should never happen
-		return (-1);
-	index = is_there((const char **)*env, cmd.words[1]);
-	if (index >= 0)
+	errno = 0;
+	i = 1;
+	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
-		ft_printf("found var in env\n");
-		mtx = (char **)drop_index((void **)*env, index);
-		if (mtx == NULL)
-			return (1);
-		*env = mtx;
-		return (0);
+		if (!var_check(cmd.words[i]))
+		{
+			errno = 1;
+			i++;
+			continue ;
+		}
+		mass_drop(vars, cmd.words[i]);
+		i++;
 	}
-	index = is_there((const char **)*shv, cmd.words[1]);
-	if (index >= 0)
-	{
-		ft_printf("found var in shv\n");
-		mtx = (char **)drop_index((void **)*shv, index);
-		if (mtx == NULL)
-			return (1);
-		*shv = mtx;
-		return (0);
-	}
-	ft_printf("no var found\n");
-	//ft_printf("I should do something, but I don't :D\n");
-	return (1);
+	return (errno);
 }

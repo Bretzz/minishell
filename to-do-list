@@ -50,3 +50,11 @@ bash: syntax error near unexpected token `|'
 "mkdir a | grep c": creates the dir and closes the pipe
 "grep c | mkdir b": grep is waiting the std in, BUT DIR IS MADE INSTANTLY
 (check command priority when unrelated in pipe)
+
+REDO: pwd, cd
+	(just change the PWD='/global/path/to/folder' variable)
+	(beware of errors)
+
+Invalid Name for vars (only [a-z,A-Z,_] allowed)
+
+norminette ft_export

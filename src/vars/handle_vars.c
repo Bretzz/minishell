@@ -3,46 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 18:53:47 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 02:53:29 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		handle_vars(t_cmd cmd, char ***shv, char ***env);
+int		handle_vars(t_cmd cmd, char ***vars);
 char	**var_append(char **mtx, char *var);
-int		is_there(const char **mtx, const char *target);
-
-/* checks weather the target var is present or not.
-RETURNS: the index of the var, -1 if not present or mtx/target is NULL. */
-int	is_there(const char **mtx, const char *target)
-{
-	char	*my_tar;
-	size_t	tar_len;
-	int		i;
-
-	if (mtx == NULL || target == NULL)
-		return (-1);
-	i = 0;
-	while (target[i] && target[i] != '=')
-		i++;
-	// if (*target == '$')	//both $var and var=value behaviour should be impelented
-		//code here
-	my_tar = ft_substr(target, 0, i);
-	tar_len = ft_strlen(my_tar);
-	i = 0;
-	while (mtx[i] != NULL)
-	{
-		if (!ft_strncmp(mtx[i], my_tar, tar_len))
-			return (free(my_tar), i);
-		i++;
-	}
-	free(my_tar);
-	return(-1);
-}
 
 /* we're expecting to find an mtx_var with same key as var at the index 'index',
 so we free that string and replace it with var.
@@ -67,7 +38,10 @@ static char	**replace_var(int index, char **mtx, char *var)
 If the var_string is NULL the var_append just returns the ptr to the matrix. 
 var_string syntax: varname=varvalue.
 NOTE: the var_string must be a NULL-terminated string.
-RETURNS: a pointer to the head of the matrix, NULL if a malloc fails. */
+RETURNS: a pointer to the head of the matrix, NULL if a malloc fails.
+NOTE: is safe to assign the originale matrix to the return of var_append,
+since if it fails somehow just returns the old matrix.
+NOTE2: a valid var is expected, var_is_valid() function check. */
 char	**var_append(char **mtx, char *var)
 {
 	char	**new_matrix;
@@ -77,7 +51,7 @@ char	**var_append(char **mtx, char *var)
 //	ft_print_charr((const char **)mtx);
 	if (var == NULL)
 		return (mtx);
-	len = ft_mtxlen((void *)mtx);
+	len = ft_mtxlen((const void **)mtx);
 	index = is_there((const char **)mtx, var);
 	if (index >= 0)
 		return (replace_var(index, mtx, var));
@@ -89,49 +63,48 @@ char	**var_append(char **mtx, char *var)
 		{
 			free(mtx);
 			new_matrix[len + 1] = NULL;
-			//			ft_print_charr((const char **)new_matrix);
+			//ft_print_charr((const char **)new_matrix);
 			return (new_matrix);
 		}
 	}
-	ft_freentf("22", mtx, new_matrix);
-	/* ft_free_arr((void **)mtx);
-	ft_free_arr((void **)new_matrix); */
-	return (NULL);
+	//not freeing so the arr is still usable
+	ft_printfd(STDERR_FILENO, "minishell: malloc error that maybe is handled\n");
+	return (mtx);
 }
 
 /* adds the var to the var_list or reads the var.
 TODO:
-	1. replacement of old value in exists. DONE
-	2. expand_string function. */
-int	handle_vars(t_cmd cmd, char ***shv, char ***env)
+	1. replacement of old value in exists.	DONE
+	2. expand_string function.				DONE */
+int	handle_vars(t_cmd cmd, char ***vars)
 {
-	char	*eq;
-	char	**mtx;
+	char	my_var[MAX_VAR_LEN];
 	int		index;
+	int		eq;
+	int		i;
 
-	(void)env;
-	//ft_printf("cmd=%s\n", cmd);
-	eq = ft_strchr(cmd.words[0], '=');
-	//ft_printf("eq=%s\n", eq);
-	if (eq != NULL && eq != cmd.words[0])
+	//ft_printf("cmd=%s\n", cmd.words[0]);
+	eq = ft_strichr(cmd.words[0], '=');
+	if (eq <= 1 || eq > MAX_VAR_LEN)
+		return (0);
+	ft_bzero(my_var, MAX_VAR_LEN);
+	ft_strlcpy(my_var, cmd.words[0], eq + 1);
+	if (!var_is_valid(my_var))
+		return (0);
+	//ft_printf("var assignment found\n");
+	i = 2;
+	while (i > 0)
 	{
-		index = is_there((const char **)*env, cmd.words[0]);
-		if (index < 0)
-			mtx = var_append(*shv, cmd.words[0]);
-		else
-			mtx = var_append(*env, cmd.words[0]);
-		if (mtx == NULL)
-			return (0);
-		if (index < 0)
-			*shv = mtx;
-		else
-			*env = mtx;
-		return (1);
+		index = is_there((const char **)vars[i], cmd.words[0]);
+		if (index >= 0)
+			vars[i] = var_append(vars[i], cmd.words[0]);
+		i--;
 	}
-	else if (!ft_strncmp("$?", cmd.words[0], 3))
-	{
-		ft_printf("%d\n", g_pipe_status);
-		return (1);
-	}
-	return (0);
+	vars[0] = var_append(vars[0], cmd.words[0]);
+	// if (!ft_strncmp("$?", cmd.words[0], 3))
+	// {
+	//	ft_printf("%d\n", g_pipe_status);
+	//	return (1);
+	// }
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 22:32:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 00:24:04 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_cd(int *fd, t_cmd cmd);
 			The length of a pathname exceeds {PATH_MAX}, or pathname resolution of a
 			symbolic link produced an intermediate result with a length that exceeds
 			{PATH_MAX}.
-RETURNS: -1 on error, 1 on successfull execution. */
+RETURNS: 1 on error, 0 on successfull execution. */
 int	ft_cd(int *fd, t_cmd cmd)
 {
 	int		ret;
