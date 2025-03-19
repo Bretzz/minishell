@@ -60,4 +60,6 @@ Invalid Name for vars (only [a-z,A-Z,_] allowed)
 EXPORT:
 	norminette ft_export
 	also var=value to check for valname validity
-	generally check for value length < MAX_VAL_LEN
+	generally check for value length < MAX_VAL_LEN (REMOVE PLS)
+	just use write of size and strichr to print on 'export'
+
