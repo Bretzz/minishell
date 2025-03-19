@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 03:11:44 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 17:59:59 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	ft_env(int *fd, const char ***vars);
 int	ft_env(int *fd, const char ***vars)
 {
 	int	i;
+	int	eq;
 
 	if (vars[2] == NULL)
 	{
@@ -33,7 +34,8 @@ int	ft_env(int *fd, const char ***vars)
 	i = 0;
 	while (vars[1] && vars[1][i] != NULL)
 	{
-		if (ft_strichr(vars[1][i], '=') != 0)
+		eq = ft_strichr(vars[1][i], '=');
+		if (eq != 0 && vars[1][i][eq] != '\0')
 			ft_printfd(fd[1], "%s\n", vars[1][i]);
 		i++;
 	}

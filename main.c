@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 03:35:26 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 17:41:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_pipe_status = 0;
+int g_last_sig = 0;
 
 static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 {
@@ -83,10 +83,12 @@ static int	handle_command(t_cmd cmd, char ***vars)
 		ret = exec_builtin(fd, cmd, vars);
 		if (ret < 0)
 		{
-			g_pipe_status = 0;
+			//g_pipe_status = 0;
+			vars[0] = setnum(vars[0], "LITTLEPIPE", 0);
 			return (EXIT_SUCCESS);
 		}
-		g_pipe_status = ret;
+		//g_pipe_status = ret;
+		vars[0] = setnum(vars[0], "LITTLEPIPE", ret);
 		return (-1); // continue cycling trough commands
 	}
 	pid = wrapper(fd, oldfd, cmd);
@@ -96,7 +98,8 @@ static int	handle_command(t_cmd cmd, char ***vars)
 		return (ret);
 	}
 	waitpid(pid, &ret, WUNTRACED);
-	g_pipe_status = ((ret) & 0xff00) >> 8;
+	//g_pipe_status = ((ret) & 0xff00) >> 8;
+	vars[0] = setnum(vars[0], "LITTLEPIPE", ((ret) & 0xff00) >> 8);
 	//ft_printf("status=%d\n", g_pipe_status);
 	return (-1);
 }
@@ -134,7 +137,7 @@ static char	**env_copy(char **his_env)
 	if (his_env == NULL)
 		return (NULL);
 	i = 0;
-	my_env = (char **)malloc((ft_mtxlen((const void **)his_env) + 1) * sizeof(char *));
+	my_env = (char **)ft_calloc((ft_mtxlen((const void **)his_env) + 1), sizeof(char *));
 	if (my_env == NULL)
 		return (NULL);
 	while(his_env[i] != NULL)
@@ -142,8 +145,29 @@ static char	**env_copy(char **his_env)
 		my_env[i] = ft_strdup(his_env[i]);
 		i++;
 	}
-	my_env[i] = NULL;
 	return (my_env);
+}
+
+/* LITTLEPIPE=errno.
+later inplementation of:
+PIPESTATUS
+	An array variable de containing a list of
+	exit status values from the processes in the most-recently-executed foreground
+	pipeline (which may contain only a single command). */
+static char	**pipe_setup(void)
+{
+	char	**mtx;
+
+	/* mtx = (char **)ft_calloc(2, sizeof(char *));
+	if (mtx == NULL)
+		return (NULL);
+	mtx[0] = ft_calloc(16, sizeof(char));	
+	//mtx[0] = ft_strdup("LITTLEPIPE=0");
+	if (mtx == NULL)
+		return (NULL);
+	ft_strlcpy(mtx[0], "LITTLEPIPE=0", 13); */
+	mtx = var_append(NULL, "LITTLEPIPE=0");
+	return (mtx);
 }
 
 int	main(int argc, char *argv[], char *__environ[])
@@ -154,7 +178,8 @@ int	main(int argc, char *argv[], char *__environ[])
 	(void)argc; (void)argv;
 	ft_bzero(vars, 3 * sizeof(char **));
 	vars[2] = env_copy(__environ);
-	if (vars[2] == NULL)
+	vars[0] = pipe_setup();
+	if (!vars[0] || !vars[2])
 		return (1);
 		
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen

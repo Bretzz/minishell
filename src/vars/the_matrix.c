@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   the_matrix.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 17:45:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 02:22:12 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 18:30:01 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int		is_there(const char **mtx, const char *target);
 void	**drop_index(void **mtx, int index);
 
 /* checks weather the target var is present or not.
-RETURNS: the index of the var, -1 if not present or mtx/target is NULL. */
+RETURNS: the index of the var, -1 if not present or mtx/target is NULL.
+EXPECTED: string 'varname' or 'varname='*/
 int	is_there(const char **mtx, const char *target)
 {
 	char	*my_tar;
@@ -24,7 +25,7 @@ int	is_there(const char **mtx, const char *target)
 	int		cmp;
 	int		i;
 
-	if (mtx == NULL || target == NULL)
+	if (!mtx || !target)
 		return (-1);
 	i = 0;
 	while (target[i] && target[i] != '=')
@@ -60,9 +61,11 @@ void	**drop_index(void **mtx, int index)
 	len = ft_mtxlen((const void **)mtx);
 	if (index < 0 || index >= (int)len)
 		return (mtx);
-	new_mtx = (void **)malloc((len) * sizeof(void *));
+	if (len == 1 && index == 0)
+		return (free(mtx[0]), free(mtx), NULL);	//better syntex pls
+	new_mtx = (void **)ft_calloc((len), sizeof(void *));
 	if (new_mtx == NULL)
-		return (ft_printfd(2, "malloc failure\n"), mtx);
+		return (ft_printfd(STDERR_FILENO, "malloc failure\n"), mtx);
 	i = 0;
 	while (mtx[i] != NULL)
 	{
@@ -76,6 +79,6 @@ void	**drop_index(void **mtx, int index)
 		new_mtx[i] = mtx[i];
 		i++;
 	}
-	new_mtx[i] = NULL;
+	//ft_print_charr((const char **)new_mtx);
 	return (free(--mtx), new_mtx);
 }

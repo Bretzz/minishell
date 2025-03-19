@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 02:53:29 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 17:55:10 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,55 @@
 
 int		handle_vars(t_cmd cmd, char ***vars);
 char	**var_append(char **mtx, char *var);
+char	**setnum(char **mtx, const char *target, int value);
+
+/* sets the value of the var pointed by dest,
+to the int passed by value
+EXPECTED: "VARNAME=VALUE" string pointed by *dest.
+NOTE: we need some allocated space after the '=', len indicates that
+RETURNS: 1 on successfull execution, 0 on error.
+NOTE2: as var_append(), also setnum() is safe to assign to the original matrix
+since it preserve the original value even on malloc failures. */
+char	**setnum(char **mtx, const char *target, int value)
+{
+	char	*str_val;
+	char	new_var[23];	// max value = 9999999999(10 cifre), min value = -999999999(9 cifre)
+
+	if (!target)
+		return (mtx);
+	str_val = (char *)ft_itoa(value);
+	if (str_val == NULL)
+	{
+		ft_printfd(STDERR_FILENO, "minishell: malloc: Allocation failure (hopefully handled)\n");
+		return (mtx);
+	}
+	ft_bzero(new_var, 23);
+	ft_strlcpy(new_var, target, ft_strlen(target) + 1);
+	ft_strlcat(new_var, "=", ft_strlen(new_var) + 2);
+	ft_strlcat(new_var, str_val, ft_strlen(new_var) + ft_strlen(str_val) + 1);
+	//ft_printf("var_append(ing): '%s'\n", new_var);
+	mtx = var_append(mtx, new_var);
+	free(str_val);
+	return (mtx);
+}
+
+/* RETURNS: 1 on good execution, 0 on error */
+/* int	change_value(char **dest, char *src)
+{
+	char	*new_dest;
+	int		src_len;
+	int		eq;
+
+	if (!dest || !*dest)
+		return (0);
+	//free(*dest);
+	eq = ft_strichr(*dest, '=');
+	src_len = ft_strlen(src);
+	new_dest = ft_realloc(*dest, eq * sizeof(char), (eq + src_len) * sizeof(char));
+	if (new_dest == NULL)
+		return (NULL);
+	ft_memcpy(*dest)
+} */
 
 /* we're expecting to find an mtx_var with same key as var at the index 'index',
 so we free that string and replace it with var.
@@ -66,6 +115,7 @@ char	**var_append(char **mtx, char *var)
 			//ft_print_charr((const char **)new_matrix);
 			return (new_matrix);
 		}
+		free(new_matrix);
 	}
 	//not freeing so the arr is still usable
 	ft_printfd(STDERR_FILENO, "minishell: malloc error that maybe is handled\n");
@@ -78,18 +128,13 @@ TODO:
 	2. expand_string function.				DONE */
 int	handle_vars(t_cmd cmd, char ***vars)
 {
-	char	my_var[MAX_VAR_LEN];
 	int		index;
 	int		eq;
 	int		i;
 
 	//ft_printf("cmd=%s\n", cmd.words[0]);
 	eq = ft_strichr(cmd.words[0], '=');
-	if (eq <= 1 || eq > MAX_VAR_LEN)
-		return (0);
-	ft_bzero(my_var, MAX_VAR_LEN);
-	ft_strlcpy(my_var, cmd.words[0], eq + 1);
-	if (!var_is_valid(my_var))
+	if (eq <= 1 || eq > MAX_VAR_LEN || !var_check(cmd.words[0]))
 		return (0);
 	//ft_printf("var assignment found\n");
 	i = 2;

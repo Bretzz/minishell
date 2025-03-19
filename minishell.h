@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 04:00:25 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 18:08:37 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define MAX_ARGS 100		/* Max number of arguments to a command */
 # define MAX_VAR_LEN 1024	/* Max length of a shell variable's name. */
-# define MAX_VAL_LEN 1024	/* Max length of a shell variable's value. */
+/* NOTE: currently we can take a var value of any length. */
 
 /* PROGRAM LOCATION FLAGS */
 # define STDL 0		/* Standard Location: STDIN STDOUT execution */
@@ -34,12 +34,12 @@
 # define PIPE 2		/* reding/writing from/into a pipe */
 # define HERE_DOC 3 /* recieving input from an HERE_DOC */
 
-extern int g_pipe_status;
+extern int g_last_sig;
 
 typedef enum e_token_type
 {
 	TOKEN_WORD,
-	TOKEN_PIPE,
+	TOKEN_PIPE,			// |
 	TOKEN_RED_INPUT,    // <
 	TOKEN_RED_OUTPUT,   // >
 	TOKEN_HERE_DOC,     // <<
@@ -107,13 +107,14 @@ char	*find_env_path(char *cmd, char **env);
 
 int		handle_vars(t_cmd cmd, char ***vars);
 char	**var_append(char **mtx, char *var);
-int		is_there(const char **mtx, const char *target);
+char	**setnum(char **mtx, const char *target, int value);
 
 char 	*expand_string(char *str, const char ***vars);
 
 char	*get_value(const char *target, const char **mtx);
+int		is_there(const char **mtx, const char *target);
 int		var_is_valid(const char *var);
-int		var_check(char *var);
+int		var_check(const char *var);
 
 //ft_execve.c
 
@@ -138,7 +139,10 @@ int		ft_freentf(const char *s, ...);
 
 void	**drop_index(void **mtx, int index);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-size_t	ft_strlen_space(const char *s);
+
+size_t	ft_strlen_space(const char *s); //replace with ft_varlen when measuring vars
+size_t	ft_varlen(const char *s);
+
 size_t	ft_mtxlen(const void **mtx);
 
 char	*ft_strjoin_free_space(char *s1, char *s2);

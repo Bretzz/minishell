@@ -1,25 +1,122 @@
-EXPORT
+
+======================== D O N E =======================
+EXPORT	(DONE)
 	1. unset the exported variable
 	2. without arg do 'env' (DO EXPORT)
-
 NOTE: variables can be 'shell', 'export' or 'enviroment'
 (difference between
 	'unset pippo; export pippo=tuamamma'
 			and
 	'unset pippo; export pippo')
 
+check precise command: 'exitt' != 'exit' (DONE)
+
+Invalid Name for vars (only [a-z,A-Z,_] allowed) (DONE)
+
+EXPORT: (DONE)
+	norminette ft_export (DONE)
+	also var=value to check for valname validity (DONE)
+	just use write of size and strichr to print on 'export' (DONE)
+
+echo $var1$var2 ???? (concatenates) (DONE)
+
+======================== T O D O =======================
+
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+	/		! ! ! REMOVE FT_FREENTF ! ! !			/
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+
+------------------> EXCLUSIVE PARSING PROBLEMS <------------------
+
+CURSED COMMAND (BASH):
+	topiana-@c2r3p6: ls | << prut cat | grep la > pippo; cat pippo
+	lalalala
+	lololo
+	prut
+	lalalala (output di 'cat pippo')
+
+also ls | > out redirect inside the pipe and don't write in 'out' (just parsing check)
+
+"| | |"
+bash: syntax error near unexpected token `|'
+
+------------------> EXCLUSIVE EXEC PROBLEMS <------------------
+
+function 'expand_commad()' that replace the command variables with expanded ones
+
 PIPESTATUS
-	An array variable (see Section 6.7 [Arrays], page 100) containing a list of
+	An array variable de containing a list of
 	exit status values from the processes in the most-recently-executed foreground
 	pipeline (which may contain only a single command).
+(check for hardcoded errors: command not found, builtin errors, others...)
+
+EXTRA
+	"cd ..; pwd" changes dir
+	"pwd; cd .." doesn't
+
+"mkdir a | grep c": creates the dir and closes the pipe
+"grep c | mkdir b": grep is waiting the std in, BUT DIR IS MADE INSTANTLY
+(check command priority (when unrelated) in pipe) (ADVANCED)
+
+REDO: pwd, cd
+	(just change the PWD='/global/path/to/folder' variable)
+	(beware of errors)
+REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
+
+----------------------> MIXED PROBLEMS <-----------------------
 
 "<< LIMITER" witout a command just reprints the heredoc (like "<< LIMITER cat")
 also Ctrl-D in heredoc:
 	zsh: list wierd stuff
 	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
 
-also unfollowd pipe, ex: 'cat |', does weird stuff
-also ls | > out redirect inside the pipe and don't write in 'out' (just parsing check)
+also unfollowd pipe, ex: 'cat |', does weird stuff:
+	waits for a command to be executed after the pipe:
+	EXAMPLE:
+	topiana-@c2r3p6:~/live_projects/github/minishell$ cat |
+	> ps
+		PID TTY          TIME CMD
+	1774952 pts/1    00:00:00 zsh
+	1934700 pts/1    00:00:00 bash
+	1938102 pts/1    00:00:00 cat
+	1938103 pts/1    00:00:00 ps
+	ciao
+	topiana-@c2r3p6:~/live_projects/github/minishell$ cat | ps
+		PID TTY          TIME CMD
+	1774952 pts/1    00:00:00 zsh
+	1934700 pts/1    00:00:00 bash
+	1938526 pts/1    00:00:00 cat
+	1938527 pts/1    00:00:00 ps
+	ciao
+
+VAR EXPANSION:
+	topiana-@c2r3p6:~/live_projects/github/minishell$ ab=123
+	topiana-@c2r3p6:~/live_projects/github/minishell$ echo $ab
+	123
+	topiana-@c2r3p6:~/live_projects/github/minishell$ ab=65 echo $ab
+	123
+
+----------------------> TO INVESTIGATE <-----------------------
+
+'env -i' removes env from the following program (or not really)
+	try: 'env -i ls' in bash
+
+VARS:
+	$12: prints value of $1, then 2: '2'
+
+ENV MANAGEMENT:
+	topiana-@c2r3p6:~/live_projects/github/minishell$ unset PWD
+	topiana-@c2r3p6:~/live_projects/github/minishell$ pwd
+	/nfs/homes/topiana-/live_projects/github/minishell
+	topiana-@c2r3p6:~/live_projects/github/minishell$ env | grep PWD
+	OLDPWD=/nfs/homes/topiana-/live_projects/github/minishell
+	topiana-@c2r3p6:~/live_projects/github/minishell$ cd ..
+	topiana-@c2r3p6:~/live_projects/github$ pwd
+	/nfs/homes/topiana-/live_projects/github
+	topiana-@c2r3p6:~/live_projects/github$ env | grep PWD
+	topiana-@c2r3p6:~/live_projects/github$ 
+
+----------------------> FUNNY STUFF <-----------------------
 
 CURSED COMMAND (ZSH):
 	c2r3p6% ls | << prut cat | grep la | > pippo; cat pippo
@@ -30,36 +127,3 @@ CURSED COMMAND (ZSH):
 	alalready excluded?
 playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
-
-CURSED COMMAND (BASH):
-	topiana-@c2r3p6: ls | << prut cat | grep la > pippo; cat pippo
-	lalalala
-	lololo
-	prut
-	lalalala (output di pippo)
-
-check precise command: 'exitt' != 'exit' (DONE)
-
-EXTRA
-	"cd ..; pwd" changes dir
-	"pwd; cd .." doesn't
-
-"| | |"
-bash: syntax error near unexpected token `|'
-
-"mkdir a | grep c": creates the dir and closes the pipe
-"grep c | mkdir b": grep is waiting the std in, BUT DIR IS MADE INSTANTLY
-(check command priority when unrelated in pipe)
-
-REDO: pwd, cd
-	(just change the PWD='/global/path/to/folder' variable)
-	(beware of errors)
-
-Invalid Name for vars (only [a-z,A-Z,_] allowed)
-
-EXPORT:
-	norminette ft_export
-	also var=value to check for valname validity
-	generally check for value length < MAX_VAL_LEN (REMOVE PLS)
-	just use write of size and strichr to print on 'export'
-

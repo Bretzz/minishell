@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 01:50:02 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 18:32:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,16 @@ static char	*single_expand(int i, char *str, const char ***vars)
 	char	*new_str;
 	int		var_len;
 
-	if (!ft_strncmp("?", &str[i + 1], ft_strlen_space(&str[i + 1])))
-		exp_val = ft_itoa(g_pipe_status);
+	if (!ft_strncmp("?", &str[i + 1], ft_varlen(&str[i + 1])))
+		exp_val = get_value("LITTLEPIPE", vars[0]);
 	else
 		exp_val = whide_search(&str[i + 1], vars);
 	if (exp_val == NULL)
 	{
-		new_str = cut_string(str, ft_substr(str, i, ft_strlen_space(&str[i])));
+		new_str = cut_string(str, ft_substr(str, i, ft_varlen(&str[i]) + 1));
 		return (free(str), new_str);
 	}
-	var_len = ft_strlen_space(&str[i]);
+	var_len = ft_varlen(&str[i]) + 1;
 	new_str = (char *)malloc(ft_strlen(str) - var_len + ft_strlen(exp_val) + 1);
 	if (new_str == NULL)
 		return (free(exp_val), NULL);
@@ -109,7 +109,9 @@ char *expand_string(char *str, const char ***vars)
 	{
 		//ft_printf("curr string: %s\n", my_str);
 		if (my_str[i] == '$')
+		{
 			my_str = single_expand(i--, my_str, vars);
+		}
 		i++;
 	}
 	return (my_str);

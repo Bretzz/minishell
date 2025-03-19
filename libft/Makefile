@@ -36,6 +36,7 @@ SRC_FILES		= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isasc
 				nest_putput_fd.c \
 				nest_putuns_fd.c \
 				nest_putflo_fd.c \
+				nest_putztr_fd.c \
 				west_putchar_fd.c \
 				west_putnbr_fd.c \
 				west_putstr_fd.c \

@@ -3,16 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   free_space.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 02:42:06 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/19 18:21:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 size_t	ft_strlen_space(const char *s);
+size_t	ft_mtxlen(const void **mtx);
+size_t	ft_varlen(const char *s);
+
+/* both ab123 and $ab123 returns 5 as length. */
+size_t	ft_varlen(const char *s)
+{
+	size_t	i;
+
+	if (s == NULL)
+		return (0);
+	i = 0;
+	if (s[i] == '$')
+		s++;
+	if (s == NULL)
+		return (0);
+	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_'))
+		i++;
+	return (i);
+}
 
 size_t	ft_mtxlen(const void **mtx)
 {

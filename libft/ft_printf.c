@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:51:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/02/26 17:17:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:40:24 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static int	printf_vice_sheriff(int fd, char outlaw, va_list arg)
 	shots = 0;
 	if (outlaw == 'f')
 		shots = nest_putflo_fd(fd, va_arg(arg, double));
+	else if (outlaw == 'z')
+		shots = nest_putztr_fd(fd, va_arg(arg, char *), va_arg(arg, int));
 	else
 		shots = ft_printf("%%%c", outlaw);
 	return (shots);
