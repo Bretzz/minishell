@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/21 17:24:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 19:48:34 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,12 +174,14 @@ int	main(int argc, char *argv[], char *__environ[])
 	vars[0] = pipe_setup();
 	if (!vars[0] || !vars[2])
 		return (1);
-		
+	
+	sig_initializer();
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	while (1)
 	{
 		line = ft_readline("minishell% ");
 		//check g_last_signal
+		// ft_signals (che chiama signal con i vari SIGNORE DEF o la tua function)
 		if (line == NULL)
 		{
 			ft_printf("exit\n");

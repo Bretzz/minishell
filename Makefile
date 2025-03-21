@@ -37,7 +37,7 @@ SRC_FILES		= main.c \
 				parser.c tokenizer.c \
 				\
 				handle_vars.c expand_string.c \
-				get_value.c the_matrix.c \
+				get_value.c the_matrix.c signals.c\
 				\
 				print_stuff.c free_space.c cleanup.c \
 				ft_realloc.c ft_freentf.c ft_readline.c
