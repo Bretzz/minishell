@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/21 14:11:25 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 17:20:22 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,11 @@ int	main(int argc, char *argv[], char *__environ[])
 	while (1)
 	{
 		line = ft_readline("minishell% ");
+		if (line == NULL)
+		{
+			ft_printf("exit\n");
+			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
+		}
 		if (!handle_line(line, vars))
 			return (1);
 	//	add_history(line);
