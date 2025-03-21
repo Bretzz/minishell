@@ -1,0 +1,10 @@
+export | grep SHELL; echo $?
+pwd; echo $?
+ls | grepp a | cat; echo $?
+error 127; echo $?
+echo pippo | grep; echo $?
+| | |; echo $?
+ls | > out; echo $?; cat out; rm out
+ciao=pippo echo indeed; echo $?
+echo qualcosa | rick=jonny | ls; echo $?
+echo DONE

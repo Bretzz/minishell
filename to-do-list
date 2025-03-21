@@ -133,11 +133,16 @@ alalready excluded?: found in heredoc and grep'd
 
 -------------------> THINGS TO DISCUSS <-------------------
 
-1. var value length (and varous mallocs)
-2. var name length (and various mallocs)
-3. mallocs protections (see funny printfs)
+1. var value length (and varous mallocs) (DONE)
+2. var name length (and various mallocs) (DONE)
+3. mallocs protections (see funny printfs) 
+	se un malloc fallisce freeiamo quello che dobbiamo freeare
+	stampiamo errore;
+	e non chiudiamo minishell
 4. autocorrezione di ecoh in echo??
+	NO
 5. builtins should return the exit code wanted
+	(DONE)
 6. non uscire da minishell con ctrl C
 7. testare $? - example: unset export (var nn valida) -> 
 8. ls | > out 

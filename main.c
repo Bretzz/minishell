@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 18:57:24 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:11:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	(void)argc; (void)argv;
 	ft_bzero(vars, 3 * sizeof(char **));
 	vars[2] = env_copy(__environ);
+	vars[1] = env_copy(__environ);
 	vars[0] = pipe_setup();
 	if (!vars[0] || !vars[2])
 		return (1);

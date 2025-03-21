@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 18:21:44 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:57:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ size_t	ft_varlen(const char *s)
 		s++;
 	if (s == NULL)
 		return (0);
-	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_'))
+	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?'))
 		i++;
 	return (i);
 }

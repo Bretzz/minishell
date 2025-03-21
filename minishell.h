@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 21:32:59 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:01:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <readline/history.h>
 
 # define MAX_ARGS 100		/* Max number of arguments to a command */
-# define MAX_VAR_LEN 1024	/* Max length of a shell variable's name. */
+# define VARNAME 1024	/* Max length of a shell variable's name. */
 /* NOTE: currently we can take a var value of any length. */
 
 /* PROGRAM LOCATION FLAGS */

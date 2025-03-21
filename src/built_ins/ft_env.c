@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 17:59:59 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:14:48 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@ int	ft_env(int *fd, const char ***vars);
 int	ft_env(int *fd, const char ***vars)
 {
 	int	i;
-	int	eq;
 
-	if (vars[2] == NULL)
+	if (vars[2] == NULL)	//should never happen
 	{
-		ft_printfd(STDERR_FILENO, "%p\n", vars[2]); //should never happen
+		ft_printfd(STDERR_FILENO, "%p\n", vars[2]);
 		multicose(fd);
 		return (-1);
 	}
@@ -29,14 +28,6 @@ int	ft_env(int *fd, const char ***vars)
 	while (vars[2][i] != NULL)
 	{
 		ft_printfd(fd[1], "%s\n", vars[2][i]);
-		i++;
-	}
-	i = 0;
-	while (vars[1] && vars[1][i] != NULL)
-	{
-		eq = ft_strichr(vars[1][i], '=');
-		if (eq != 0 && vars[1][i][eq] != '\0')
-			ft_printfd(fd[1], "%s\n", vars[1][i]);
 		i++;
 	}
 	multicose(fd);

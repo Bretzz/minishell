@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:12:08 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 18:33:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:01:20 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ int		var_check(const char *var);
 takes both 'var' and 'var=' as valid string. */
 int	var_check(const char *var)
 {
-	char	my_var[MAX_VAR_LEN];
+	char	my_var[VARNAME];
 	int		eq;
 	
 	eq = ft_strichr(var, '=');
-	if (eq == 1 || eq > MAX_VAR_LEN)
+	if (eq == 1 || eq > VARNAME)
 		return (0);
 	//ft_printf("no = foound\n");
-	ft_bzero(my_var, MAX_VAR_LEN);
+	ft_bzero(my_var, VARNAME);
 	if (eq != 0)
 		ft_strlcpy(my_var, var, eq + 1);
 	else

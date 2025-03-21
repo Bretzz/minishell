@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 14:09:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:10:02 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	ft_pwd(int *fd, t_cmd cmd);
 RETURNS: 0 on error, the number of char printed on successful execution. */
 int	ft_pwd(int *fd, t_cmd cmd)
 {
-	int		count;
 	char	*dir;
 
 	(void)cmd;
@@ -45,8 +44,8 @@ int	ft_pwd(int *fd, t_cmd cmd)
 		//handle errno
 		return (1); //return errno
 	}
-	count = ft_printfd(fd[1], "%s\n", dir);
+	ft_printfd(fd[1], "%s\n", dir);
 	free(dir);
 	safeclose(fd[1]);
-	return (count);
+	return (0);
 }

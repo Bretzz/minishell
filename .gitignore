@@ -13,3 +13,6 @@ minishell
 minishell.tar
 .nfs*
 **/exec
+tester/expected_output
+tester/mini_output
+tester/traces.diff

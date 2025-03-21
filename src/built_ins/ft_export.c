@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 13:09:27 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:10:43 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static void	print_export(int *fd, char ***vars)
 	int		i;
 	int		eq;
 	
-	i = 0;
-	while (vars[2] && vars[2][i] != NULL)
-	{
-		eq = ft_strichr(vars[2][i], '=');
-		ft_printfd(fd[1], "declare -x %z\"%s\"\n", vars[2][i], eq, vars[2][i] + eq);
-		i++;
-	}
+	// i = 0;
+	// while (vars[2] && vars[2][i] != NULL)
+	// {
+	// 	eq = ft_strichr(vars[2][i], '=');
+	// 	ft_printfd(fd[1], "declare -x %z\"%s\"\n", vars[2][i], eq, vars[2][i] + eq);
+	// 	i++;
+	// }
 	i = 0;
 	while (vars[1] && vars[1][i] != NULL)
 	{
@@ -67,7 +67,10 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 			errno = 1;
 		}
 		else if (ft_strichr(cmd.words[i], '=') != 0)
+		{
 			vars[1] = var_append(vars[1], cmd.words[i]);
+			vars[2] = var_append(vars[2], cmd.words[i]);
+		}
 		else
 		{
 			index = is_there((const char **)vars[0], cmd.words[i]);

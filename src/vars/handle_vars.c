@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 17:55:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:01:24 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	handle_vars(t_cmd cmd, char ***vars)
 
 	//ft_printf("cmd=%s\n", cmd.words[0]);
 	eq = ft_strichr(cmd.words[0], '=');
-	if (eq <= 1 || eq > MAX_VAR_LEN || !var_check(cmd.words[0]))
+	if (eq <= 1 || eq > VARNAME || !var_check(cmd.words[0]))
 		return (0);
 	//ft_printf("var assignment found\n");
 	i = 2;

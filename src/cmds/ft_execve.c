@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/18 21:12:41 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 15:45:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,24 @@ static int	error_check(t_cmd cmd, char *path)
 	if (cmd.redir[1] == FILE
 		&& access(cmd.outfile, F_OK) - access(cmd.outfile, W_OK) > 0)
 	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: Permission denied\n", cmd.outfile);
+		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.outfile);
 		return (1);
 	}
 	if (cmd.redir[0] == FILE
 		&& access(cmd.infile, F_OK) != 0)
 	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: No such file or directory\n", cmd.infile);
+		ft_printfd(STDERR_FILENO, "minishell: %s: no such file or directory\n", cmd.infile);
 		return (1);
 	}
 	if (cmd.redir[0] == FILE
 		&& access(cmd.infile, R_OK) != 0)
 	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: Permission denied\n", cmd.infile);
+		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.infile);
 		return (1);
 	}
 	if (path == NULL)
 	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: Command not found\n", cmd.words[0]);
+		ft_printfd(STDERR_FILENO, "minishell: %s: command not found\n", cmd.words[0]);
 		return (127);
 	}
 	return (0);
