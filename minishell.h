@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/21 16:01:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/21 18:11:49 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,10 @@ void	ft_print_charr(const char **arr);
 
 void	safeclose(int fd);
 void	multicose(int *fd);
+
+
+void	sig_initializer(void);
+
+
 
 #endif

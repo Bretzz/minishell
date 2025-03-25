@@ -143,7 +143,7 @@ alalready excluded?: found in heredoc and grep'd
 	NO
 5. builtins should return the exit code wanted
 	(DONE)
-6. non uscire da minishell con ctrl C
+6. non uscire da minishell con ctrl C --> fai a capo e aggiorna var con valore giusto
 7. testare $? - example: unset export (var nn valida) -> 
 8. ls | > out 
 	deve creare un file out. out viene tokenizzato come word. pero non viene creato il comando 
