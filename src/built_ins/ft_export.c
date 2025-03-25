@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/21 14:10:43 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:11:33 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 		}
 		else
 		{
-			index = is_there((const char **)vars[0], cmd.words[i]);
+			index = is_there((const char **)(vars[0] + 1), cmd.words[i]);
 			if (index >= 0)
 			{
 				vars[1] = var_append(vars[1], vars[0][index]); //remember to drop_index on shv
