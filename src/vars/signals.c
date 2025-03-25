@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/21 19:47:57 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/03/25 21:17:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	sig_handler(int signal)
 {
 	if(signal == SIGINT)
 	{		
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		//ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		write(STDIN_FILENO, "\n", 1);
+		//write(STDOUT_FILENO, "\n", 1);
+		//ioctl(STDIN_FILENO, TCFLSH, "\n");
 		g_last_sig = 130;
 
 	}
