@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 00:24:04 by totommi          ###   ########.fr       */
+/*   Updated: 2025/03/25 23:31:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,16 @@ int	ft_cd(int *fd, t_cmd cmd)
 		return (1);
 		//better error handling
 	}
-	if (cmd.redir[0] != STDL || cmd.redir[1] != STDL)
+	if (cmd.redir[0] == PIPE || cmd.redir[1] == PIPE) //maybe execute in child if in pipe
 		return (1);
 	//ft_printf("new-dir=%s\n", cmd.words[1]);
+	//old_pwd = getcwd(NULL, 0);
 	ret = chdir(cmd.words[1]);
 	if (ret == -1)
 	{
 		//handle errno
 		return (1); //return errno
 	}
+	//*env = var_append(*env, old_pwd);
 	return (0);
 }
