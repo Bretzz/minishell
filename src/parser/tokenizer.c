@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/01 17:10:06 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:57:36 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,18 @@ char	*remove_quotes(char *str)
 	return (newstr);
 }
 
+char	*funzionebuffa(const char *line, char quote, char ***vars)
+{
+	
+	if (quote == '"')
+		if (line[i] == '$')
+			line = single_expand(0, line, vars)
+			
+	else if (quote == '\'')
+		non esplodere le vairabili 
+}
 /* returns a dynamicly allocated mem addres */
-char	*get_next_word(const char *line, int *i)
+char	*get_next_word(const char *line, int *i, char ***vars)
 {
 	int		start;
 	char	quote;
@@ -115,6 +125,7 @@ char	*get_next_word(const char *line, int *i)
 				quote = 0;
 			(*i)++;
 		}
+		line = funzionebuffa(&line[*i], quote, vars);
 		else
 			(*i)++;
 	}
@@ -234,7 +245,7 @@ void	print_tokens(t_token *tokens)
 // 	t_token	*tokens;
 
 // 	(void)argc;
-// 	printf("tokenizing: '%s'\n", argv[1]);
+// 	printf("tokenizing: ===%s===\n", argv[1]);
 // 	tokens = tokenizer(argv[1]);
 // 	print_tokens(tokens);
 // 	return (0);

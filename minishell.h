@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:55:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:55:34 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	is_operator(const char *line, int i);
 t_token_type	pipe_or_die(const char *line, int *i);
 t_token_type	get_next_operator(const char *line, int *i);
 char	*remove_quotes(char *str);
-char	*get_next_word(const char *line, int *i);
+char	*get_next_word(const char *line, int *i, char ***vars);
 void	add_token(t_token **tokens, t_token_type type, char *value);
 t_token	*tokenizer(char *line);
 void	print_tokens(t_token *tokens);
@@ -111,7 +111,7 @@ char	*find_env_path(char *cmd, char **env);
 // char	**setnum(char **mtx, const char *target, int value);
 
 char 	*expand_string(char *str, const char ***vars);
-
+char	*single_expand(int i, char *str, const char ***vars);
 // char	*get_value(const char *target, const char **mtx);
 // int		is_there(const char **mtx, const char *target);
 // int		var_is_valid(const char *var);

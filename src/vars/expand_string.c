@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:16:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:54:55 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char *expand_string(char *str, const char ***vars);
+char	*single_expand(int i, char *str, const char ***vars);
 
 static char	*cut_string(char *str, char *target)
 {
@@ -47,7 +48,7 @@ static char	*cut_string(char *str, char *target)
 }
 
 /* searches all the vars arrays for the var pointer by str */
-static char	*whide_search(char *str, const char ***vars)
+static char	*wide_search(char *str, const char ***vars)
 {
 	char	*value;
 	int		i;
@@ -72,7 +73,7 @@ Allocates with malloc(3) a new string that's a copy of the imput string
 with the var_string '$var' replaced with it's value found in shv, exp or env,
 then frees the input string.
 RETURNS: A pointer to the new string, NULL on malloc failures. */
-static char	*single_expand(int i, char *str, const char ***vars)
+char	*single_expand(int i, char *str, const char ***vars)
 {
 	char	*exp_val;
 	char	*new_str;
@@ -81,7 +82,7 @@ static char	*single_expand(int i, char *str, const char ***vars)
 	if (!ft_strncmp("$?", &str[i], 2)) // to be fiexed $ab?, or $?ab
 		exp_val = ft_itoa(*(int *)(vars[0] + 1));
 	else
-		exp_val = whide_search(&str[i + 1], vars);
+		exp_val = wide_search(&str[i + 1], vars);
 	if (exp_val == NULL)
 	{
 		new_str = cut_string(str, ft_substr(str, i, ft_varlen(&str[i]) + 1));
