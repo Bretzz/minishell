@@ -131,12 +131,36 @@ CURSED COMMAND (ZSH):
 playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
+----------------------> HERE DOC <-----------------------
 
 topiana-@c2r4p11:~/live_projects/github/minishell$ ab=123
 topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
 > $ab
 > X
 123
+
+topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
+> $abc'f
+> $abc;o
+> $abc&g
+> X
+123'f
+123;o
+123&g
+
+topiana-@c2r4p11:~/live_projects/github/minishell$ ab=123
+topiana-@c2r4p11:~/live_projects/github/minishell$ << 'X' cat
+$ab
+'X'
+X
+$ab
+'X'
+topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
+$ab
+'X'
+X
+123
+'X'
 
 -------------------> THINGS TO DISCUSS <-------------------
 
