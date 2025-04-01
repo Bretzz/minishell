@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:58:00 by topiana-          #+#    #+#             */
-/*   Updated: 2025/01/21 12:42:49 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:36:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static size_t	ft_wdlen(const char *s, int c)
 
 int	ft_wdcount(const char *s, int c)
 {
-	int	wd;
-	int	i;
+	int		wd;
+	size_t	i;
 
 	wd = 0;
 	i = 0;

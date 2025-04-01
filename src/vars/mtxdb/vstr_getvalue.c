@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:30:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 18:54:34 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:40:38 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ in alloc mode the first case returns a NULL pointer, in the second
 case retusn an allocated space of size=1 cointaining a '\0'. */
 char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 {
-	int	i;
+	size_t	i;
 
 	if (varstr == NULL)
 		return (NULL);

@@ -7,4 +7,5 @@ echo pippo | grep; echo $?
 ls | > out; echo $?; cat out; rm out
 ciao=pippo echo indeed; echo $?
 echo qualcosa | rick=jonny | ls; echo $?
+echo "ciao | ls" | grep '$ciao' | w"c" -l >out; echo $? cat out; rm -f out
 echo DONE

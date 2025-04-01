@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/19 22:24:55 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:10:06 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,7 @@ void	print_tokens(t_token *tokens)
 // 	t_token	*tokens;
 
 // 	(void)argc;
+// 	printf("tokenizing: '%s'\n", argv[1]);
 // 	tokens = tokenizer(argv[1]);
 // 	print_tokens(tokens);
 // 	return (0);

@@ -37,8 +37,8 @@ SRC_FILES		= main.c \
 				\
 				parser.c tokenizer.c \
 				\
-				handle_vars.c expand_string.c \
-				get_value.c the_matrix.c signals.c\
+				expand_string.c \
+				signals.c\
 				\
 				mtx_addnum.c mtx_addval.c \
 				mtx_init.c mtx_free.c \

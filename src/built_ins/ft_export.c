@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:57:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:15:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ static void	print_export(int *fd, char ***vars)
 //env no, shv si
 //env si, shv no
 //env si, shv si
-/* RETURNS: 1 if all good, 0 in case of error. */
 int	ft_export(int *fd, t_cmd cmd, char ***vars)
 {
 	int		index;
 	int		i;
 	int		errno;
+	char	name[MAX_NAME];
 
 	safeclose(fd[0]);
 	if (!cmd.words[1] || cmd.words[1][0] == '\0')
@@ -61,28 +61,72 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
-		if (!var_check(cmd.words[i]))
+		if (!vstr_name_is_valid(cmd.words[i]))
 		{
 			ft_printfd(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", cmd.words[i]);
 			errno = 1;
 		}
 		else if (ft_strichr(cmd.words[i], '=') != 0)
 		{
-			vars[1] = var_append(vars[1], cmd.words[i]);
-			vars[2] = var_append(vars[2], cmd.words[i]);
+			vars[1] = mtx_vstr_copy(cmd.words[i], vars[1]);
+			vars[2] = mtx_vstr_copy(cmd.words[i], vars[2]);
 		}
 		else
 		{
-			index = is_there((const char **)(vars[0] + 1), cmd.words[i]);
+			index = mtx_getindex(vstr_getname(cmd.words[i], name, MAX_NAME), vars[0]);
 			if (index >= 0)
 			{
-				vars[1] = var_append(vars[1], vars[0][index]); //remember to drop_index on shv
-				vars[0] = (char **)drop_index((void **)vars[0], index);
+				vars[1] = mtx_vstr_copy(vars[0][index], vars[1]); //remember to drop_index on shv
+				mtx_safedel(index, vars[0]);
 			}
 			else
-				vars[1] = var_append(vars[1], cmd.words[i]);		//appends the var without '='
+				vars[1] = mtx_vstr_copy(cmd.words[i], vars[1]);
 		}
 		i++;
 	}
 	return (errno);
 }
+/* RETURNS: 1 if all good, 0 in case of error. */
+// int	ft_export(int *fd, t_cmd cmd, char ***vars)
+// {
+// 	int		index;
+// 	int		i;
+// 	int		errno;
+
+// 	safeclose(fd[0]);
+// 	if (!cmd.words[1] || cmd.words[1][0] == '\0')
+// 	{
+// 		print_export(fd, vars);
+// 		safeclose(fd[1]);
+// 		return (0);
+// 	}
+// 	safeclose(fd[1]);
+// 	errno = 0;
+// 	i = 1;
+// 	while (cmd.words[i] && cmd.words[i][0] != '\0')
+// 	{
+// 		if (!var_check(cmd.words[i]))
+// 		{
+// 			ft_printfd(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", cmd.words[i]);
+// 			errno = 1;
+// 		}
+// 		else if (ft_strichr(cmd.words[i], '=') != 0)
+// 		{
+// 			vars[1] = var_append(vars[1], cmd.words[i]);
+// 			vars[2] = var_append(vars[2], cmd.words[i]);
+// 		}
+// 		else
+// 		{
+// 			index = is_there((const char **)(vars[0] + 1), cmd.words[i]);
+// 			if (index >= 0)
+// 			{
+// 				vars[1] = var_append(vars[1], vars[0][index]); //remember to drop_index on shv
+// 				vars[0] = (char **)drop_index((void **)vars[0], index);
+// 			}
+// 			else
+// 				vars[1] = var_append(vars[1], cmd.words[i]);		//appends the var without '='
+// 		}
+// 		i++;
+// 	}
+// 	return (errno);
+// }

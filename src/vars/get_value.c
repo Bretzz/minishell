@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:12:08 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:17:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:44:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ RETURNS: 1 if the var is valid, 0 if it isn't.
 NOTE: you should throw a 'not a valid identifier' error (Exit Code: 1). */
 int	var_is_valid(const char *var)
 {
-	int	i;
+	size_t	i;
 
 	if (var == NULL)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 20:25:27 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/11 15:52:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:55:37 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	west_putstr_fd(int fd, char *s)
 {
-	int	i;
+	size_t	i;
 
 	if (!s)
 		return (west_putstr_fd(fd, "(null)"));

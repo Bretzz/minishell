@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:41:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:26:43 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:40:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ RETURNS: 1 if the var is valid, 0 if it isn't.
 NOTE: you should throw a 'not a valid identifier' error (Exit Code: 1). */
 int	vstr_name_is_valid(char *varstr)
 {
-	int	i;
+	size_t	i;
 	char	name[MAX_NAME];
 
 	if (varstr == NULL)
@@ -48,7 +48,7 @@ RETURNS: a pointer to a dedicated space containing the value,
 NULL on malloc failure or if not a var-string. */
 char	*vstr_getname(char *varstr, char *buff, size_t size)
 {
-	int	i;
+	size_t	i;
 
 	if (varstr == NULL)
 		return (NULL);

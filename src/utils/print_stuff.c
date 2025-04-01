@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:21:42 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 17:47:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:44:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_print_charr(const char **arr)
 {
-	int	i;
+	size_t	i;
 
 	if (arr == NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/25 18:13:37 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:19:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@ static void	mass_drop(char ***vars, char *var)
 {
 	int	index;
 	int	i;
+	char	name[MAX_NAME];
 	
+	vstr_getname(var, name, MAX_NAME);
 	i = 2;
 	while (i >= 0)
 	{
 		if (vars[i] != NULL)
 		{
-			if (i == 0) //skips LITTLEPIPE
-				index = is_there((const char **)(vars[i] + 1), var);
-			else
-				index = is_there((const char **)(vars[i]), var);
+			// if (i == 0) //skips LITTLEPIPE
+			// 	index = is_there((const char **)(vars[i] + 1), var);
+			// else
+			// 	index = is_there((const char **)(vars[i]), var);
+			index = mtx_getindex(name, vars[i]);
 			if (index >= 0)
-				vars[i] = (char **)drop_index((void **)vars[i], index);
+				mtx_safedel(index, vars[i]);
 		}
 		i--;
 	}
@@ -45,7 +48,7 @@ int	ft_unset(int *fd, t_cmd cmd, char ***vars)
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
-		if (!var_check(cmd.words[i]))
+		if (!vstr_name_is_valid(cmd.words[i]))
 		{
 			ft_printfd(STDERR_FILENO, "minishell: unset: `%s': not a valid identifier\n", cmd.words[i]);
 			errno = 1;

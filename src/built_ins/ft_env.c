@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:45:17 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:39:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_env(int *fd, const char ***vars);
 
 int	ft_env(int *fd, const char ***vars)
 {
-	int	i;
+	unsigned int	i;
 
 	if (vars[2] == NULL)	//should never happen
 	{

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 14:29:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:55:37 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,10 @@ static int	handle_command(t_cmd cmd, char ***vars)
 
 static int	handle_line(char *line, char ***vars)
 {
-	int	i;
-	int	len;
 	int	errno;
 	t_cmd *cmd_arr;
+	size_t	i;
+	size_t	len;
 	
 	if (line == NULL)
 		return (0);
@@ -146,7 +146,7 @@ static int	handle_line(char *line, char ***vars)
 the newly initialized matrix. */
 static char	**env_copy(char **his_env)
 {
-	int	i;
+	size_t	i;
 	char **my_env;
 
 	if (his_env == NULL)
@@ -171,7 +171,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	(void)argc; (void)argv; (void)__environ;
 	ft_bzero(vars, 3 * sizeof(char **));
 	vars[2] = env_copy(__environ);
-	vars[1] = mtx_init();
+	vars[1] = env_copy(__environ);
 	vars[0] = mtx_init();
 	if (!vars[0] || !vars[1] || !vars[2])
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:42:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:55:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,16 @@ char	*find_env_path(char *cmd, char **env);
 
 //handle stuff
 
-int		handle_vars(t_cmd cmd, char ***vars);
-char	**var_append(char **mtx, char *var);
-char	**setnum(char **mtx, const char *target, int value);
+// int		handle_vars(t_cmd cmd, char ***vars);
+// char	**var_append(char **mtx, char *var);
+// char	**setnum(char **mtx, const char *target, int value);
 
 char 	*expand_string(char *str, const char ***vars);
 
-char	*get_value(const char *target, const char **mtx);
-int		is_there(const char **mtx, const char *target);
-int		var_is_valid(const char *var);
-int		var_check(const char *var);
+// char	*get_value(const char *target, const char **mtx);
+// int		is_there(const char **mtx, const char *target);
+// int		var_is_valid(const char *var);
+// int		var_check(const char *var);
 
 //ft_execve.c
 

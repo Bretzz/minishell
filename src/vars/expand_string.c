@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:44:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:16:42 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ static char	*whide_search(char *str, const char ***vars)
 	i = 2;
 	while (i >= 0)
 	{
-		if (i == 0) //skips LITTLEPIPE
-			value = get_value(str, vars[i] + 1);
-		else
-			value = get_value(str, vars[i]);
+		// if (i == 0) //skips LITTLEPIPE
+		// 	value = get_value(str, vars[i] + 1);
+		// else
+		// 	value = get_value(str, vars[i]);
+		value = mtx_findval(str, NULL, 0, (char **)(vars[i] + 1));
 		if (value != NULL)
 			return (value);
 		i--;
