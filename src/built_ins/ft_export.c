@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:15:45 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 18:35:56 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,47 @@
 
 int	ft_export(int *fd, t_cmd cmd, char ***vars);
 
-static void	print_export(int *fd, char ***vars)
+static void	sort_export(char **exp)
+{
+	int				sorted;
+	char			*tmp;
+	unsigned int	i;
+
+	sorted = 1;
+	i = 1;
+	while (i < *(int *)exp && exp[i] != NULL)
+	{
+		if (exp[i + 1]
+			&& ft_strncmp(exp[i], exp[i + 1], ft_strlen(exp[i])) > 0)
+		{
+			tmp = exp[i];
+			exp[i] = exp[i + 1];
+			exp[i + 1] = tmp;
+			sorted = 0;
+		}
+		i++;
+		if (!sorted && (i == *(int *)exp || exp[i] == NULL))
+		{
+			sorted = 1;
+			i = 1;
+		}
+	}
+}
+
+static void	print_export(int *fd, char **exp)
 {
 	int		i;
 	int		eq;
 	
-	// i = 0;
-	// while (vars[2] && vars[2][i] != NULL)
-	// {
-	// 	eq = ft_strichr(vars[2][i], '=');
-	// 	ft_printfd(fd[1], "declare -x %z\"%s\"\n", vars[2][i], eq, vars[2][i] + eq);
-	// 	i++;
-	// }
+	sort_export(exp);
 	i = 1;
-	while (vars[1] && vars[1][i] != NULL)
+	while (exp && exp[i] != NULL)
 	{
-		eq = ft_strichr(vars[1][i], '=');
+		eq = ft_strichr(exp[i], '=');
 		if (eq != 0)
-			ft_printfd(fd[1], "declare -x %z\"%s\"\n", vars[1][i], eq, vars[1][i] + eq);
+			ft_printfd(fd[1], "declare -x %z\"%s\"\n", exp[i], eq, exp[i] + eq);
 		else
-			ft_printfd(fd[1], "declare -x %s\n", vars[1][i]);
+			ft_printfd(fd[1], "declare -x %s\n", exp[i]);
 		i++;
 	}
 }
