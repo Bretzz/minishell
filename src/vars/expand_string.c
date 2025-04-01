@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 17:54:55 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:47:43 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,14 @@ static char	*cut_string(char *str, char *target)
 static char	*wide_search(char *str, const char ***vars)
 {
 	char	*value;
+	char	*name;
 	int		i;
 	
+	name = ft_substr(str, 0, ft_varlen(str));
+	if (!name)
+		return (NULL);
+	//ft_printf("searching: '%s'\n", name);
+
 	i = 2;
 	while (i >= 0)
 	{
@@ -60,13 +66,19 @@ static char	*wide_search(char *str, const char ***vars)
 		// 	value = get_value(str, vars[i] + 1);
 		// else
 		// 	value = get_value(str, vars[i]);
-		value = mtx_findval(str, NULL, 0, (char **)(vars[i] + 1));
+		value = mtx_findval(name, NULL, 0, (char **)(vars[i]));
 		if (value != NULL)
+		{
+			free(name);
+			//ft_printf("found: %s\n", value);
 			return (value);
+		}
 		i--;
 	}
+	free(name);
 	return (NULL);
 }
+
 
 /* takes a string (to be free'd) and the index of the var found.
 Allocates with malloc(3) a new string that's a copy of the imput string
@@ -105,19 +117,30 @@ RETURNS: the expanded string, NULL on malloc error. */
 char *expand_string(char *str, const char ***vars)
 {
 	char	*my_str;
-	int		i;
+	char	quote;
+	size_t	i;
 
 	my_str = ft_strdup(str);
 	if (my_str == NULL)
 		return (NULL);	
+	quote = 0;
 	i = 0;
 	while (my_str[i] != '\0')
 	{
-		//ft_printf("curr string: %s\n", my_str);
-		if (my_str[i] == '$')
+		if (my_str[i] == '"' || my_str[i] == '\'')
 		{
-			my_str = single_expand(i--, my_str, vars);
+			if (quote == 0)
+				quote = my_str[i];
+			else if (quote == my_str[i])
+				quote = 0;
+			i++;
 		}
+		// if (my_str[i] == '\'' && quote == 0)
+		// 	quote = '\'';
+		// else if (my_str[i] == '\'' && quote == '\'')
+		// 	quote = 0;
+		if (my_str[i] == '$' && quote != '\'')
+			my_str = single_expand(i--, my_str, vars);
 		i++;
 	}
 	return (my_str);

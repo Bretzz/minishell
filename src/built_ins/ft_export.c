@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 18:35:56 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:18:00 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	sort_export(char **exp)
 
 	sorted = 1;
 	i = 1;
-	while (i < *(int *)exp && exp[i] != NULL)
+	while (i < (unsigned int)*(int *)exp && exp[i] != NULL)
 	{
 		if (exp[i + 1]
 			&& ft_strncmp(exp[i], exp[i + 1], ft_strlen(exp[i])) > 0)
@@ -33,7 +33,7 @@ static void	sort_export(char **exp)
 			sorted = 0;
 		}
 		i++;
-		if (!sorted && (i == *(int *)exp || exp[i] == NULL))
+		if (!sorted && (i == (unsigned int)*(int *)exp || exp[i] == NULL))
 		{
 			sorted = 1;
 			i = 1;
@@ -73,7 +73,7 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 	safeclose(fd[0]);
 	if (!cmd.words[1] || cmd.words[1][0] == '\0')
 	{
-		print_export(fd, vars);
+		print_export(fd, vars[1]);
 		safeclose(fd[1]);
 		return (0);
 	}

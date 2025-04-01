@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:55:37 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:29:37 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ static int	handle_line(char *line, char ***vars)
 	
 	if (line == NULL)
 		return (0);
-	cmd_arr = parse_tokens((char *)line);
+	cmd_arr = parse_tokens((char *)line, (const char ***)vars);
 	len = ft_cmdlen(cmd_arr);
 	//ft_printf("found %d command(s)\n", len);
 	i = 0;

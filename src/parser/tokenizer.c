@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/01 17:57:36 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:45:02 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,27 @@ char	*remove_quotes(char *str)
 	return (newstr);
 }
 
-char	*funzionebuffa(const char *line, char quote, char ***vars)
-{
+
+// substr() fino a $ poi expand() fino a varlen(alfanum primo alfa, underscore) e fai strjoin(substr + exland)
+// line = ciao $pippo 'sono $topolino'
+
+
+// if line[i] = '$'
+// explodedline = strjoin(explodedline, substr(line fino a i-1)
+// if line[i] = " "
+
+
+// char	*funzionebuffa(const char *line, int *i, char quote, char ***vars)
+// {
 	
-	if (quote == '"')
-		if (line[i] == '$')
-			line = single_expand(0, line, vars)
+// 	if (quote == '"')
+// 		if (line[i] == '$')
 			
-	else if (quote == '\'')
-		non esplodere le vairabili 
-}
+// 	else if (quote == '\'')
+// 		non esplodere le vairabili 
+// }
 /* returns a dynamicly allocated mem addres */
-char	*get_next_word(const char *line, int *i, char ***vars)
+char	*get_next_word(const char *line, int *i)
 {
 	int		start;
 	char	quote;
@@ -115,6 +124,7 @@ char	*get_next_word(const char *line, int *i, char ***vars)
 
 	start = *i;
 	quote = 0;
+	word = NULL;
 	while (line[*i] && (quote || (line[*i] != ' ' && !is_operator(line, *i))))
 	{
 		if (line[*i] == '"' || line[*i] == '\'')
@@ -125,7 +135,6 @@ char	*get_next_word(const char *line, int *i, char ***vars)
 				quote = 0;
 			(*i)++;
 		}
-		line = funzionebuffa(&line[*i], quote, vars);
 		else
 			(*i)++;
 	}
@@ -179,13 +188,15 @@ char *get_rekd(t_token_type type)
 }
  
 
-t_token	*tokenizer(char *line)
+t_token	*tokenizer(char *line, const char ***vars)
 {
 	t_token		*tokens;
 	int			i;
 
 	i = 0;
 	tokens = NULL;
+	line = expand_string(line, vars);
+	//printf("expanded string: ~%s~\n", line);
 	while (line[i])
 	{
 		skip_spaces(line, &i);
@@ -195,7 +206,8 @@ t_token	*tokenizer(char *line)
 			add_token(&tokens, get_next_operator(line, &i), NULL);
 		else
 			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i));
-			}
+	}
+	free(line);
 	return (tokens);
 }
 
@@ -240,13 +252,38 @@ void	print_tokens(t_token *tokens)
 	}
 }
 
+/* copies the enviroment passed as parameters and returns
+the newly initialized matrix. */
+// static char	**env_copy(char **his_env)
+// {
+// 	size_t	i;
+// 	char **my_env;
+
+// 	if (his_env == NULL)
+// 		return (NULL);
+// 	my_env = mtx_init();
+// 	if (my_env == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	while(his_env[i] != NULL)
+// 	{
+// 		my_env = mtx_vstr_copy(his_env[i], my_env);
+// 		i++;
+// 	}
+// 	return (my_env);
+// }
+
 // int	main(int argc, char *argv[])
 // {
 // 	t_token	*tokens;
-
+// 	char **vars[3];
+// 	vars[2] = env_copy(__environ);
+// 	vars[1] = NULL;
+// 	vars[0] = NULL;
+	
 // 	(void)argc;
 // 	printf("tokenizing: ===%s===\n", argv[1]);
-// 	tokens = tokenizer(argv[1]);
+// 	tokens = tokenizer(argv[1], (const char ***)vars);
 // 	print_tokens(tokens);
 // 	return (0);
 // }

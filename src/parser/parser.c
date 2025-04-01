@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/03/19 22:24:59 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:48:50 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,14 +158,14 @@ void	free_cmd(t_cmd *cmd_arr)
 	free(cmd_arr);
 }
 
-t_cmd *parse_tokens(char *line)
+t_cmd *parse_tokens(char *line, const char ***vars)
 {
 	t_token *tokens[2];
 	t_cmd *cmd_array;
 	t_cmd current_cmd;
 	int cmd_index;
 
-	tokens[0] = tokenizer(line);
+	tokens[0] = tokenizer(line, vars);
 	tokens[1] = tokens[0];
 	/* print_tokens(tokens);
 	printf("\n\n"); */
@@ -266,14 +266,39 @@ int	ft_cmdlen(t_cmd *cmd_array)
 	return(i);
 }
 
+/* copies the enviroment passed as parameters and returns
+the newly initialized matrix. */
+// static char	**env_copy(char **his_env)
+// {
+// 	size_t	i;
+// 	char **my_env;
+
+// 	if (his_env == NULL)
+// 		return (NULL);
+// 	my_env = mtx_init();
+// 	if (my_env == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	while(his_env[i] != NULL)
+// 	{
+// 		my_env = mtx_vstr_copy(his_env[i], my_env);
+// 		i++;
+// 	}
+// 	return (my_env);
+// }
 // int	main(int argc, char *argv[])
 // {
 // 	(void)argc;
 //     char *line = argv[1];
 //     t_cmd *cmd_array;
 //     int num_cmds;
+// 	char **vars[3];
+// 	vars[2] = env_copy(__environ);
+// 	vars[1] = NULL;
+// 	vars[0] = NULL;
 	
-//     cmd_array = parse_tokens(line);
+// 	line = "echo ciao '\"$pippo           sono'\" $pluto";
+//     cmd_array = parse_tokens(line, (const char ***)vars);
 
 // //	int num_cmds2 = ft_mtxlen((const void **)&cmd_array);
 // 	num_cmds = 	ft_cmdlen(cmd_array);

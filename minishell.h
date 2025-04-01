@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 17:55:34 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 20:29:24 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ typedef struct s_var
 }				t_var;
 
 // parsing
-t_cmd	*parse_tokens(char *line);
+t_cmd *parse_tokens(char *line, const char ***vars);
 int		ft_cmdlen(t_cmd *cmd_array);
 void	free_cmd(t_cmd *cmd_arr);
 
 //tokens
-t_token	*tokenizer(char *line);
+t_token	*tokenizer(char *line, const char ***vars);
 void	free_tokens(t_token *tokens);
 
 void	skip_spaces(const char *line, int *i);
@@ -89,9 +89,8 @@ int	is_operator(const char *line, int i);
 t_token_type	pipe_or_die(const char *line, int *i);
 t_token_type	get_next_operator(const char *line, int *i);
 char	*remove_quotes(char *str);
-char	*get_next_word(const char *line, int *i, char ***vars);
+char	*get_next_word(const char *line, int *i);
 void	add_token(t_token **tokens, t_token_type type, char *value);
-t_token	*tokenizer(char *line);
 void	print_tokens(t_token *tokens);
 char *get_rekd(t_token_type type);
 
