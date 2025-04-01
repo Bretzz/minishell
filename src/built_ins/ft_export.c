@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 20:18:00 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:37:00 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	sort_export(char **exp)
 {
 	int				sorted;
 	char			*tmp;
-	unsigned int	i;
+	int				i;
 
 	sorted = 1;
 	i = 1;
-	while (i < (unsigned int)*(int *)exp && exp[i] != NULL)
+	while (i < *(int *)exp && exp[i] != NULL)
 	{
 		if (exp[i + 1]
 			&& ft_strncmp(exp[i], exp[i + 1], ft_strlen(exp[i])) > 0)
@@ -33,7 +33,7 @@ static void	sort_export(char **exp)
 			sorted = 0;
 		}
 		i++;
-		if (!sorted && (i == (unsigned int)*(int *)exp || exp[i] == NULL))
+		if (!sorted && (i == *(int *)exp || exp[i] == NULL))
 		{
 			sorted = 1;
 			i = 1;

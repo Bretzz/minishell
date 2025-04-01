@@ -20,6 +20,11 @@ EXPORT: (DONE)
 
 echo $var1$var2 ???? (concatenates) (DONE)
 
+minishell% echo "'$a' is $a" (DONE)
+'' is 
+minishell% echo '$a' is $a (DONE)
+$a is
+
 ======================== T O D O =======================
 
 	/ * * * * * * * * * * * * * * * * * * * * * * * /

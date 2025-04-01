@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/01 20:45:02 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:20:29 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,45 @@ t_token_type	get_next_operator(const char *line, int *i)
 	return (TOKEN_WORD);
 }
 
+static char	skip_quotes(char *str, int *i, char quote)
+{
+	if (str[*i] == '"' || str[*i] == '\'')
+	{
+		if (quote == 0)
+		{
+			quote = str[*i];
+			(*i)++;
+		}
+		/* else  */if (quote == str[*i])
+		{
+			quote = 0;
+			(*i)++;
+		}
+	}
+	return (quote);
+}
+
 /* str is a dynamic allocated memory addres, it will be free'd later */
 char	*remove_quotes(char *str)
 {
-	int		len;
+	char	quote;
 	int		j;
 	int		i;
 	char	*newstr;
 
-	len = 0;
 	j = 0;
 	i = 0;
-	while (str[len])
-		len++;
-	newstr = malloc(len + 1);
+	quote = 0;
+	newstr = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!newstr)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] != '\'' && str[i] != '"')
-			newstr[j++] = str[i];
-		i++;
+		//ft_printf("'%c'...", str[i]);
+		quote = skip_quotes(str, &i, quote);
+		if (str[i] == '\0')
+			break ;
+		newstr[j++] = str[i++];
 	}
 	newstr[j] = '\0';
 	return (newstr);
@@ -114,6 +132,8 @@ char	*remove_quotes(char *str)
 // 	else if (quote == '\'')
 // 		non esplodere le vairabili 
 // }
+
+
 /* returns a dynamicly allocated mem addres */
 char	*get_next_word(const char *line, int *i)
 {
@@ -208,6 +228,7 @@ t_token	*tokenizer(char *line, const char ***vars)
 			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i));
 	}
 	free(line);
+	//print_tokens(tokens);
 	return (tokens);
 }
 

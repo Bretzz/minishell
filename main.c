@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 20:29:37 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:34:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ returns the command 'exit code', -1 on dangerous errors. */
 static int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 {
 	if (!ft_strncmp("echo", cmd.words[0], 5))
-		return(ft_echo(fd, cmd, (const char ***)vars));
+		return(ft_echo(fd, cmd));
 	else if (!ft_strncmp("cd", cmd.words[0], 3))
 		return (ft_cd(fd, cmd));
 	else if (!ft_strncmp("pwd", cmd.words[0], 4))

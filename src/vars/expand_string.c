@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 20:47:43 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:18:58 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,20 @@
 char *expand_string(char *str, const char ***vars);
 char	*single_expand(int i, char *str, const char ***vars);
 
-static char	*cut_string(char *str, char *target)
+static char	*cut_string(char *str, int tar_index)
 {
 	char	*new_str;
 	char	*tar_ptr;
 	int		tar_len;
 	int		i;
 
-	if (str == NULL || target == NULL)
-		return (free(target), str);
-	tar_len = ft_strlen(target);
-	tar_ptr = ft_strnstr(str, target, ft_strlen(str));
-	if (tar_ptr == NULL)
-		return (free(target), str);
-	new_str = (char *)malloc(ft_strlen(str) - ft_strlen(target) + 1);
+	if (str == NULL)
+		return (NULL);
+	tar_len = ft_varlen(&str[tar_index]) + 1;
+	tar_ptr = &str[tar_index];
+	new_str = (char *)malloc(ft_strlen(str) - tar_len + 1);
 	if (new_str == NULL)
-		return (free(target), NULL);
+		return (NULL);
 	i = 0;
 	while (str[i] != '\0')
 	{
@@ -43,7 +41,6 @@ static char	*cut_string(char *str, char *target)
 			str += tar_len;
 	}
 	new_str[i] = '\0';
-	free(target);
 	return (new_str);
 }
 
@@ -58,7 +55,6 @@ static char	*wide_search(char *str, const char ***vars)
 	if (!name)
 		return (NULL);
 	//ft_printf("searching: '%s'\n", name);
-
 	i = 2;
 	while (i >= 0)
 	{
@@ -69,8 +65,8 @@ static char	*wide_search(char *str, const char ***vars)
 		value = mtx_findval(name, NULL, 0, (char **)(vars[i]));
 		if (value != NULL)
 		{
-			free(name);
 			//ft_printf("found: %s\n", value);
+			free(name);
 			return (value);
 		}
 		i--;
@@ -97,7 +93,7 @@ char	*single_expand(int i, char *str, const char ***vars)
 		exp_val = wide_search(&str[i + 1], vars);
 	if (exp_val == NULL)
 	{
-		new_str = cut_string(str, ft_substr(str, i, ft_varlen(&str[i]) + 1));
+		new_str = cut_string(str, i);
 		return (free(str), new_str);
 	}
 	var_len = ft_varlen(&str[i]) + 1;
@@ -122,7 +118,7 @@ char *expand_string(char *str, const char ***vars)
 
 	my_str = ft_strdup(str);
 	if (my_str == NULL)
-		return (NULL);	
+		return (NULL);
 	quote = 0;
 	i = 0;
 	while (my_str[i] != '\0')
@@ -133,12 +129,7 @@ char *expand_string(char *str, const char ***vars)
 				quote = my_str[i];
 			else if (quote == my_str[i])
 				quote = 0;
-			i++;
 		}
-		// if (my_str[i] == '\'' && quote == 0)
-		// 	quote = '\'';
-		// else if (my_str[i] == '\'' && quote == '\'')
-		// 	quote = 0;
 		if (my_str[i] == '$' && quote != '\'')
 			my_str = single_expand(i--, my_str, vars);
 		i++;
