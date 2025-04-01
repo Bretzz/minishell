@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   mtx_vstr_copy.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:45:17 by topiana-         ###   ########.fr       */
+/*   Created: 2025/03/26 22:21:31 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/01 13:52:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "mtx.h"
 
-int	ft_env(int *fd, const char ***vars);
+char	**mtx_vstr_copy(char *varstr, char **mtx);
 
-int	ft_env(int *fd, const char ***vars)
+char	**mtx_vstr_copy(char *varstr, char **mtx)
 {
-	int	i;
-
-	if (vars[2] == NULL)	//should never happen
-	{
-		ft_printfd(STDERR_FILENO, "%p\n", vars[2]);
-		multicose(fd);
-		return (-1);
-	}
-	i = 1;
-	while (vars[2][i] != NULL)
-	{
-		ft_printfd(fd[1], "%s\n", vars[2][i]);
-		i++;
-	}
-	multicose(fd);
-	return (0);
+	char	*name;
+	char	*value;
+	
+	if (varstr == NULL || mtx == NULL)
+		return (mtx);
+	name = vstr_getname(varstr, NULL, 0);
+	value = vstr_getvalue(varstr, NULL, 0);
+	if (!name)
+		return (mtx);
+	mtx = mtx_setval(name, value, mtx);
+	free(name);
+	free(value);
+	return (mtx);
 }

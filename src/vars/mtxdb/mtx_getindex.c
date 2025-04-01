@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   mtx_getindex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:45:17 by topiana-         ###   ########.fr       */
+/*   Created: 2025/03/26 18:50:19 by topiana-          #+#    #+#             */
+/*   Updated: 2025/03/26 19:45:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "mtx.h"
 
-int	ft_env(int *fd, const char ***vars);
+int	mtx_getindex(char *name, char **mtx);
 
-int	ft_env(int *fd, const char ***vars)
+/* RETURNS: the index of the var with 'name', -1 if name is NULL
+of the var isn't in mtx. */
+int	mtx_getindex(char *name, char **mtx)
 {
-	int	i;
+	int		i;
+	size_t	len;
+	char	buff[MAX_NAME];
 
-	if (vars[2] == NULL)	//should never happen
-	{
-		ft_printfd(STDERR_FILENO, "%p\n", vars[2]);
-		multicose(fd);
+	if (name == NULL)
 		return (-1);
-	}
+	len = ft_strlen(name);
 	i = 1;
-	while (vars[2][i] != NULL)
+	while (i < *(int *)mtx)
 	{
-		ft_printfd(fd[1], "%s\n", vars[2][i]);
+		
+		if (mtx[i] != NULL
+			&& !ft_strncmp(name, vstr_getname(mtx[i], buff, sizeof(buff)), len))
+			return (i);
 		i++;
 	}
-	multicose(fd);
-	return (0);
+	return (-1);
 }

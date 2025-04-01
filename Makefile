@@ -17,13 +17,14 @@ NAME			= minishell
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g
 
-DEFS			=
-INK				= -I$(LIBFT_DIR) -I$(CURDIR)
-LINKS			= -lreadline #-ltinfo
-
 # Libs
 LIBFT_DIR		:= libft
 LIBFT			= $(LIBFT_DIR)/libft.a
+MTX_DIR			:= src/vars/mtxdb
+
+DEFS			=
+INK				= -I$(LIBFT_DIR) -I$(MTX_DIR) -I$(CURDIR)
+LINKS			= -lreadline #-ltinfo
 
 #source files (full path optional)
 SRCS_DIR		=
@@ -39,8 +40,17 @@ SRC_FILES		= main.c \
 				handle_vars.c expand_string.c \
 				get_value.c the_matrix.c signals.c\
 				\
+				mtx_addnum.c mtx_addval.c \
+				mtx_init.c mtx_free.c \
+				mtx_delvar.c mtx_move.c \
+				mtx_getindex.c mtx_findval.c \
+				mtx_replace.c mtx_vstr_copy.c \
+				mtx_setnum.c mtx_setval.c mtx_setdata.c \
+				\
+				vstr_getname.c vstr_getvalue.c \
+				\
 				print_stuff.c free_space.c cleanup.c \
-				ft_realloc.c ft_freentf.c ft_readline.c
+				ft_freentf.c ft_readline.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 
@@ -53,7 +63,8 @@ VPATH			= src \
 				  src/cmds \
 				  src/parser \
 				  src/utils \
-				  src/vars
+				  src/vars \
+				  src/vars/mtxdb
 
 # Objects
 OBJS_DIR		= obj/

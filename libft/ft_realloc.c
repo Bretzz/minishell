@@ -6,11 +6,11 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:40:03 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/19 15:24:02 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:50:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
@@ -47,5 +47,6 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	if (ret == NULL)
 		return (NULL);
 	ft_memmove(ret, ptr, old_size);
+	free(ptr);
 	return (ret);
 }

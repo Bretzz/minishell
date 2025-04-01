@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   mtx_free.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:45:17 by topiana-         ###   ########.fr       */
+/*   Created: 2025/03/26 16:13:50 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/01 14:16:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "mtx.h"
 
-int	ft_env(int *fd, const char ***vars);
+void	mtx_free(char **mtx);
 
-int	ft_env(int *fd, const char ***vars)
+/* Default free mtx-pointer */
+void	mtx_free(char **mtx)
 {
 	int	i;
 
-	if (vars[2] == NULL)	//should never happen
-	{
-		ft_printfd(STDERR_FILENO, "%p\n", vars[2]);
-		multicose(fd);
-		return (-1);
-	}
+	ft_printf("freeing mtx: %p\n", mtx);
+	if (mtx == NULL)
+		return ;
+	ft_printf("freeing mtx of size: %d\n", *(int *)mtx);
 	i = 1;
-	while (vars[2][i] != NULL)
+	while (i < *(int *)mtx)
 	{
-		ft_printfd(fd[1], "%s\n", vars[2][i]);
+		ft_printf("freeing: '%s'\n", mtx[i]);
+		free(mtx[i]);
 		i++;
 	}
-	multicose(fd);
-	return (0);
+	free(mtx);
 }

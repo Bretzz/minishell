@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:51:09 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/10 18:21:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:51:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ typedef struct s_list_fd
 	char				*content;
 	struct s_list_fd	*next;
 }			t_list_fd;
+
+//realloc
+
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 //get_next_line.c
 

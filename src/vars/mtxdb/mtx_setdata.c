@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   mtx_setdata.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:45:17 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/01 13:31:39 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/01 13:35:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "mtx.h"
 
-int	ft_env(int *fd, const char ***vars);
+void	mtx_setdata(int value, char **mtx);
 
-int	ft_env(int *fd, const char ***vars)
+/* Takes a mtx-matrix and an integer as parameters.
+Sets the second free slot after 'size' to the integer passed:
+*(int *)mtx = size, *(int *)(mtx + 1) = value. */
+void	mtx_setdata(int value, char **mtx)
 {
-	int	i;
-
-	if (vars[2] == NULL)	//should never happen
-	{
-		ft_printfd(STDERR_FILENO, "%p\n", vars[2]);
-		multicose(fd);
-		return (-1);
-	}
-	i = 1;
-	while (vars[2][i] != NULL)
-	{
-		ft_printfd(fd[1], "%s\n", vars[2][i]);
-		i++;
-	}
-	multicose(fd);
-	return (0);
+	*(int *)(mtx + 1) = value;
 }

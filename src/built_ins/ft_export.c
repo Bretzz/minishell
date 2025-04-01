@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/25 18:11:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:57:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	print_export(int *fd, char ***vars)
 	// 	ft_printfd(fd[1], "declare -x %z\"%s\"\n", vars[2][i], eq, vars[2][i] + eq);
 	// 	i++;
 	// }
-	i = 0;
+	i = 1;
 	while (vars[1] && vars[1][i] != NULL)
 	{
 		eq = ft_strichr(vars[1][i], '=');

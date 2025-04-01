@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/25 18:08:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:44:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ static char	*single_expand(int i, char *str, const char ***vars)
 	char	*new_str;
 	int		var_len;
 
-	if (!ft_strncmp("$?", &str[i], 2)) // to be fiexed $ab?, of $?ab
-		exp_val = get_value("LITTLEPIPE", vars[0]);
+	if (!ft_strncmp("$?", &str[i], 2)) // to be fiexed $ab?, or $?ab
+		exp_val = ft_itoa(*(int *)(vars[0] + 1));
 	else
 		exp_val = whide_search(&str[i + 1], vars);
 	if (exp_val == NULL)

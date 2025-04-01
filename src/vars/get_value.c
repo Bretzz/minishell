@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 20:12:08 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/21 16:01:20 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/01 13:17:15 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	var_check(const char *var)
 	eq = ft_strichr(var, '=');
 	if (eq == 1 || eq > VARNAME)
 		return (0);
-	//ft_printf("no = foound\n");
+	//ft_printf("no = found\n");
 	ft_bzero(my_var, VARNAME);
 	if (eq != 0)
 		ft_strlcpy(my_var, var, eq + 1);

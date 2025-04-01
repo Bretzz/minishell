@@ -1,7 +1,8 @@
-export | grep SHELL; echo $?
+export | grep SHELL; echo $? 
 pwd; echo $?
 ls | grepp a | cat; echo $?
 error 127; echo $?
+| | |; echo $?
 echo pippo | grep; echo $?
 ls | > out; echo $?; cat out; rm out
 ciao=pippo echo indeed; echo $?
