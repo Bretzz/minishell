@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 13:40:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:38:01 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*wide_search(char *str, const char ***vars)
 	if (!name)
 		return (NULL);
 	//ft_printf("searching: '%s'\n", name);
-	i = 2;
+	i = 1;
 	while (i >= 0)
 	{
 		value = mtx_findval(name, NULL, 0, (char **)(vars[i]));

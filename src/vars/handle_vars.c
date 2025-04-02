@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 10:15:32 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:37:35 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	handle_vars(t_cmd cmd, char ***vars)
 	if (index >= 0)
 	{
 		vars[1] = mtx_vstr_copy(cmd.words[0], vars[1]);
-		vars[2] = mtx_vstr_copy(cmd.words[0], vars[2]);
+		//vars[2] = mtx_vstr_copy(cmd.words[0], vars[2]);
 	}
 	else
 		vars[0] = mtx_vstr_copy(cmd.words[0], vars[0]);

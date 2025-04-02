@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 18:29:36 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 19:02:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 	free_cmd(cmd_arr);
 	mtx_free(vars[0]);
 	mtx_free(vars[1]);
-	mtx_free(vars[2]);
+	//mtx_free(vars[2]);
 	free(line);
 	exit(code);
 }
@@ -86,6 +86,8 @@ static int	handle_command(t_cmd cmd, char ***vars)
 	static int		oldfd[2];
 	struct sigaction	ignore_sig;
 
+	sig_initializer();
+
 	if (handle_vars(cmd, vars))
 		return (-1);
 	if (is_builtin(cmd.words[0]))
@@ -112,7 +114,7 @@ static int	handle_command(t_cmd cmd, char ***vars)
 		// Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		ret = ft_execve(fd, cmd, vars[2] + 1);
+		ret = ft_execve(fd, cmd, vars[1] + 1);
 		return (ret);
 	}
 	waitpid(pid, &ret, WUNTRACED);
@@ -174,16 +176,16 @@ static char	**env_copy(char **his_env)
 int	main(int argc, char *argv[], char *__environ[])
 {
 	char	*line;
-	char	**vars[3]; //vars[0]: shv, var[1]: exv, var[2]: env
+	char	**vars[2]; //vars[0]: shv, var[1]: env, var[2]: env
 	//char	stack[1000000000];
 
 	//line = malloc(167772160000000000);
 	(void)argc; (void)argv; (void)__environ;/*  (void)stack; */
 	ft_bzero(vars, 3 * sizeof(char **));
-	vars[2] = env_copy(__environ);
+	//vars[2] = env_copy(__environ);
 	vars[1] = env_copy(__environ);
 	vars[0] = mtx_init();
-	if (!vars[0] || !vars[1] || !vars[2])
+	if (!vars[0] || !vars[1])
 		return (1);
 
 	sig_initializer();
