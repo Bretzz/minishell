@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:55:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 10:46:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 11:06:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**mtx_addval(char *name, char *value, char **mtx)
 		i++;
 	if (i == *(unsigned int *)mtx)
 	{
-		ft_printf("reached mtx limit, proceeding with expansion\n");
+		//ft_printf("reached mtx limit, proceeding with expansion\n");
 		mtx = mtx_addval(name, value, mtx_expand(mtx));
 		return (mtx);
 	}
