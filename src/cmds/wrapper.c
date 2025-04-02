@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:38:09 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/25 20:34:20 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:35:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,65 +19,66 @@ int		miniwrapper(int *fd, int *oldfd, t_cmd cmd);
 writes "pipe heredoc> " to the stdout,
 writes the stdin to the write end of the pipe,
 breaks when the stdin is exactly argv[2] */
-static void	here_doc(int where, char *limiter, int *pipefd)
-{
-	char	*line;
-	char	prompt[15];
+// static void	here_doc(int where, char *limiter, int *pipefd)
+// {
+// 	char	*line;
+// 	char	prompt[15];
 
-	ft_bzero(prompt, 15);
-	if (where == PIPE)
-		ft_strlcpy(prompt, "pipe heredoc> ", 15);
-	else
-		ft_strlcpy(prompt, "heredoc> ", 10);
-	ft_printf("%s", prompt);
-	line = get_next_line(STDIN_FILENO);
-	while (/* line != NULL &&  */!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
-			&& line[ft_strlen(limiter)] == '\n'))
-	{
-		if (line != NULL)
-		{
-			write(pipefd[1], line, ft_strlen(line));
-			free(line);
-		}
-		else
-			ft_printf("\nminishell: is weak...\n");
-		ft_printf("%s", prompt);
-		line = get_next_line(STDIN_FILENO);
-	}
-	//ft_printf("\n");
-	free(line);
-	close(pipefd[1]);
-}
+// 	ft_bzero(prompt, 15);
+// 	if (where == PIPE)
+// 		ft_strlcpy(prompt, "pipe heredoc> ", 15);
+// 	else
+// 		ft_strlcpy(prompt, "heredoc> ", 10);
+// 	ft_printf("%s", prompt);
+// 	line = get_next_line(STDIN_FILENO);
+// 	while (/* line != NULL &&  */!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
+// 			&& line[ft_strlen(limiter)] == '\n'))
+// 	{
+// 		if (line != NULL)
+// 		{
+// 			write(pipefd[1], line, ft_strlen(line));
+// 			free(line);
+// 		}
+// 		else
+// 			ft_printf("\nminishell: is weak...\n");
+// 		ft_printf("%s", prompt);
+// 		line = get_next_line(STDIN_FILENO);
+// 	}
+// 	//ft_printf("\n");
+// 	free(line);
+// 	close(pipefd[1]);
+// }
 
 /* defaults returns STDIN_FILENO,
 if an input file is found, returns it's fd after a successful open(3) call. */
 static int	redir_input(int *oldfd, t_cmd cmd)
 {
-	int	pipefd[2];
+	//int	pipefd[2];
 	
 	//ft_printf("infile:%s, redir=%d\n", cmd.infile, cmd.redir[0]);
 	if (cmd.redir[0] == PIPE)
 	{
 		return (oldfd[0]);
 	}
-	if (cmd.redir[0] == HERE_DOC)
+	// if (cmd.redir[0] == HERE_DOC)
+	// {
+	// 	if (pipe(pipefd) < 0)
+	// 	{
+	// 		ft_printfd(2, "minishell: pippe error to be handled\n");
+	// 		return (-1);
+	// 	}
+	// 	if (cmd.redir[1] == PIPE)
+	// 		here_doc(PIPE, cmd.infile, pipefd);
+	// 	else
+	// 		here_doc(STDL, cmd.infile, pipefd);
+	// 	return (pipefd[0]);
+	// }
+	if (cmd.redir[0] == FILE || cmd.redir[0] == HERE_DOC)
 	{
-		if (pipe(pipefd) < 0)
-		{
-			ft_printfd(2, "minishell: pippe error to be handled\n");
-			return (-1);
-		}
-		if (cmd.redir[1] == PIPE)
-			here_doc(PIPE, cmd.infile, pipefd);
-		else
-			here_doc(STDL, cmd.infile, pipefd);
-		return (pipefd[0]);
-	}
-	if (cmd.redir[0] == FILE)
-	{
-		if (access(cmd.infile, R_OK) == 0)
-			return(open(cmd.infile, O_RDONLY));
-		return (-1);
+		return (cmd.fd[0]);
+		// if (access(cmd.infile, R_OK) == 0)
+		// 	return(open(cmd.infile, O_RDONLY));
+		// return (-1);
 	}
 	return (STDIN_FILENO);
 }
@@ -102,11 +103,12 @@ static int	redir_output(int *pipefd, t_cmd cmd)
 	}
 	if (cmd.redir[1] == FILE)
 	{
-		//if (access(cmd.outfile, W_OK) == 0)
+		return (cmd.fd[1]);
+		// //if (access(cmd.outfile, W_OK) == 0)
 		
-		if (access(cmd.outfile, F_OK) == -1 || access(cmd.outfile, W_OK) == 0)
-			return(open(cmd.outfile, cmd.append, 0644));
-		return (-1);
+		// if (access(cmd.outfile, F_OK) == -1 || access(cmd.outfile, W_OK) == 0)
+		// 	return(open(cmd.outfile, cmd.append, 0644));
+		// return (-1);
 	}
 	return (STDOUT_FILENO);
 }
@@ -152,7 +154,7 @@ pid_t	wrapper(int *fd, int *oldfd, t_cmd cmd)
 		}
 		if (cmd.redir[1] == FILE && fd[1] > 2)
 			close(fd[1]);
-		if (cmd.redir[0] == FILE && fd[0] > 2)
+		if ((cmd.redir[0] == FILE || cmd.redir[0] == HERE_DOC) && fd[0] > 2)
 			close(fd[0]);
 		ft_memcpy(oldfd, pipefd, 2 * sizeof(int)); // backup of old pipe
 		return (pid);

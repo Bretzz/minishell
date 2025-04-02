@@ -6,12 +6,14 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 10:40:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:31:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
+
+void print_cmd_array(t_cmd *cmd_array, size_t num_cmds);
 
 #define MAX_CMDS 100
 // typedef struct s_cmd
@@ -101,23 +103,32 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 	{
 		if (redirType == TOKEN_RED_INPUT)
 		{
-			ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
+			safeclose(current_cmd->fd[0]);
+			//ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
+			current_cmd->fd[0] = open((*tokens)->next->value, O_RDONLY);
 			current_cmd->redir[0] = FILE;
 		}
 		else if (redirType == TOKEN_HERE_DOC)
 		{
-			ft_strlcat(current_cmd->infile, (*tokens)->next->value, 1024);
+			safeclose(current_cmd->fd[0]);
+			//ft_strlcat(current_cmd->infile, (*tokens)->next->value, 1024);
+			current_cmd->fd[0] = here_doc((*tokens)->next->value);
 			current_cmd->redir[0] = HERE_DOC;
 		}
 		else if (redirType == TOKEN_RED_OUTPUT)
 		{
-			ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			//safeclose(current_cmd->fd[1]);
+			//ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			//write(current_cmd->fd[1], "pippo", 5);
 			current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
 			current_cmd->redir[1] = FILE;
 		}
 		else if (redirType == TOKEN_APPEND)
 		{
-			ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			safeclose(current_cmd->fd[1]);
+			//ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
 			current_cmd->redir[1] = FILE;
 		}
@@ -243,6 +254,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	}
 	append_cmd(cmd_array, &cmd_index, current_cmd);
 	free_tokens(tokens[1]);
+	print_cmd_array(cmd_array, ft_cmdlen(cmd_array));
 	return (cmd_array);
 }
 
@@ -258,12 +270,14 @@ void print_cmd_array(t_cmd *cmd_array, size_t num_cmds)
 		j = 0;
 		while (cmd_array[i].words[j] != NULL)
 		{
-			ft_printf("  arg[%d]: %s\n", j, cmd_array[i].words[j]);
+			ft_printf("  arg[%d]     : %s\n", j, cmd_array[i].words[j]);
 			j++;
 		}
-		ft_printf("  infile: %s\n", cmd_array[i].infile);
-		ft_printf("  outfile: %s\n", cmd_array[i].outfile);
+		ft_printf("  fd         : [%i, %i]\n", cmd_array[i].fd[0], cmd_array[i].fd[1]);
+		ft_printf("  infile     : %s\n", cmd_array[i].infile);
+		ft_printf("  outfile    : %s\n", cmd_array[i].outfile);
 		ft_printf("  append flag: %d\n", cmd_array[i].append);
+		ft_printf("  redir      : [%i, %i]\n", cmd_array[i].redir[0], cmd_array[i].redir[1]);
 		i++;
 	}
 }

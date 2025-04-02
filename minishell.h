@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 10:54:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:02:01 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ void	print_tokens(t_token *tokens);
 char *get_rekd(t_token_type type);
 
 
+//here_doc.c
+
+int		here_doc(char *limiter);
+
 //ft_readline.c
 
 char	*ft_readline (const char *prompt);
@@ -137,7 +141,6 @@ int		ft_freentf(const char *s, ...);
 
 //usefull stuff
 
-void	**drop_index(void **mtx, int index);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 size_t	ft_strlen_space(const char *s); //replace with ft_varlen when measuring vars
@@ -155,7 +158,6 @@ void	multicose(int *fd);
 
 
 void	sig_initializer(void);
-
 
 
 #endif

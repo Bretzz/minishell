@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/21 15:45:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:20:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,24 @@ static void	clean_exit(char *str, int *fd)
 /* returns the error code of the problem */
 static int	error_check(t_cmd cmd, char *path)
 {
-	if (cmd.redir[1] == FILE
-		&& access(cmd.outfile, F_OK) - access(cmd.outfile, W_OK) > 0)
-	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.outfile);
-		return (1);
-	}
-	if (cmd.redir[0] == FILE
-		&& access(cmd.infile, F_OK) != 0)
-	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: no such file or directory\n", cmd.infile);
-		return (1);
-	}
-	if (cmd.redir[0] == FILE
-		&& access(cmd.infile, R_OK) != 0)
-	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.infile);
-		return (1);
-	}
+	// if (cmd.redir[1] == FILE
+	// 	&& access(cmd.outfile, F_OK) - access(cmd.outfile, W_OK) > 0)
+	// {
+	// 	ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.outfile);
+	// 	return (1);
+	// }
+	// if (cmd.redir[0] == FILE
+	// 	&& access(cmd.infile, F_OK) != 0)
+	// {
+	// 	ft_printfd(STDERR_FILENO, "minishell: %s: no such file or directory\n", cmd.infile);
+	// 	return (1);
+	// }
+	// if (cmd.redir[0] == FILE
+	// 	&& access(cmd.infile, R_OK) != 0)
+	// {
+	// 	ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.infile);
+	// 	return (1);
+	// }
 	if (path == NULL)
 	{
 		ft_printfd(STDERR_FILENO, "minishell: %s: command not found\n", cmd.words[0]);
@@ -77,7 +77,7 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 	errno = error_check(cmd, path);
 	if (errno != 0)
 		return (clean_exit(path, fd), errno);
-	//ft_printf("executing on: [%d,%d]\n", fd[0], fd[1]);
+	ft_printf("executing on: [%d,%d]\n", fd[0], fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	execve(path, cmd.words, env);

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:19:31 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:43:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ static void	mass_drop(char ***vars, char *var)
 	{
 		if (vars[i] != NULL)
 		{
-			// if (i == 0) //skips LITTLEPIPE
-			// 	index = is_there((const char **)(vars[i] + 1), var);
-			// else
-			// 	index = is_there((const char **)(vars[i]), var);
 			index = mtx_getindex(name, vars[i]);
 			if (index >= 0)
 				mtx_safedel(index, vars[i]);
