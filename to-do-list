@@ -25,6 +25,20 @@ minishell% echo "'$a' is $a" (DONE)
 minishell% echo '$a' is $a (DONE)
 $a is
 
+VARS:
+	to be fixed:
+		$ab? (NOT NEEDED)
+		$?ab (DONE)
+
+handle quotes (DONE)
+
+VAR EXPANSION: (DONE)
+	topiana-@c2r3p6:~/live_projects/github/minishell$ ab=123
+	topiana-@c2r3p6:~/live_projects/github/minishell$ echo $ab
+	123
+	topiana-@c2r3p6:~/live_projects/github/minishell$ ab=65 echo $ab
+	123
+
 ======================== T O D O =======================
 
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
@@ -45,13 +59,9 @@ also "ls | > out" redirect inside the pipe and don't write in 'out' (just parsin
 "| | |"
 bash: syntax error near unexpected token `|'
 
-handle quotes (con calma)
-
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 
-function 'expand_commad()' that replace the command variables with expanded ones
-
-PIPESTATUS
+PIPESTATUS (NOT NECESSARY)
 	An array variable de containing a list of
 	exit status values from the processes in the most-recently-executed foreground
 	pipeline (which may contain only a single command).
@@ -85,8 +95,7 @@ also unfollowd pipe, ex: 'cat |', does weird stuff:
 		PID TTY          TIME CMD
 	1774952 pts/1    00:00:00 zsh
 	1934700 pts/1    00:00:00 bash
-	1938102 pt	4. tutti i builtin ritornano il codice di uscita che vogliamo risulti da '$?'
-s/1    00:00:00 cat
+	1938102 pts/1    00:00:00 cat
 	1938103 pts/1    00:00:00 ps
 	ciao
 	topiana-@c2r3p6:~/live_projects/github/minishell$ cat | ps
@@ -96,13 +105,6 @@ s/1    00:00:00 cat
 	1938526 pts/1    00:00:00 cat
 	1938527 pts/1    00:00:00 ps
 	ciao
-
-VAR EXPANSION:
-	topiana-@c2r3p6:~/live_projects/github/minishell$ ab=123
-	topiana-@c2r3p6:~/live_projects/github/minishell$ echo $ab
-	123
-	topiana-@c2r3p6:~/live_projects/github/minishell$ ab=65 echo $ab
-	123
 
 ----------------------> TO INVESTIGATE <-----------------------
 
@@ -135,9 +137,6 @@ CURSED COMMAND (ZSH):
 	alalready excluded?
 playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
-
-VARS:
-	to be fixed $ab?, or $?ab
 
 ----------------------> HERE DOC <-----------------------
 
