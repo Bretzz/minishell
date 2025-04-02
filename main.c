@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 16:45:10 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/02 17:19:59 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	while (1)
 	{
-		line = ft_readline("minishell% ");
+		line = readline("minishell% ");
 		//check g_last_signal
 		// ft_signals (che chiama signal con i vari SIGNORE DEF o la tua function)
 		if (line == NULL)
@@ -203,7 +203,7 @@ int	main(int argc, char *argv[], char *__environ[])
 		}
 		if (!handle_line(line, vars))
 			return (1);
-	//	add_history(line);
+		add_history(line);
 		free(line);
 	}
 	return (0);
