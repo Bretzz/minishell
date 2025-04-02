@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 13:23:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:34:42 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,62 @@
 
 int	ft_export(int *fd, t_cmd cmd, char ***vars);
 
-static void	sort_export(char **exp)
+static void	print_var_export(int fd, const char *varstr)
 {
-	int				sorted;
-	char			*tmp;
-	int				i;
+	int	eq;
 
-	sorted = 1;
-	i = 1;
-	while (i < *(int *)exp && exp[i] != NULL)
-	{
-		if (exp[i + 1]
-			&& ft_strncmp(exp[i], exp[i + 1], ft_strlen(exp[i])) > 0)
-		{
-			tmp = exp[i];
-			exp[i] = exp[i + 1];
-			exp[i + 1] = tmp;
-			sorted = 0;
-		}
-		i++;
-		if (!sorted && (i == *(int *)exp || exp[i] == NULL))
-		{
-			sorted = 1;
-			i = 1;
-		}
-	}
+	eq = ft_strichr(varstr, '=');
+	if (eq != 0)
+		ft_printfd(fd, "declare -x %z\"%s\"\n", varstr, eq, varstr + eq);
+	else
+		ft_printfd(fd, "declare -x %s\n", varstr);
 }
 
-static void	print_export(int fd, char **exp)
+/* takes an int array of size 'len' and a mtx-matrix 'exp'.
+Cycles trough evey element of exp to find the ones with lower ascii value
+(whole 'name=value' checked) and the correspondig index in 'printed' is 0.
+RETUENS: the index found, -1 if the string in 'exp' with that index is NULL. */
+static int	get_best_ascii(int *printed, unsigned int len, char **exp)
 {
-	int		i;
-	int		eq;
+	unsigned int	best_ascii;
+	unsigned int	i;
 	
-	sort_export(exp);
+	best_ascii = 1;
+	while (best_ascii < len && printed[best_ascii] != 0)
+		best_ascii++;
+	if (exp[best_ascii] == NULL)
+		return (-1);
+	//ft_printf("new cycle start: %d, len: %d\n", best_ascii, len);
 	i = 1;
-	while (exp && exp[i] != NULL)
+	while (exp[i] != NULL)
 	{
-		eq = ft_strichr(exp[i], '=');
-		if (eq != 0)
-			ft_printfd(fd, "declare -x %z\"%s\"\n", exp[i], eq, exp[i] + eq);
-		else
-			ft_printfd(fd, "declare -x %s\n", exp[i]);
+		if (!printed[i] && ft_strncmp(exp[i], exp[best_ascii], ft_strlen(exp[i])) < 0)
+			best_ascii = i;
 		i++;
+	}
+	return (best_ascii);
+}
+
+/* static  */void	print_sort_export(int fd, char **exp)
+{
+	int				best_ascii;
+	unsigned int	len;
+	int				all_done;
+	int				*printed;
+	
+	len = ft_mtxlen((const void **)exp);
+	printed = (int *)ft_calloc(len, sizeof(int));
+	if (printed == NULL)
+	return ;
+	all_done = len;
+	while (all_done > 0)
+	{
+		best_ascii = get_best_ascii(printed, len, exp);
+		if (best_ascii < 0)
+			return ;
+		print_var_export(fd, exp[best_ascii]);
+		printed[best_ascii] = 1;
+		all_done--;
 	}
 }
 
@@ -67,7 +81,7 @@ static void	overwrite(char *varstr, char ***vars)
 	int		index;
 
 	vars[1] = mtx_vstr_copy(varstr, vars[1]);
-	vars[2] = mtx_vstr_copy(varstr, vars[2]);
+	//vars[2] = mtx_vstr_copy(varstr, vars[2]);
 	vstr_getname(varstr, name, MAX_NAME);
 	index = mtx_getindex(name, vars[0]);
 	if (index >= 0)
@@ -85,15 +99,15 @@ static void	rank_up(char *varstr, char ***vars)
 	index = mtx_getindex(name, vars[1]);
 	if (index >= 0)
 		return ;
+	vars[1] = mtx_vstr_copy(varstr, vars[1]);
 	index = mtx_getindex(name, vars[0]);
 	if (index >= 0)
-	{
-		vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
-		vars[2] = mtx_vstr_copy(vars[0][index], vars[2]);
 		mtx_safedel(index, vars[0]);
-	}
-	else
-		vars[1] = mtx_vstr_copy(varstr, vars[1]);
+	// {
+	// 	vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
+	// 	//vars[2] = mtx_vstr_copy(vars[0][index], vars[2]);
+	// }
+	// else
 }
 
 //env no, shv no
@@ -108,7 +122,7 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 	safeclose(fd[0]);
 	if (!cmd.words[1] || cmd.words[1][0] == '\0')
 	{
-		print_export(fd[1], vars[1]);
+		print_sort_export(fd[1], vars[1]);
 		safeclose(fd[1]);
 		return (0);
 	}

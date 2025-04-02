@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 17:19:59 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:29:36 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,11 @@ static int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */
 static int	handle_command(t_cmd cmd, char ***vars)
 {
-	pid_t		pid;
-	int			ret;
-	int			fd[2];
-	static int	oldfd[2]; // backup of the previous pipe
-
-	struct sigaction ignore_sig; //AGGIUNTO PER SIGNALS
+	pid_t			pid;
+	int				ret;
+	int				fd[2];
+	static int		oldfd[2];
+	struct sigaction	ignore_sig;
 
 	if (handle_vars(cmd, vars))
 		return (-1);
@@ -95,38 +94,34 @@ static int	handle_command(t_cmd cmd, char ***vars)
 		ret = exec_builtin(fd, cmd, vars);
 		if (ret < 0)
 		{
-			//g_pipe_status = 0;
-			//vars[0] = setnum(vars[0], "LITTLEPIPE", 0);
 			mtx_setdata(0, vars[0]);
 			return (EXIT_SUCCESS);
 		}
-		//g_pipe_status = ret;
-		//vars[0] = setnum(vars[0], "LITTLEPIPE", ret);
 		mtx_setdata(ret, vars[0]);
-		return (-1); // continue cycling trough commands
+		return (-1);
 	}
-
-	sigemptyset(&ignore_sig.sa_mask); //AGGIUNTO PER SIGNALS
-	ignore_sig.sa_flags = 0; //AGGIUNTO PER SIGNALS
-	ignore_sig.sa_handler = SIG_IGN; //AGGIUNTO PER SIGNALS
-	sigaction(SIGINT, &ignore_sig, NULL); //AGGIUNTO PER SIGNALS
+	// Imposta SIGINT per essere ignorato nel processo padre
+	sigemptyset(&ignore_sig.sa_mask);
+	ignore_sig.sa_flags = 0;
+	ignore_sig.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &ignore_sig, NULL);
 
 	pid = wrapper(fd, oldfd, cmd);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL); //AGGIUNTO PER SIGNALS
-		signal(SIGQUIT, SIG_DFL);//AGGIUNTO PER SIGNALS
-
+		// Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		ret = ft_execve(fd, cmd, vars[2] + 1);
 		return (ret);
 	}
 	waitpid(pid, &ret, WUNTRACED);
-	//g_pipe_status = ((ret) & 0xff00) >> 8;
-	//vars[0] = setnum(vars[0], "LITTLEPIPE", ((ret) & 0xff00) >> 8);
-	sig_initializer(); //AGGIUNTO PER SIGNALS
-	
+	// Se il figlio è terminato a causa di SIGINT, manda un newline
+	if (WIFSIGNALED(ret) && WTERMSIG(ret) == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
+	// Riattiva il nostro handler personalizzato
+	sig_initializer();
 	mtx_setdata(((ret) & 0xff00) >> 8, vars[0]);
-	//ft_printf("status=%d\n", *((unsigned int *)vars[0] + 1));
 	return (-1);
 }
 
@@ -180,8 +175,10 @@ int	main(int argc, char *argv[], char *__environ[])
 {
 	char	*line;
 	char	**vars[3]; //vars[0]: shv, var[1]: exv, var[2]: env
-	
-	(void)argc; (void)argv; (void)__environ;
+	//char	stack[1000000000];
+
+	//line = malloc(167772160000000000);
+	(void)argc; (void)argv; (void)__environ;/*  (void)stack; */
 	ft_bzero(vars, 3 * sizeof(char **));
 	vars[2] = env_copy(__environ);
 	vars[1] = env_copy(__environ);
@@ -191,6 +188,7 @@ int	main(int argc, char *argv[], char *__environ[])
 
 	sig_initializer();
 	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
+	rl_catch_signals = 0;
 	while (1)
 	{
 		line = readline("minishell% ");

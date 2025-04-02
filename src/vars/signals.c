@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 17:19:09 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/02 17:51:03 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,22 @@
 #include <string.h>
 #include <sys/ioctl.h>
 
-static void	sig_handler(int signal)
+static void sig_handler(int signal)
 {
-	if(signal == SIGINT)
-	{		
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		//write(STDIN_FILENO, "\n", 1);
-		//write(STDOUT_FILENO, "\n", 1);
-		//ioctl(STDIN_FILENO, TCFLSH, "\n");
-		g_last_sig = 130;
-
-	}
-	if(signal == SIGQUIT)
-		ft_printf("Pterodattilo!\n");
+    if (signal == SIGINT)
+    {
+        // Stampa un newline (così se sei in un comando come "cat", va a capo)
+        write(STDOUT_FILENO, "\n", 1);
+        // Cancella la linea corrente e prepara readline per una nuova linea
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+        g_last_sig = 130;
+    }
+    else if (signal == SIGQUIT)
+    {
+        ft_printf("Pterodattilo!\n");
+    }
 }
 
 void	sig_initializer(void)
