@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 10:20:29 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:54:33 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int		miniwrapper(int *fd, int *oldfd, t_cmd cmd);
 //built_ins.c
 
 int		ft_echo(int *fd, t_cmd cmd);
-int		ft_cd(int *fd, t_cmd cmd);
+int		ft_cd(int *fd, t_cmd cmd, char ***vars);
 int		ft_pwd(int *fd, t_cmd cmd);
 int		ft_export(int *fd, t_cmd cmd, char ***vars);
 int		ft_unset(int *fd, t_cmd cmd, char ***vars);

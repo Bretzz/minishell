@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 09:32:46 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:54:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 	if (!ft_strncmp("echo", cmd.words[0], 5))
 		return(ft_echo(fd, cmd));
 	else if (!ft_strncmp("cd", cmd.words[0], 3))
-		return (ft_cd(fd, cmd));
+		return (ft_cd(fd, cmd, vars));
 	else if (!ft_strncmp("pwd", cmd.words[0], 4))
 		return (ft_pwd(fd, cmd));
 	else if (!ft_strncmp("export", cmd.words[0], 7))
