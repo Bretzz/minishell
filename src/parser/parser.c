@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 21:18:09 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:26:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,12 @@ int	cmds_count(const t_token *tokens)
 	return (count + 2);	// +2 is important: +1 for first command, +1 for NULL-term
 }
 
+static void	raccattagarbage(t_cmd garbage)
+{
+	safeclose(garbage.fd[0]);
+	safeclose(garbage.fd[1]);
+}
+
 t_cmd *parse_tokens(char *line, const char ***vars)
 {
 	t_token *tokens[2];
@@ -251,9 +257,12 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		}
 		tokens[0] = tokens[0]->next;
 	}
-	append_cmd(cmd_array, &cmd_index, current_cmd);
 	free_tokens(tokens[1]);
-	//print_cmd_array(cmd_array, ft_cmdlen(cmd_array));
+	if (current_cmd.words[0] == NULL)
+		raccattagarbage(current_cmd);
+	else
+		append_cmd(cmd_array, &cmd_index, current_cmd);
+	// print_cmd_array(cmd_array, 1/* ft_cmdlen(cmd_array) */);
 	return (cmd_array);
 }
 
@@ -324,8 +333,8 @@ the newly initialized matrix. */
 // 	vars[1] = NULL;
 // 	vars[0] = NULL;
 	
-// 	line = "echo ciao '\"$pippo           sono'\" $pluto";
-//     cmd_array = parse_tokens(line, (const char ***)vars);
+// 	//line = "echo ciao '\"$pippo           sono'\" $pluto";
+//     cmd_array = parse_tokens(argv[1], (const char ***)vars);
 
 // //	int num_cmds2 = ft_mtxlen((const void **)&cmd_array);
 // 	num_cmds = 	ft_cmdlen(cmd_array);

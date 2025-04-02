@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:38:09 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 15:35:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:25:56 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static int	redir_input(int *oldfd, t_cmd cmd)
 	// }
 	if (cmd.redir[0] == FILE || cmd.redir[0] == HERE_DOC)
 	{
+		safeclose(oldfd[0]);
 		return (cmd.fd[0]);
 		// if (access(cmd.infile, R_OK) == 0)
 		// 	return(open(cmd.infile, O_RDONLY));

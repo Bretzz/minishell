@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 19:02:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:05:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ static int	handle_line(char *line, char ***vars)
 		i++;
 	}
 	free_cmd(cmd_arr);
-	//add_history(line);
 	return (1);
 }
 
