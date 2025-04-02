@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/01 20:48:50 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:40:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
 
-#define MAX_ARGS 100
 #define MAX_CMDS 100
 // typedef struct s_cmd
 // {
@@ -158,6 +157,21 @@ void	free_cmd(t_cmd *cmd_arr)
 	free(cmd_arr);
 }
 
+int	cmds_count(const t_token *tokens)
+{
+	unsigned int	count;
+
+	count = 0;
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_PIPE
+			|| tokens->type == TOKEN_SEMICOL)
+			count++;
+		tokens = tokens->next;
+	}
+	return (count + 2);	// +2 is important: +1 for first command, +1 for NULL-term
+}
+
 t_cmd *parse_tokens(char *line, const char ***vars)
 {
 	t_token *tokens[2];
@@ -169,7 +183,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	tokens[1] = tokens[0];
 	/* print_tokens(tokens);
 	printf("\n\n"); */
-	cmd_array = ft_calloc(sizeof(t_cmd), MAX_CMDS);
+	cmd_array = ft_calloc(sizeof(t_cmd), cmds_count(tokens[0]));
 	if (!cmd_array)
 		return (NULL);
 	cmd_index = 0;

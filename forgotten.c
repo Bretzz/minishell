@@ -6,13 +6,173 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:39:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 22:24:41 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 09:26:41 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	ft_putchar(int c);
+
+char	*get_value(const char *target, const char **mtx);
+int		var_is_valid(const char *var);
+int		var_check(const char *var);
+
+char	**setnum(char **mtx, const char *target, int value);
+static char	**replace_var(int index, char **mtx, char *var);
+char	**var_append(char **mtx, char *var);
+
+int		is_there(const char **mtx, const char *target);
+void	**drop_index(void **mtx, int index);
+
+/* checks weather the target var is present or not.
+RETURNS: the index of the var, -1 if not present or mtx/target is NULL.
+EXPECTED: string 'varname' or 'varname='*/
+int	is_there(const char **mtx, const char *target)
+{
+	char	*my_tar;
+	size_t	tar_len;
+	int		cmp;
+	int		i;
+
+	if (!mtx || !target)
+		return (-1);
+	i = 0;
+	while (target[i] && target[i] != '=')
+		i++;
+	// if (*target == '$')	//both $var and var=value behaviour should be impelented
+		//code here
+	my_tar = ft_substr(target, 0, i);
+	tar_len = ft_strlen(my_tar);
+	i = 0;
+	while (mtx[i] != NULL)
+	{
+		cmp = ft_strncmp(mtx[i], my_tar, tar_len + 1);
+		if (cmp == 0 || cmp == '=')
+			return (free(my_tar), i);
+		i++;
+	}
+	free(my_tar);
+	return(-1);
+}
+
+/* takes a matrix and an index as parameters.
+Reallocs a new matrix with same elements but the one at the index.
+RETURN: the new matrix, NULL on malloc(3) failure, the same matrix on IOR. 
+(IOR: Index Out of Range)
+NOTE: the areas pointed by the elements of the matrix is left untouched,
+except for the one at the index witch is free'd. */
+void	**drop_index(void **mtx, int index)
+{
+	void	**new_mtx;
+	size_t	len;
+	int		i;
+
+	len = ft_mtxlen((const void **)mtx);
+	if (index < 0 || index >= (int)len)
+		return (mtx);
+	if (len == 1 && index == 0)
+		return (free(mtx[0]), free(mtx), NULL);	//better syntex pls
+	new_mtx = (void **)ft_calloc((len), sizeof(void *));
+	if (new_mtx == NULL)
+		return (ft_printfd(STDERR_FILENO, "malloc failure\n"), mtx);
+	i = 0;
+	while (mtx[i] != NULL)
+	{
+		if (i == index)
+		{
+			free(mtx[i]);
+			mtx++;
+		}
+		if (mtx[i] == NULL)
+			break ;
+		new_mtx[i] = mtx[i];
+		i++;
+	}
+	//ft_print_charr((const char **)new_mtx);
+	return (free(--mtx), new_mtx);
+}
+
+/* just a var_is_valid() wrapper. 
+takes both 'var' and 'var=' as valid string. */
+int	var_check(const char *var)
+{
+	char	my_var[VARNAME];
+	int		eq;
+	
+	eq = ft_strichr(var, '=');
+	if (eq == 1 || eq > VARNAME)
+		return (0);
+	//ft_printf("no = found\n");
+	ft_bzero(my_var, VARNAME);
+	if (eq != 0)
+		ft_strlcpy(my_var, var, eq + 1);
+	else
+		ft_strlcpy(my_var, var, ft_varlen(var) + 1);
+	if (!var_is_valid(my_var))
+		return (0);
+	return (1);
+}
+
+/* checks if the var is a valid name:
+	no spaces (neither leading nor trailing)
+	only alphabetical chars (upper or lowe)
+	only separator allowed: '_'
+RETURNS: 1 if the var is valid, 0 if it isn't.
+NOTE: you should throw a 'not a valid identifier' error (Exit Code: 1). */
+int	var_is_valid(const char *var)
+{
+	size_t	i;
+
+	if (var == NULL)
+		return (0);
+	//ft_printf("validating: '%s'\n", var);
+	i = 0;
+	while (var[i] != '\0')
+	{
+		if (i == 0 && !ft_isalpha(var[i]))
+			return (0);
+		if (!ft_isalpha(var[i]) && !ft_isdigit(var[i]) && var[i] == '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+/*
+var1=123
+var2=laskd
+var3=
+var4=123;12k3
+NOTE: target: 'var' without the '=' */
+char	*get_value(const char *target, const char **mtx)
+{
+	size_t	tar_len;
+	int		index;
+	char	*my_tar;
+	
+	if (target == NULL || mtx == NULL)
+		return (NULL);
+	tar_len = ft_varlen(target);			//just for flexible usage
+	my_tar = ft_substr(target, 0, tar_len); 	//VARLEN DISCUSSION
+	//ft_printf("looking for '%s' -> '%s' in vars[?]\n", target, my_tar);
+	if (!var_check(target))
+	{
+		//throw error? (treated as a cmd (or a path if contains '/'))
+		free(my_tar);
+		return (NULL);
+	}
+	index = is_there(mtx, my_tar);
+	if (index >= 0)
+	{
+		//ft_printf("found '%s' in vars[?]\n", mtx[index]);
+		free(my_tar);
+		return(ft_substr(mtx[index], tar_len + 1, ft_strlen(mtx[index] + tar_len + 1)));
+	}
+	free(my_tar);
+	return (NULL);
+}
+
 
 /* sets the value of the var pointed by dest,
 to the int passed by value

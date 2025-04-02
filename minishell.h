@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 22:34:29 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:20:29 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef struct s_token
 typedef struct s_cmd
 {
     char	*words[MAX_ARGS];   // Array di argomenti (comando + parametri)
-    char	infile[1024];       // File di input, se presente
+    int		fd[2];
+	char	infile[1024];       // File di input, se presente
     char	outfile[1024];      // File di output, se presente
     int		append;             // Flag: O_WRONLY|O_CREAT|O_APPEND per ">>" oppure O_WRONLY|O_CREAT|O_TRUNC per ">"
 	int		redir[2];			// (redir[0]: input, redir[1]: output) Flag: PIPE_OUT: pipe dopo il comando, PIPE_IN: pipe prima del comando, HERE_DOC: heredoc prima del comando, FILE: input or output file, STDL: nessuna redirection.
@@ -105,12 +106,11 @@ char	*find_env_path(char *cmd, char **env);
 
 //handle stuff
 
-// int		handle_vars(t_cmd cmd, char ***vars);
+int		handle_vars(t_cmd cmd, char ***vars);
 // char	**var_append(char **mtx, char *var);
 // char	**setnum(char **mtx, const char *target, int value);
 
 char 	*expand_string(char *str, const char ***vars);
-char	*single_expand(int i, char *str, const char ***vars);
 // char	*get_value(const char *target, const char **mtx);
 // int		is_there(const char **mtx, const char *target);
 // int		var_is_valid(const char *var);

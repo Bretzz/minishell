@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:55:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 16:55:30 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:44:48 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**mtx_init()
 	if (mtx == NULL)
 		return (NULL);
 	ft_memset(mtx, 0, 16 * sizeof(char *));
-	*(int *)mtx += 16;
+	*(unsigned int *)mtx += 16;
 	return (mtx);
 }
 
@@ -37,13 +37,13 @@ char	**mtx_expand(char **mtx)
 
 	if (mtx == NULL)
 		return (mtx_init());
-	new_mtx = ft_realloc(mtx, (*(int *)mtx) * sizeof(char *), (*(int *)mtx + 16) * sizeof(char *));
+	new_mtx = ft_realloc(mtx, (*(unsigned int *)mtx) * sizeof(char *), (*(unsigned int *)mtx + 16) * sizeof(char *));
 	if (new_mtx == NULL)
 	{
 		write(STDERR_FILENO, "malloc failure\n", 15);
 		return (mtx);
 	}
-	ft_memset(&new_mtx[*(int *)new_mtx], 0, 16 * sizeof(char *));
+	ft_memset(&new_mtx[*(unsigned int *)new_mtx], 0, 16 * sizeof(char *));
 	*(int *)new_mtx += 16;
 	return (new_mtx);
 }

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:50:19 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:26:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:47:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	mtx_getindex(char *name, char **mtx);
 of the var isn't in mtx. */
 int	mtx_getindex(char *name, char **mtx)
 {
-	int		i;
-	size_t	len;
-	char	buff[MAX_NAME];
+	unsigned int	i;
+	size_t			len;
+	char			buff[MAX_NAME];
 
 	if (name == NULL)
 		return (-1);
 	len = ft_strlen(name) + 1;
 	i = 1;
-	while (i < *(int *)mtx)
+	while (i < *(unsigned int *)mtx)
 	{
 		if (mtx[i] != NULL
 			&& !ft_strncmp(name, vstr_getname(mtx[i], buff, sizeof(buff)), len))

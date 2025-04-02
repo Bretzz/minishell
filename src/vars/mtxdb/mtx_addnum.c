@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:07:04 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 21:52:46 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:46:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ static char *build_var(char *name, int value)
 /* same as setval but with an integer instead of as string as 'value' */
 char	**mtx_addnum(char *name, int value, char **mtx)
 {
-	int		i;
+	unsigned int		i;
 
 	i = 1;
-	while (i < *(int *)mtx && mtx[i] != NULL)
+	while (i < *(unsigned int *)mtx && mtx[i] != NULL)
 		i++;
-	if (i == *(int *)mtx)
+	if (i == *(unsigned int *)mtx)
 	{
 		ft_printf("reached mtx limit, proceeding with expansion\n");
 		mtx = mtx_addnum(name, value, mtx_expand(mtx));

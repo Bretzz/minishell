@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/01 22:20:29 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:16:33 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,13 @@ static char	skip_quotes(char *str, int *i, char quote)
 		{
 			quote = str[*i];
 			(*i)++;
+			quote = skip_quotes(str, i, quote);
 		}
-		/* else  */if (quote == str[*i])
+		else if (quote == str[*i])
 		{
 			quote = 0;
 			(*i)++;
+			quote = skip_quotes(str, i, quote);
 		}
 	}
 	return (quote);

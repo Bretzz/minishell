@@ -6,14 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 22:18:58 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 09:25:56 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char *expand_string(char *str, const char ***vars);
-char	*single_expand(int i, char *str, const char ***vars);
 
 static char	*cut_string(char *str, int tar_index)
 {
@@ -81,7 +80,7 @@ Allocates with malloc(3) a new string that's a copy of the imput string
 with the var_string '$var' replaced with it's value found in shv, exp or env,
 then frees the input string.
 RETURNS: A pointer to the new string, NULL on malloc failures. */
-char	*single_expand(int i, char *str, const char ***vars)
+static char	*single_expand(int i, char *str, const char ***vars)
 {
 	char	*exp_val;
 	char	*new_str;

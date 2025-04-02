@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:55:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 19:15:29 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:46:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ RETURNS: a mtx-pointer to the matrix with the var-string added.
 If there was enough spaces in the previous matrix the pointer will be the same. */
 char	**mtx_addval(char *name, char *value, char **mtx)
 {
-	int		i;
+	unsigned int		i;
 
 	i = 1;
-	while (i < *(int *)mtx && mtx[i] != NULL)
+	while (i < *(unsigned int *)mtx && mtx[i] != NULL)
 		i++;
-	if (i == *(int *)mtx)
+	if (i == *(unsigned int *)mtx)
 	{
 		ft_printf("reached mtx limit, proceeding with expansion\n");
 		mtx = mtx_addval(name, value, mtx_expand(mtx));

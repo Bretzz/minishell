@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 22:34:44 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 09:32:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ static int	handle_command(t_cmd cmd, char ***vars)
 	int			fd[2];
 	static int	oldfd[2]; // backup of the previous pipe
 
-	// if (handle_vars(cmd, vars))
-	// 	return (-1);
+	if (handle_vars(cmd, vars))
+		return (-1);
 	if (is_builtin(cmd.words[0]))
 	{
 		miniwrapper(fd, oldfd, cmd);

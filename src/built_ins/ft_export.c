@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 22:37:00 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 09:37:35 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,9 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 		{
 			vars[1] = mtx_vstr_copy(cmd.words[i], vars[1]);
 			vars[2] = mtx_vstr_copy(cmd.words[i], vars[2]);
+			index = mtx_getindex(vstr_getname(cmd.words[i], name, MAX_NAME), vars[0]);
+			if (index >= 0)
+				mtx_safedel(index, vars[0]);
 		}
 		else
 		{
@@ -98,6 +101,7 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 			if (index >= 0)
 			{
 				vars[1] = mtx_vstr_copy(vars[0][index], vars[1]); //remember to drop_index on shv
+				vars[2] = mtx_vstr_copy(vars[0][index], vars[2]);
 				mtx_safedel(index, vars[0]);
 			}
 			else
