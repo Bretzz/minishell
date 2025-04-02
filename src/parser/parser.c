@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 15:31:44 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:39:06 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,9 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 		}
 		else if (redirType == TOKEN_RED_OUTPUT)
 		{
-			//safeclose(current_cmd->fd[1]);
+			safeclose(current_cmd->fd[1]);
 			//ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
 			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			//write(current_cmd->fd[1], "pippo", 5);
 			current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
 			current_cmd->redir[1] = FILE;
 		}
