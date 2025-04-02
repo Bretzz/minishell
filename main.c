@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 15:17:21 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:45:10 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ static int	handle_command(t_cmd cmd, char ***vars)
 	int			fd[2];
 	static int	oldfd[2]; // backup of the previous pipe
 
+	struct sigaction ignore_sig; //AGGIUNTO PER SIGNALS
+
 	if (handle_vars(cmd, vars))
 		return (-1);
 	if (is_builtin(cmd.words[0]))
@@ -103,15 +105,26 @@ static int	handle_command(t_cmd cmd, char ***vars)
 		mtx_setdata(ret, vars[0]);
 		return (-1); // continue cycling trough commands
 	}
+
+	sigemptyset(&ignore_sig.sa_mask); //AGGIUNTO PER SIGNALS
+	ignore_sig.sa_flags = 0; //AGGIUNTO PER SIGNALS
+	ignore_sig.sa_handler = SIG_IGN; //AGGIUNTO PER SIGNALS
+	sigaction(SIGINT, &ignore_sig, NULL); //AGGIUNTO PER SIGNALS
+
 	pid = wrapper(fd, oldfd, cmd);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL); //AGGIUNTO PER SIGNALS
+		signal(SIGQUIT, SIG_DFL);//AGGIUNTO PER SIGNALS
+
 		ret = ft_execve(fd, cmd, vars[2] + 1);
 		return (ret);
 	}
 	waitpid(pid, &ret, WUNTRACED);
 	//g_pipe_status = ((ret) & 0xff00) >> 8;
 	//vars[0] = setnum(vars[0], "LITTLEPIPE", ((ret) & 0xff00) >> 8);
+	sig_initializer(); //AGGIUNTO PER SIGNALS
+	
 	mtx_setdata(((ret) & 0xff00) >> 8, vars[0]);
 	//ft_printf("status=%d\n", *((unsigned int *)vars[0] + 1));
 	return (-1);
