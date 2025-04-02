@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 09:25:56 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 11:15:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ static char	*single_expand(int i, char *str, const char ***vars)
 	int		var_len;
 
 	if (!ft_strncmp("$?", &str[i], 2)) // to be fiexed $ab?, or $?ab
-		exp_val = ft_itoa(*(int *)(vars[0] + 1));
+	{
+		exp_val = ft_itoa(*((unsigned int *)vars[0] + 1));
+		ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST COMMAND BEFORE ME!!!\n");
+	}
 	else
 		exp_val = wide_search(&str[i + 1], vars);
 	if (exp_val == NULL)

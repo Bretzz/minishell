@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 10:54:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 11:10:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ static int	handle_command(t_cmd cmd, char ***vars)
 	//g_pipe_status = ((ret) & 0xff00) >> 8;
 	//vars[0] = setnum(vars[0], "LITTLEPIPE", ((ret) & 0xff00) >> 8);
 	mtx_setdata(((ret) & 0xff00) >> 8, vars[0]);
-	//ft_printf("status=%d\n", g_pipe_status);
+	//ft_printf("status=%d\n", *((unsigned int *)vars[0] + 1));
 	return (-1);
 }
 
