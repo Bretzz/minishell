@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 10:16:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 21:38:15 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	*remove_quotes(char *str)
 
 
 /* returns a dynamicly allocated mem addres */
-char	*get_next_word(const char *line, int *i)
+char	*get_next_word(const char *line, int *i, const char ***vars)
 {
 	int		start;
 	char	quote;
@@ -161,7 +161,9 @@ char	*get_next_word(const char *line, int *i)
 			(*i)++;
 	}
 	word = ft_substr(line, start, *i - start);
-	cleaned_word = remove_quotes(word);
+	// cleaned_word = remove_quotes(word);
+	// free(word);
+	cleaned_word = expand_string(word, vars);
 	free(word);
 	return (cleaned_word);
 }
@@ -217,7 +219,7 @@ t_token	*tokenizer(char *line, const char ***vars)
 
 	i = 0;
 	tokens = NULL;
-	line = expand_string(line, vars);
+	//line = expand_string(line, vars);
 	//printf("expanded string: ~%s~\n", line);
 	while (line[i])
 	{
@@ -227,10 +229,10 @@ t_token	*tokenizer(char *line, const char ***vars)
 		if (is_operator(line, i))
 			add_token(&tokens, get_next_operator(line, &i), NULL);
 		else
-			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i));
+			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i, vars));
 	}
-	free(line);
-	//print_tokens(tokens);
+	//free(line);
+	print_tokens(tokens);
 	return (tokens);
 }
 

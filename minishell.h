@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 15:02:01 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:41:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,7 @@ void	skip_spaces(const char *line, int *i);
 int	is_operator(const char *line, int i);
 t_token_type	pipe_or_die(const char *line, int *i);
 t_token_type	get_next_operator(const char *line, int *i);
-char	*remove_quotes(char *str);
-char	*get_next_word(const char *line, int *i);
+//char	*get_next_word(const char *line, int *i);
 void	add_token(t_token **tokens, t_token_type type, char *value);
 void	print_tokens(t_token *tokens);
 char *get_rekd(t_token_type type);

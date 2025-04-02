@@ -126,6 +126,12 @@ notrainnopainnogain: $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
 
+val: notrainnopainnogain
+	clear && valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.supp ./$(NAME)
+
+minival: notrainnopainnogain
+	clear && valgrind --track-fds=yes --suppressions=valgrind.supp ./$(NAME)
+
 tar: os
 	@ls | grep -q "$(NAME).tar" && rm -f $(NAME).tar || true
 	@tar -cf $(NAME).tar --exclude=".git" --exclude="$(NAME)" --exclude="$(OBJS_DIR)" ./*

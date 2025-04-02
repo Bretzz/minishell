@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 11:03:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:29:33 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 		return (1); //return errno
 	}
 	vars[1] = mtx_setval("OLDPWD", oldpwd, vars[1]);
-	vars[2] = mtx_setval("OLDPWD", oldpwd, vars[2]);
+	//vars[2] = mtx_setval("OLDPWD", oldpwd, vars[2]);
 	free(oldpwd);
 	ft_printf("  TODO: update PWD automatically\n\tgo HOME if only 'cd'\n\tjust read the man...\n");
 	return (0);
