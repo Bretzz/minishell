@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 11:15:44 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/02 13:40:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,6 @@ static char	*wide_search(char *str, const char ***vars)
 	i = 2;
 	while (i >= 0)
 	{
-		// if (i == 0) //skips LITTLEPIPE
-		// 	value = get_value(str, vars[i] + 1);
-		// else
-		// 	value = get_value(str, vars[i]);
 		value = mtx_findval(name, NULL, 0, (char **)(vars[i]));
 		if (value != NULL)
 		{
@@ -86,10 +82,10 @@ static char	*single_expand(int i, char *str, const char ***vars)
 	char	*new_str;
 	int		var_len;
 
-	if (!ft_strncmp("$?", &str[i], 2)) // to be fiexed $ab?, or $?ab
+	if (!ft_strncmp("$?", &str[i], 2)) // to be fixed $ab?, or $?ab
 	{
 		exp_val = ft_itoa(*((unsigned int *)vars[0] + 1));
-		ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST COMMAND BEFORE ME!!!\n");
+		ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");
 	}
 	else
 		exp_val = wide_search(&str[i + 1], vars);

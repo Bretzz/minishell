@@ -136,6 +136,9 @@ CURSED COMMAND (ZSH):
 playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
+VARS:
+	to be fixed $ab?, or $?ab
+
 ----------------------> HERE DOC <-----------------------
 
 topiana-@c2r4p11:~/live_projects/github/minishell$ ab=123
