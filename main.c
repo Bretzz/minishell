@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 22:45:34 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:24:58 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,41 @@ static int	handle_line(char *line, char ***vars)
 	return (1);
 }
 
+static char *close_unclosed(char *line)
+{
+	char	*closed_line;
+	char	quote;
+	char	last;
+	size_t	i;
+
+	if (line == NULL)	//never happens
+		return (NULL);
+	quote = 0;
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (!ft_isspace(line[i]))
+			last = line[i];
+		if (quote == 0
+			&& (line[i] == '\'' || line[i] == '"'))
+			quote = line[i];
+		else if (line[i] == quote)
+			quote = 0;
+		i++;
+	}
+	if (quote != 0)
+	{
+		closed_line = close_unclosed(ft_strjoin_free_nl(line, readline("> ")));
+		return (closed_line);
+	}
+	if (last == '|' || last == '&') //also for "||", "&" and "&&"
+	{
+		closed_line = close_unclosed(ft_strjoin_free_nl(line, readline("> ")));
+		return (closed_line);
+	}
+	return (line);
+}
+
 /* copies the enviroment passed as parameters and returns
 the newly initialized matrix. */
 static char	**env_copy(char **his_env)
@@ -173,7 +208,7 @@ int	main(int argc, char *argv[], char *__environ[])
 
 	sig_initializer();
 	//ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
-	rl_catch_signals = 0;
+	//rl_catch_signals = 0;	MacOS issues
 	while (1)
 	{
 		line = readline("minishell% ");
@@ -184,6 +219,7 @@ int	main(int argc, char *argv[], char *__environ[])
 			ft_printf("exit\n");
 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
 		}
+		line = close_unclosed(line);
 		if (!handle_line(line, vars))
 			return (1);
 		add_history(line);

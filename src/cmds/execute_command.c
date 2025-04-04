@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 22:59:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:33:20 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ returns the EXIT_STATUS of the command.
 int	execute_command(char *line, t_cmd *cmd, char ***vars)
 {
 	int		execfd[2];
+	int		pipefd[2];
 
 	execfd[0] = STDIN_FILENO;
 	execfd[1] = STDOUT_FILENO;
@@ -87,6 +88,21 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		execfd[0] = cmd[0].fd[0];
 	if (cmd[0].redir[1] == FILE)
 		execfd[1] = cmd[0].fd[1];
+	if (cmd[0].redir[1] == PIPE)
+	{
+		pipefd[0] = STDIN_FILENO;
+		pipefd[1] = STDOUT_FILENO;
+		if (pipe(pipefd) < 0)
+		{
+			write(STDERR_FILENO, "pipe failure\n", 13);
+			// ...or just return
+		}
+		else
+		{
+			execfd[1] = pipefd[1];
+			safeclose(pipefd[0]);
+		}
+	}
 	if (ft_strichr(cmd[0].words[0], '=') != 0)
 	{
 		if (cmd[0].words[1] != NULL)

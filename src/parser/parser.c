@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/04 22:44:47 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:30:36 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,13 +228,13 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		if (tokens[0]->type == TOKEN_PIPE)
 		{
 			/* Imposta l'outfile del comando corrente con "|" */
-			//current_cmd.redir[1] = PIPE;
+			current_cmd.redir[1] = PIPE;
 			
 			append_cmd(cmd_array, &cmd_index, current_cmd);
 			
 			/* Crea un nuovo comando e imposta il suo infile con "|" */
 			ft_bzero(&current_cmd, sizeof(t_cmd));
-			//current_cmd.redir[0] = PIPE;
+			current_cmd.redir[0] = PIPE;
 			tokens[0] = tokens[0]->next;
 			continue;
 		}

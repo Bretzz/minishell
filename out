@@ -1,3 +1,0 @@
-/*   main.c                                             :+:      :+:    :+:   */
-throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */
-int	main(int argc, char *argv[], char *__environ[])

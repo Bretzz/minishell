@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 22:32:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:24:49 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ size_t	ft_varlen(const char *s);
 size_t	ft_mtxlen(const void **mtx);
 
 char	*ft_strjoin_free_space(char *s1, char *s2);
+char	*ft_strjoin_free_nl(char *s1, char *s2);
 char	*ft_strjoin_free_nl_space(char *s1, char *s2);
 
 void	ft_print_charr(const char **arr);

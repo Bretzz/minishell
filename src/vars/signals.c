@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 18:50:24 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 00:19:53 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void sig_handler(int signal)
         // Stampa un newline (così se sei in un comando come "cat", va a capo)
         write(STDOUT_FILENO, "\n", 1);
         // Cancella la linea corrente e prepara readline per una nuova linea
-        rl_replace_line("", 0);
+        //rl_replace_line("", 0);   MacOS issues
         rl_on_new_line();
         rl_redisplay();
         g_last_sig = 130;

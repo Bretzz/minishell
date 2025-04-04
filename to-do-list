@@ -48,12 +48,6 @@ CURSED COMMAND (BASH): (DONE)
 
 <main.c grep main | cat >out | ls | <main.c cat >out2 | pwd (DONE)
 
-minishell% << "X 'cat (DONE)
->lol
->X' cat
->X 'cat
-(check for leaks)
-
 (DONE)
 "mkdir a | grep c": creates the dir and closes the pipe
 "grep c | mkdir b": grep is waiting the std in, BUT DIR IS MADE INSTANTLY
@@ -65,12 +59,12 @@ minishell% << "X 'cat (DONE)
 
 ---------- (DONE) -----------
 topiana-@c2r4p11:~/live_projects/github/minishell$ ab=123
-topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
+topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat (DONE)
 > $ab
 > X
 123
 
-topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
+topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat (DONE)
 > $abc'f
 > $abc;o
 > $abc&g
@@ -80,55 +74,31 @@ topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
 123&g
 
 topiana-@c2r4p11:~/live_projects/github/minishell$ ab=123
-topiana-@c2r4p11:~/live_projects/github/minishell$ << 'X' cat
+topiana-@c2r4p11:~/live_projects/github/minishell$ << 'X' cat (DONE)
 $ab
 'X'
 X
 $ab
 'X'
-topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat
+topiana-@c2r4p11:~/live_projects/github/minishell$ << X cat (DONE)
 $ab
 'X'
 X
 123
 'X'
+topiana-@c2r4p11:~/live_projects/github/minishell$ << "X 'cat (DONE)
+>lol
+>X' cat
+>X 'cat
+(check for leaks)
 
+unclosed quotes and pipes (DONE)
 
-======================== T O D O =======================
-
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-	/		! ! ! REMOVE FT_FREENTF ! ! !			/
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-
-------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
-
+(DONE)
 also "ls | > out" redirect inside the pipe and don't write in 'out' (just parsing check)
+( ! ! ! CHECK FDS ! ! ! )
 
-"| | |"
-bash: syntax error near unexpected token `|'
-
-------------------> EXCLUSIVE EXEC PROBLEMS <------------------
-
-PIPESTATUS (NOT NECESSARY)
-	An array variable de containing a list of
-	exit status values from the processes in the most-recently-executed foreground
-	pipeline (which may contain only a single command).
-(check for hardcoded errors: command not found, builtin errors, others...)
-
-EXTRA
-	"cd ..; pwd" changes dir
-	"pwd; cd .." doesn't
-
-REDO: pwd, cd
-	(just change the PWD='/global/path/to/folder' variable)
-	(beware of errors)
-REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
-
-----------------------> MIXED PROBLEMS <-----------------------
-also Ctrl-D in heredoc:
-	zsh: list wierd stuff
-	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
-
+(DONE)
 also unfollowd pipe, ex: 'cat |', does weird stuff:
 	waits for a command to be executed after the pipe:
 	EXAMPLE:
@@ -141,6 +111,42 @@ also unfollowd pipe, ex: 'cat |', does weird stuff:
 	1938103 pts/1    00:00:00 ps
 	ciao
 	as if I just wrote: cat | ps
+
+( ! ! ! CHECK LEAKS ! ! ! )
+(DONE) (without redoing getcwd() and chdir())
+REDO: pwd, cd
+	(just change the PWD='/global/path/to/folder' variable)
+	(beware of errors)
+REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
+
+======================== T O D O =======================
+
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+	/		! ! ! REMOVE FT_FREENTF ! ! !			/
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+
+------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
+
+"| | |"
+bash: syntax error near unexpected token `|'
+
+------------------> EXCLUSIVE EXEC PROBLEMS <------------------
+
+PIPESTATUS (NOT NECESSARY)
+	An array variable de containing a list of
+	exit status values from the processes in the most-recently-executed foreground
+	pipeline (which may contain only a single command).
+(check for hardcoded errors: command not found, builtin errors, others...)
+
+EXTRA (FAKE NEWS)
+	"cd ..; pwd" changes dir
+	"pwd; cd .." doesn't
+
+----------------------> MIXED PROBLEMS <-----------------------
+
+also Ctrl-D in heredoc:
+	zsh: list wierd stuff
+	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
 
 ----------------------> TO INVESTIGATE <-----------------------
 
@@ -175,6 +181,8 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
+
+sighandler
 
 -------------------> THINGS TO DISCUSS <-------------------
 

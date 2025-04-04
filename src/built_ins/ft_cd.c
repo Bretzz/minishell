@@ -3,16 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 21:58:20 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 01:37:25 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	ft_cd(int *fd, t_cmd cmd, char ***vars);
+
+static void	update_pwd(char *oldpwd, char *pwd, char ***vars)
+{
+	static int	fresh;
+	int			index;
+	char		*env_oldpwd;
+
+	if (pwd != NULL)
+	{
+		index = mtx_getindex("PWD", vars[1]);
+		if (index >= 0)
+			mtx_setval("PWD", pwd, vars[1]);
+		else
+		{
+			index = mtx_getindex("OLDPWD", vars[1]);
+			if (index >= 0)
+			{
+				env_oldpwd = mtx_findval("OLDPWD", NULL, 0, vars[1]);
+				if (env_oldpwd == NULL)
+					fresh++;
+				else if (!ft_strncmp(env_oldpwd, pwd, ft_strlen(oldpwd) + 1))
+					*(ft_strchr(vars[1][index], '=')) = '\0';
+			}
+		}
+	}
+	if (oldpwd != NULL)
+	{
+		index = mtx_getindex("OLDPWD", vars[1]);
+		if (index >= 0 && (ft_strchr(vars[1][index], '=') != NULL || fresh != 0))
+		{
+			mtx_setval("OLDPWD", oldpwd, vars[1]);
+			fresh = 0;
+		}
+	}
+}
 
 /*	EACCES Search permission is denied for any component of the pathname.
 
@@ -41,8 +76,9 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars);
 RETURNS: 1 on error, 0 on successfull execution. */
 int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 {
-	int		ret;
 	char	*oldpwd;
+	char	*pwd;
+	char	*tar_dir;
 
 	safeclose(fd[1]);
 	if (cmd.words[2] != NULL)
@@ -51,16 +87,28 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 		return (1);
 		//better error handling
 	}
+	if (cmd.words[1] == NULL)
+	{
+		tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
+		if (tar_dir == NULL)
+		{
+			write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
+			return (1);
+		}
+	}
+	else
+		tar_dir = cmd.words[1];
 	//ft_printf("new-dir=%s\n", cmd.words[1]);
 	oldpwd = getcwd(NULL, 0);
-	ret = chdir(cmd.words[1]);
-	if (ret == -1)
+	if (chdir(tar_dir) < 0)
 	{
 		//handle errno
 		return (1); //return errno
 	}
-	vars[1] = mtx_setval("OLDPWD", oldpwd, vars[1]);
-	free(oldpwd);
-	ft_printf("  TODO: update PWD automatically\n\tgo HOME if only 'cd'\n\tjust read the man...\n");
+	pwd = getcwd(NULL, 0);	//catch error
+	update_pwd(oldpwd, pwd, vars);
+	//vars[1] = mtx_setval("OLDPWD", oldpwd, vars[1]);
+	free(oldpwd); free(pwd);
+	//ft_printf("  TODO: update PWD automatically\n\tgo HOME if only 'cd'\n\tjust read the man...\n");
 	return (0);
 }
