@@ -27,7 +27,7 @@ $a is
 
 VARS:
 	to be fixed:
-		$ab? (NOT NEEDED)
+		$ab? (NOT NEEDED) (DONE)
 		$?ab (DONE)
 
 handle quotes (DONE)
@@ -98,7 +98,7 @@ unclosed quotes and pipes (DONE)
 also "ls | > out" redirect inside the pipe and don't write in 'out' (just parsing check)
 ( ! ! ! CHECK FDS ! ! ! )
 
-(DONE)
+(DONE) ( ! ! ! CHECK LEAKS ! ! ! )
 also unfollowd pipe, ex: 'cat |', does weird stuff:
 	waits for a command to be executed after the pipe:
 	EXAMPLE:
@@ -118,6 +118,18 @@ REDO: pwd, cd
 	(just change the PWD='/global/path/to/folder' variable)
 	(beware of errors)
 REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
+
+ENV MANAGEMENT: (DONE) ( ! ! ! CHECK LEAKS ! ! ! )
+	topiana-@c2r3p6:~/live_projects/github/minishell$ unset PWD
+	topiana-@c2r3p6:~/live_projects/github/minishell$ pwd
+	/nfs/homes/topiana-/live_projects/github/minishell
+	topiana-@c2r3p6:~/live_projects/github/minishell$ env | grep PWD
+	OLDPWD=/nfs/homes/topiana-/live_projects/github/minishell
+	topiana-@c2r3p6:~/live_projects/github/minishell$ cd ..
+	topiana-@c2r3p6:~/live_projects/github$ pwd
+	/nfs/homes/topiana-/live_projects/github
+	topiana-@c2r3p6:~/live_projects/github$ env | grep PWD
+	topiana-@c2r3p6:~/live_projects/github$ 
 
 ======================== T O D O =======================
 
@@ -144,10 +156,6 @@ EXTRA (FAKE NEWS)
 
 ----------------------> MIXED PROBLEMS <-----------------------
 
-also Ctrl-D in heredoc:
-	zsh: list wierd stuff
-	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
-
 ----------------------> TO INVESTIGATE <-----------------------
 
 'env -i' removes env from the following program (or not really)
@@ -155,18 +163,6 @@ also Ctrl-D in heredoc:
 
 VARS:
 	$12: prints value of $1, then 2: '2'
-
-ENV MANAGEMENT:
-	topiana-@c2r3p6:~/live_projects/github/minishell$ unset PWD
-	topiana-@c2r3p6:~/live_projects/github/minishell$ pwd
-	/nfs/homes/topiana-/live_projects/github/minishell
-	topiana-@c2r3p6:~/live_projects/github/minishell$ env | grep PWD
-	OLDPWD=/nfs/homes/topiana-/live_projects/github/minishell
-	topiana-@c2r3p6:~/live_projects/github/minishell$ cd ..
-	topiana-@c2r3p6:~/live_projects/github$ pwd
-	/nfs/homes/topiana-/live_projects/github
-	topiana-@c2r3p6:~/live_projects/github$ env | grep PWD
-	topiana-@c2r3p6:~/live_projects/github$ 
 
 ----------------------> FUNNY STUFF <-----------------------
 
@@ -181,6 +177,10 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
+
+also Ctrl-D in heredoc:
+	zsh: list wierd stuff
+	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
 
 sighandler
 
@@ -198,7 +198,7 @@ sighandler
 	(DONE)
 6. non uscire da minishell con ctrl C --> fai a capo e aggiorna var con valore giusto
 7. testare $? - example: unset export (var nn valida) -> 
-8. ls | > out 
+8. ls | > out (DONE)
 	deve creare un file out. out viene tokenizzato come word. pero non viene creato il comando 
 	Comando 0:
 	arg[0]: ls
