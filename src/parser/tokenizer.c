@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 21:38:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:25:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	*remove_quotes(char *str)
 
 
 /* returns a dynamicly allocated mem addres */
-char	*get_next_word(const char *line, int *i, const char ***vars)
+static char	*get_next_word(t_token_type prev_type, const char *line, int *i, const char ***vars)
 {
 	int		start;
 	char	quote;
@@ -163,7 +163,10 @@ char	*get_next_word(const char *line, int *i, const char ***vars)
 	word = ft_substr(line, start, *i - start);
 	// cleaned_word = remove_quotes(word);
 	// free(word);
-	cleaned_word = expand_string(word, vars);
+	if (prev_type != TOKEN_HERE_DOC)
+		cleaned_word = expand_string(word, vars);
+	else
+		cleaned_word = ft_strdup(word);
 	free(word);
 	return (cleaned_word);
 }
@@ -211,6 +214,14 @@ char *get_rekd(t_token_type type)
     return (NULL);
 }
  
+static t_token_type last_token_type(t_token *tokens)
+{
+	if (tokens == NULL)
+		return (TOKEN_WORD);
+	while(tokens->next != NULL)
+		tokens = tokens->next;
+	return (tokens->type);
+}
 
 t_token	*tokenizer(char *line, const char ***vars)
 {
@@ -229,7 +240,7 @@ t_token	*tokenizer(char *line, const char ***vars)
 		if (is_operator(line, i))
 			add_token(&tokens, get_next_operator(line, &i), NULL);
 		else
-			add_token(&tokens, TOKEN_WORD, get_next_word(line, &i, vars));
+			add_token(&tokens, TOKEN_WORD, get_next_word(last_token_type(tokens), line, &i, vars));
 	}
 	//free(line);
 	print_tokens(tokens);

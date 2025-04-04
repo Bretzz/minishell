@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 14:43:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:17:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ int	ft_unset(int *fd, t_cmd cmd, char ***vars);
 
 static void	mass_drop(char ***vars, char *var)
 {
-	int	index;
-	int	i;
+	int		index;
+	int		i;
 	char	name[MAX_NAME];
 	
+//	ft_printf("dropping: %s, buff (%p)\n", var, name);
 	vstr_getname(var, name, MAX_NAME);
-	i = 2;
+	i = 1;
 	while (i >= 0)
 	{
 		if (vars[i] != NULL)
@@ -39,7 +40,6 @@ int	ft_unset(int *fd, t_cmd cmd, char ***vars)
 	int		errno;
 	int		i;
 
-	multicose(fd);
 	errno = 0;
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
@@ -53,5 +53,6 @@ int	ft_unset(int *fd, t_cmd cmd, char ***vars)
 			mass_drop(vars, cmd.words[i]);
 		i++;
 	}
+	safeclose(fd[1]);
 	return (errno);
 }

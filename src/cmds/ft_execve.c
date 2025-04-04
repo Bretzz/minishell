@@ -6,11 +6,12 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 22:12:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:55:18 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "cmds.h"
 
 static void	clean_exit(char *str, int *fd)
 {
@@ -25,24 +26,24 @@ static void	clean_exit(char *str, int *fd)
 /* returns the error code of the problem */
 static int	error_check(t_cmd cmd, char *path)
 {
-	// if (cmd.redir[1] == FILE
-	// 	&& access(cmd.outfile, F_OK) - access(cmd.outfile, W_OK) > 0)
-	// {
-	// 	ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.outfile);
-	// 	return (1);
-	// }
-	// if (cmd.redir[0] == FILE
-	// 	&& access(cmd.infile, F_OK) != 0)
-	// {
-	// 	ft_printfd(STDERR_FILENO, "minishell: %s: no such file or directory\n", cmd.infile);
-	// 	return (1);
-	// }
-	// if (cmd.redir[0] == FILE
-	// 	&& access(cmd.infile, R_OK) != 0)
-	// {
-	// 	ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.infile);
-	// 	return (1);
-	// }
+	if (cmd.redir[1] == FILE
+		&& access(cmd.outfile, F_OK) - access(cmd.outfile, W_OK) > 0)
+	{
+		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.outfile);
+		return (1);
+	}
+	if (cmd.redir[0] == FILE
+		&& access(cmd.infile, F_OK) != 0)
+	{
+		ft_printfd(STDERR_FILENO, "minishell: %s: no such file or directory\n", cmd.infile);
+		return (1);
+	}
+	if (cmd.redir[0] == FILE
+		&& access(cmd.infile, R_OK) != 0)
+	{
+		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n", cmd.infile);
+		return (1);
+	}
 	if (path == NULL)
 	{
 		ft_printfd(STDERR_FILENO, "minishell: %s: command not found\n", cmd.words[0]);
@@ -77,14 +78,13 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 	errno = error_check(cmd, path);
 	if (errno != 0)
 		return (clean_exit(path, fd), errno);
-	// ft_printf("executing on: [%d,%d]\n", fd[0], fd[1]);
+//	ft_printf("executing '%s' on: [%d,%d]\n", cmd.words[0], fd[0], fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
+	safeclose(fd[0]);
+	safeclose(fd[1]);
 	execve(path, cmd.words, env);
-	close(fd[0]);
-	close(fd[1]);
 //	ft_freentf("2", cmd.words);
 	free(path);
-	//exit(EXIT_FAILURE);
 	return (-1);
 }

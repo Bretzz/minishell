@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/02 22:26:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:44:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void process_word(t_token *token, t_cmd *current_cmd)
 	add_arg_to_cmd(current_cmd, token->value);
 }
 
-static void process_redirection(t_token **tokens, t_cmd *current_cmd)
+static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char ***vars)
 {
 	t_token_type redirType;
 
@@ -104,7 +104,8 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 		if (redirType == TOKEN_RED_INPUT)
 		{
 			safeclose(current_cmd->fd[0]);
-			//ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
+			ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
+			//ft_printf("opening: %s\n", (*tokens)->next->value);
 			current_cmd->fd[0] = open((*tokens)->next->value, O_RDONLY);
 			current_cmd->redir[0] = FILE;
 		}
@@ -112,13 +113,13 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 		{
 			safeclose(current_cmd->fd[0]);
 			//ft_strlcat(current_cmd->infile, (*tokens)->next->value, 1024);
-			current_cmd->fd[0] = here_doc((*tokens)->next->value);
+			current_cmd->fd[0] = here_doc((*tokens)->next->value, vars);
 			current_cmd->redir[0] = HERE_DOC;
 		}
 		else if (redirType == TOKEN_RED_OUTPUT)
 		{
 			safeclose(current_cmd->fd[1]);
-			//ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
 			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
 			current_cmd->redir[1] = FILE;
@@ -126,7 +127,7 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd)
 		else if (redirType == TOKEN_APPEND)
 		{
 			safeclose(current_cmd->fd[1]);
-			//ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
 			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
 			current_cmd->redir[1] = FILE;
@@ -195,6 +196,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	t_cmd current_cmd;
 	int cmd_index;
 
+	ft_printf("NOTE: right now '|' and ';' works the same: both pipes\n");
 	tokens[0] = tokenizer(line, vars);
 	tokens[1] = tokens[0];
 	/* print_tokens(tokens);
@@ -219,31 +221,20 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 			tokens[0]->type == TOKEN_APPEND ||
 			tokens[0]->type == TOKEN_HERE_DOC)
 		{
-			process_redirection(&tokens[0], &current_cmd);
+			process_redirection(&tokens[0], &current_cmd, vars);
 			continue;
 		}
 		/* Gestione dei separatori (pipe e punto e virgola) */
 		if (tokens[0]->type == TOKEN_PIPE)
 		{
 			/* Imposta l'outfile del comando corrente con "|" */
-			{
-				/* char *pipe_str = get_rekd(TOKEN_PIPE);
-				ft_strlcpy(current_cmd.outfile, pipe_str, 1024);
-				free(pipe_str); */
-				ft_strlcpy(current_cmd.outfile, "|", 2); //outdates
-				current_cmd.redir[1] = PIPE;
-			}
+			//current_cmd.redir[1] = PIPE;
+			
 			append_cmd(cmd_array, &cmd_index, current_cmd);
+			
 			/* Crea un nuovo comando e imposta il suo infile con "|" */
-			//current_cmd = create_cmd();
 			ft_bzero(&current_cmd, sizeof(t_cmd));
-			{
-				/* char *pipe_str = get_rekd(TOKEN_PIPE);
-				ft_strlcpy(current_cmd.infile, pipe_str, 1024);
-				free(pipe_str); */
-				ft_strlcpy(current_cmd.infile, "|", 2); //OUTDATED
-				current_cmd.redir[0] = PIPE;
-			}
+			//current_cmd.redir[0] = PIPE;
 			tokens[0] = tokens[0]->next;
 			continue;
 		}
@@ -262,7 +253,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		raccattagarbage(current_cmd);
 	else
 		append_cmd(cmd_array, &cmd_index, current_cmd);
-	// print_cmd_array(cmd_array, 1/* ft_cmdlen(cmd_array) */);
+	print_cmd_array(cmd_array, ft_cmdlen(cmd_array));
 	return (cmd_array);
 }
 

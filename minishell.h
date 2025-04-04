@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 20:41:57 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:32:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# define CLEAN_EXIT -1 /* Return value to close the program */
 
 # define MAX_ARGS 100		/* Max number of arguments to a command */
 # define VARNAME 1024	/* Max length of a shell variable's name. */
@@ -81,6 +83,8 @@ t_cmd *parse_tokens(char *line, const char ***vars);
 int		ft_cmdlen(t_cmd *cmd_array);
 void	free_cmd(t_cmd *cmd_arr);
 
+t_cmd	pop_arg(t_cmd cmd, int index);
+
 //tokens
 t_token	*tokenizer(char *line, const char ***vars);
 void	free_tokens(t_token *tokens);
@@ -97,15 +101,11 @@ char *get_rekd(t_token_type type);
 
 //here_doc.c
 
-int		here_doc(char *limiter);
+int		here_doc(char *limiter, const char ***vars);
 
 //ft_readline.c
 
 char	*ft_readline (const char *prompt);
-
-//pipex_stolen.c
-
-char	*find_env_path(char *cmd, char **env);
 
 //handle stuff
 
@@ -114,6 +114,8 @@ int		handle_vars(t_cmd cmd, char ***vars);
 // char	**setnum(char **mtx, const char *target, int value);
 
 char 	*expand_string(char *str, const char ***vars);
+char 	*just_expand_string(char *str, const char ***vars);
+
 // char	*get_value(const char *target, const char **mtx);
 // int		is_there(const char **mtx, const char *target);
 // int		var_is_valid(const char *var);
@@ -124,6 +126,11 @@ char 	*expand_string(char *str, const char ***vars);
 int		ft_execve(int *fd, t_cmd cmd, char **env);
 pid_t	wrapper(int *fd, int *oldfd, t_cmd cmd);
 int		miniwrapper(int *fd, int *oldfd, t_cmd cmd);
+
+/* FINAL EXECUTION */
+
+int		execute_pipeline(char *line, t_cmd *cmd_arr, char ***vars);
+int		execute_command(char *line, t_cmd *cmd, char ***vars);
 
 //built_ins.c
 

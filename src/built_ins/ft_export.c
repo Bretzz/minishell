@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 18:34:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 21:04:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,12 @@ static void	rank_up(char *varstr, char ***vars)
 	index = mtx_getindex(name, vars[1]);
 	if (index >= 0)
 		return ;
-	vars[1] = mtx_vstr_copy(varstr, vars[1]);
 	index = mtx_getindex(name, vars[0]);
 	if (index >= 0)
+	{
+		vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
 		mtx_safedel(index, vars[0]);
+	}
 	// {
 	// 	vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
 	// 	//vars[2] = mtx_vstr_copy(vars[0][index], vars[2]);
@@ -119,7 +121,6 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 	int		i;
 	int		errno;
 
-	safeclose(fd[0]);
 	if (!cmd.words[1] || cmd.words[1][0] == '\0')
 	{
 		print_sort_export(fd[1], vars[1]);

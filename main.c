@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 22:05:31 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:45:34 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,49 +36,9 @@ int	ft_putchar(int c)
 	return (write(STDOUT_FILENO, &c, 1));
 }
 
-static int	is_builtin(char *cmd)
-{
-	if (!ft_strncmp("echo", cmd, 5))
-		return(1);
-	else if (!ft_strncmp("cd", cmd, 3))
-		return (1);
-	else if (!ft_strncmp("pwd", cmd, 4))
-		return (1);
-	else if (!ft_strncmp("export", cmd, 7))
-		return (1);
-	else if (!ft_strncmp("unset", cmd, 6))
-		return (1);
-	else if (!ft_strncmp("env", cmd, 4))
-		return (1);
-	else if (!ft_strncmp("exit", cmd, 5))
-		return (1);
-	return (0);
-}
-
-/* run after an is_builtin() call
-returns the command 'exit code', -1 on dangerous errors. */
-static int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
-{
-	if (!ft_strncmp("echo", cmd.words[0], 5))
-		return(ft_echo(fd, cmd));
-	else if (!ft_strncmp("cd", cmd.words[0], 3))
-		return (ft_cd(fd, cmd, vars));
-	else if (!ft_strncmp("pwd", cmd.words[0], 4))
-		return (ft_pwd(fd, cmd));
-	else if (!ft_strncmp("export", cmd.words[0], 7))
-		return (ft_export(fd, cmd, vars));
-	else if (!ft_strncmp("unset", cmd.words[0], 6))
-		return (ft_unset(fd, cmd, vars));
-	else if (!ft_strncmp("env", cmd.words[0], 4))
-		return (ft_env(fd, (const char ***)vars));
-	else if (!ft_strncmp("exit", cmd.words[0], 5))
-		return (multicose(fd), -1); //need to free command list
-	return (0);
-}
-
 /* executes the command, setting g_pipe_status to the exit code of the command executed.
 throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */
-static int	handle_command(t_cmd cmd, char ***vars)
+/* static int	handle_command(t_cmd cmd, char ***vars)
 {
 	pid_t			pid;
 	int				ret;
@@ -125,28 +85,52 @@ static int	handle_command(t_cmd cmd, char ***vars)
 	sig_initializer();
 	mtx_setdata(((ret) & 0xff00) >> 8, vars[0]);
 	return (-1);
-}
+} */
 
 static int	handle_line(char *line, char ***vars)
 {
-	int	errno;
+	int	exit_status;
 	t_cmd *cmd_arr;
-	size_t	i;
+	//size_t	i;
 	size_t	len;
 	
+	cmd_arr = NULL;
+	exit_status = 0;
 	if (line == NULL)
-		return (0);
+		return (1);
 	cmd_arr = parse_tokens((char *)line, (const char ***)vars);
 	len = ft_cmdlen(cmd_arr);
-	//ft_printf("found %d command(s)\n", len);
-	i = 0;
-	while(i < len)
+
+	// to discuss
+	// add_history(line);
+	// free(line);
+	
+	if (len == 0)
+		return (free_cmd(cmd_arr), 1);
+	if (len == 1)
 	{
-		errno = handle_command(cmd_arr[i], vars);
-		if (errno >= 0)
-			clean_exit(cmd_arr, line, vars, errno);
-		i++;
+		exit_status = execute_command(line, cmd_arr, vars);
+		if (exit_status < 0)
+			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
+		mtx_setdata(exit_status, vars[0]);
 	}
+	else
+	{
+		exit_status = execute_pipeline(line, cmd_arr, vars);
+		if (exit_status < 0)
+			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
+		mtx_setdata(exit_status, vars[0]);
+	}
+	// len = ft_cmdlen(cmd_arr);
+	// //ft_printf("found %d command(s)\n", len);
+	// i = 0;
+	// while(i < len)
+	// {
+	// 	errno = handle_command(cmd_arr[i], vars);
+	// 	if (errno >= 0)
+	// 		clean_exit(cmd_arr, line, vars, errno);
+	// 	i++;
+	// }
 	free_cmd(cmd_arr);
 	return (1);
 }
@@ -188,7 +172,7 @@ int	main(int argc, char *argv[], char *__environ[])
 		return (1);
 
 	sig_initializer();
-	ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
+	//ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	rl_catch_signals = 0;
 	while (1)
 	{

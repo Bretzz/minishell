@@ -33,7 +33,8 @@ SRC_FILES		= main.c \
 				ft_cd.c ft_echo.c ft_env.c \
 				ft_export.c ft_pwd.c ft_unset.c \
 				\
-				ft_execve.c pipex_stolen.c wrapper.c \
+				ft_execve.c pipex_stolen.c builtin_bridge.c\
+				execute_pipeline.c execute_command.c \
 				\
 				parser.c tokenizer.c \
 				\
@@ -130,7 +131,7 @@ val: notrainnopainnogain
 	clear && valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.supp ./$(NAME)
 
 minival: notrainnopainnogain
-	clear && valgrind --track-fds=yes --suppressions=valgrind.supp ./$(NAME)
+	clear && valgrind --track-fds=yes --trace-children=yes --suppressions=valgrind.supp ./$(NAME)
 
 tar: os
 	@ls | grep -q "$(NAME).tar" && rm -f $(NAME).tar || true

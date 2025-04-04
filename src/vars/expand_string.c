@@ -6,13 +6,14 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 21:36:28 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 22:32:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char *expand_string(char *str, const char ***vars);
+char *just_expand_string(char *str, const char ***vars);
 
 static char	*cut_string(char *str, int tar_index)
 {
@@ -189,7 +190,8 @@ char *expand_string(char *str, const char ***vars)
 		// ft_printf("skip_quotes (%p) ==%s==\n", my_str, my_str);
 		if (my_str[i] == '$' && quote != '\'')
 			my_str = single_expand(&i, my_str, vars);
-		i++;
+		else
+			i++;
 	}
 	// lim[0] = 0;
 	// lim[1] = ft_strlen(my_str);
@@ -203,3 +205,25 @@ char *expand_string(char *str, const char ***vars)
 	// free(my_str);
 	return (my_str);
 }
+
+/* expands every variable found */
+char *just_expand_string(char *str, const char ***vars)
+{
+	char	*my_str;
+	size_t	i;
+
+	(void)vars;
+	my_str = ft_strdup(str);
+	if (my_str == NULL)
+		return (NULL);
+	i = 0;
+	while (my_str[i] != '\0')
+	{
+		if (my_str[i] == '$')
+			my_str = single_expand(&i, my_str, vars);
+		else
+			i++;
+	}
+	return (my_str);
+}
+

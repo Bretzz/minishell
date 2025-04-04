@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 11:00:06 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:12:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	ft_pwd(int *fd, t_cmd cmd)
 	char	*dir;
 
 	(void)cmd;
-	safeclose(fd[0]);
 	dir = getcwd(NULL, 0);
 	if (dir == NULL)
 	{
