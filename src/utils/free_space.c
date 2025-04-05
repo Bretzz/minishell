@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 00:24:42 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 17:36:33 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,16 @@ char	*ft_strjoin_free_nl(char *s1, char *s2)
 
 	if (s1 == NULL)
 	{
-		s1 = (char *)malloc(1 * sizeof(char));
-		if (!s1)
+		s1 = (char *)ft_calloc(1, sizeof(char));
+		if (s1 == NULL)
 			return (NULL);
-		s1[0] = '\0';
 	}
 	if (s2 == NULL)
 		return (s1);
 	size = ft_strlen(s1) + ft_strlen(s2) + 2;
 	twelve = (char *)malloc(size * sizeof(char));
 	if (twelve == NULL)
-		return (NULL);
+		return (free(s1), NULL);
 	i = -1;
 	while (s1[++i])
 		twelve[i] = s1[i];
@@ -141,8 +140,7 @@ char	*ft_strjoin_free_nl(char *s1, char *s2)
 	while (s2[j] != '\0')
 		twelve[i++] = s2[j++];
 	twelve[i] = '\0';
-	free(s1);
-	return (twelve);
+	return (free(s1), twelve);
 }
 
 char	*ft_strjoin_free_nl_space(char *s1, char *s2)

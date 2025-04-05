@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 01:37:25 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 18:15:47 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 	safeclose(fd[1]);
 	if (cmd.words[2] != NULL)
 	{
-		ft_printfd(STDERR_FILENO, "minishell: cd: too many argument\n");
+		write(STDERR_FILENO, "minishell: cd: too many argument\n", 33);
 		return (1);
 		//better error handling
 	}

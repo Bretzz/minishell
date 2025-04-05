@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vstr_getname.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:41:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:40:31 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:13:34 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ NULL on malloc failure or if not a var-string. */
 char	*vstr_getname(char *varstr, char *buff, size_t size)
 {
 	size_t	i;
+	char	*name;
 
 	if (varstr == NULL)
 		return (NULL);
@@ -62,5 +63,8 @@ char	*vstr_getname(char *varstr, char *buff, size_t size)
 		ft_strlcpy(buff, varstr, size);
 		return (buff);
 	}
-	return(ft_substr(varstr, 0, i));
+	name = ft_substr(varstr, 0, i);
+	if (name == NULL)
+		write(STDERR_FILENO, "malloc failure\n", 15);
+	return(name);
 }

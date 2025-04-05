@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/04 22:25:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:27:41 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parser.h"
 
 void	skip_spaces(const char *line, int *i)
 {
@@ -69,6 +70,7 @@ t_token_type	get_next_operator(const char *line, int *i)
 	return (TOKEN_WORD);
 }
 
+/* ! ! ! UNUSED ! ! ! */
 static char	skip_quotes(char *str, int *i, char quote)
 {
 	if (str[*i] == '"' || str[*i] == '\'')
@@ -90,6 +92,7 @@ static char	skip_quotes(char *str, int *i, char quote)
 }
 
 /* str is a dynamic allocated memory addres, it will be free'd later */
+/* ! ! ! UNUSED ! ! ! */
 char	*remove_quotes(char *str)
 {
 	char	quote;
@@ -161,24 +164,36 @@ static char	*get_next_word(t_token_type prev_type, const char *line, int *i, con
 			(*i)++;
 	}
 	word = ft_substr(line, start, *i - start);
+	if (word == NULL)
+	{
+		write(STDERR_FILENO, "malloc failure\n", 15);
+		return (NULL);
+	}
 	// cleaned_word = remove_quotes(word);
 	// free(word);
 	if (prev_type != TOKEN_HERE_DOC)
 		cleaned_word = expand_string(word, vars);
 	else
 		cleaned_word = ft_strdup(word);
+	if (!cleaned_word)
+		write(STDERR_FILENO, "malloc failure\n", 15);
 	free(word);
 	return (cleaned_word);
 }
 
-void	add_token(t_token **tokens, t_token_type type, char *value)
+/* static  */int	add_token(t_token **tokens, t_token_type type, char *value)
 {
 	t_token	*new;
 	t_token	*tmp;
 
+	if (!tokens || (type == TOKEN_WORD && !value))
+		return (0);
 	new = malloc(sizeof(t_token));
-	if (!new)
-		return ;
+	if (new == NULL)
+	{
+		write(STDERR_FILENO, "malloc failure\n", 15);
+		return (0);
+	}
 	new->type = type;
 	if (value == NULL)
 		new->value = NULL;
@@ -194,6 +209,7 @@ void	add_token(t_token **tokens, t_token_type type, char *value)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+	return (1);
 }
 
 /* ! ! ! UNUSED FUNCTION ! ! ! */
@@ -228,21 +244,26 @@ t_token	*tokenizer(char *line, const char ***vars)
 	t_token		*tokens;
 	int			i;
 
+	if (line == NULL)
+		return (NULL);
 	i = 0;
 	tokens = NULL;
-	//line = expand_string(line, vars);
-	//printf("expanded string: ~%s~\n", line);
 	while (line[i])
 	{
 		skip_spaces(line, &i);
 		if (line[i] == '\0')
 			break ;
 		if (is_operator(line, i))
-			add_token(&tokens, get_next_operator(line, &i), NULL);
+		{
+			if (!add_token(&tokens, get_next_operator(line, &i), NULL))
+				return (free_tokens(tokens), NULL);
+		}
 		else
-			add_token(&tokens, TOKEN_WORD, get_next_word(last_token_type(tokens), line, &i, vars));
+		{
+			if (!add_token(&tokens, TOKEN_WORD, get_next_word(last_token_type(tokens), line, &i, vars)))
+				return (free_tokens(tokens), NULL);
+		}
 	}
-	//free(line);
 	print_tokens(tokens);
 	return (tokens);
 }
@@ -264,26 +285,26 @@ void	print_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
-		printf("Token: ");
+		ft_printf("Token: ");
 		if (tokens->type == TOKEN_WORD)
-			printf("WORD (%s)", tokens->value);
+			ft_printf("WORD (%s)", tokens->value);
 		else if (tokens->type == TOKEN_PIPE)
-			printf("PIPE (|)");
+			ft_printf("PIPE (|)");
 		else if (tokens->type == TOKEN_RED_INPUT)
-			printf("REDIRECT_IN (<)");
+			ft_printf("REDIRECT_IN (<)");
 		else if (tokens->type == TOKEN_RED_OUTPUT)
-			printf("REDIRECT_OUT (>)");
+			ft_printf("REDIRECT_OUT (>)");
 		else if (tokens->type == TOKEN_HERE_DOC)
-			printf("HERE_DOC (<<)");
+			ft_printf("HERE_DOC (<<)");
 		else if (tokens->type == TOKEN_APPEND)
-			printf("APPEND (>>)");
+			ft_printf("APPEND (>>)");
 		else if (tokens->type == TOKEN_SEMICOL)
-			printf("SEMICOLON (;)");
+			ft_printf("SEMICOLON (;)");
 		else if (tokens->type == TOKEN_S_QUOTE)
-			printf("SINGLE QUOTE (')");
+			ft_printf("SINGLE QUOTE (')");
 		else if (tokens->type == TOKEN_D_QUOTE)
-			printf("DOUBLE QUOTE (\")");
-		printf("\n");
+			ft_printf("DOUBLE QUOTE (\")");
+		ft_printf("\n");
 		tokens = tokens->next;
 	}
 }

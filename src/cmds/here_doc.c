@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 12:30:53 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 18:28:14 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,6 @@ static int	strip_limiter(char *limiter)
 {
 	size_t	len;
 
-	/* len = ft_strlen(limiter);
-	if (limiter[0] == '\'' || limiter[0] == '"')
-		ft_memmove(limiter, (limiter + 1), len);
-	if (limiter[len - 1] == '\'' || limiter[len - 1] == '"')
-	{
-		limiter[len - 1] = '\0';
-		return (0);
-	}
-	return (1); */
 	len = ft_strlen(limiter);
 	if ((limiter[0] == '\'' || limiter[0] == '"') && limiter[0] == limiter[len - 1])
 	{
@@ -56,21 +47,29 @@ static int	strip_limiter(char *limiter)
 
 /* takes the exp_flag, line to write and the fd as params.
 If the flag is set to 0 the line is written as it is then freed, if not
-the line is expanded. Then line is free'd. */
-static void	exp_write(int fd, char exp_flag, char *line, const char ***vars)
+the line is expanded. Then line is free'd.
+RETURNS: 0 on malloc failure, 1 otherwise. */
+static int	exp_write(int fd, char exp_flag, char *line, const char ***vars)
 {
 	char	*exp_line;
 	
 	if (exp_flag != 0)
 	{
 		exp_line = just_expand_string(line, vars);
-		write(fd, exp_line, ft_strlen(exp_line));
+		if (exp_line == NULL)
+		{
+			write(STDOUT_FILENO, "malloc failure\n", 15);
+			return (0);
+		}
+		else
+			write(fd, exp_line, ft_strlen(exp_line));
 		free(exp_line);
 	}
 	else
 	{
 		write(fd, line, ft_strlen(line));
 	}
+	return (1);
 }
 
 /* Takes an string as parameters.
@@ -95,13 +94,21 @@ int	here_doc(char *limiter, const char ***vars)
 	{
 		if (line != NULL)
 		{
-			exp_write(pipefd[1], exp_flag, line, vars);
+			if (!exp_write(pipefd[1], exp_flag, line, vars))
+			{
+				free(line);
+				idle_initializer();
+				return (dummy_pipe(pipefd));
+			}
 			free(line);
 		}
 		else
 		{
 			if (g_last_sig == SIGINT)
+			{
+				idle_initializer();
 				return (dummy_pipe(pipefd));
+			}
 			ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
 delimited by end-of-file (wanted `%s')\n", i, limiter);
 			break ;
@@ -110,8 +117,8 @@ delimited by end-of-file (wanted `%s')\n", i, limiter);
 		line = get_next_line(STDIN_FILENO);
 		i++;
 	}
+	free(line);
 	idle_initializer();
 	close(pipefd[1]);
-	free(line);
 	return (pipefd[0]);
 }

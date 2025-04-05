@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:15:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 21:25:57 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 15:23:42 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	builtin_and_die(int *fd, int index, t_cmd *cmd_arr, char ***vars);
 
 //pipex_stolen.c
 
+int		ft_execve(int *fd, t_cmd cmd, char **env);
 char	*find_env_path(char *cmd, char **env);
 
 #endif

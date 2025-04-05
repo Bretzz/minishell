@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 11:22:01 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 18:32:51 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,8 @@ throughout the pipe, the main program keeps returning -1. (also execve if ragnar
 
 static int	handle_line(char *line, char ***vars)
 {
-	int	exit_status;
-	t_cmd *cmd_arr;
-	//size_t	i;
+	int		exit_status;
+	t_cmd 	*cmd_arr;
 	size_t	len;
 	
 	cmd_arr = NULL;
@@ -100,12 +99,8 @@ static int	handle_line(char *line, char ***vars)
 		return (1);
 	cmd_arr = parse_tokens((char *)line, (const char ***)vars);
 	len = ft_cmdlen(cmd_arr);
-
-	// to discuss
-	// add_history(line);
-	// free(line);
 	
-	if (len == 0)
+	if (len == 0)	//both NULL cmd_arr and no actual command to execute
 		return (free_cmd(cmd_arr), 1);
 	input_initializer();
 	if (len == 1)
@@ -122,16 +117,6 @@ static int	handle_line(char *line, char ***vars)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
 		mtx_setdata(exit_status, vars[0]);
 	}
-	// len = ft_cmdlen(cmd_arr);
-	// //ft_printf("found %d command(s)\n", len);
-	// i = 0;
-	// while(i < len)
-	// {
-	// 	errno = handle_command(cmd_arr[i], vars);
-	// 	if (errno >= 0)
-	// 		clean_exit(cmd_arr, line, vars, errno);
-	// 	i++;
-	// }
 	free_cmd(cmd_arr);
 	return (1);
 }
@@ -210,7 +195,11 @@ int	main(int argc, char *argv[], char *__environ[])
 	vars[1] = env_copy(__environ);
 	vars[0] = mtx_init();
 	if (!vars[0] || !vars[1])
+	{
+		mtx_free(vars[0]);
+		mtx_free(vars[1]);
 		return (1);
+	}
 
 	//ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	rl_catch_signals = 0;	//MacOS issues... but what does it do?
@@ -222,13 +211,16 @@ int	main(int argc, char *argv[], char *__environ[])
 		// ft_signals (che chiama signal con i vari SIGNORE DEF o la tua function)
 		if (line == NULL)
 		{
-			ft_printf("exit\n");
+			write(STDOUT_FILENO, "exit\n", 5);
 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
 		}
 		line = close_unclosed(line);
-		if (!handle_line(line, vars))
+		if (line == NULL)
+			write(STDOUT_FILENO, "malloc failure\n", 15);
+		else if (!handle_line(line, vars))
 			return (1);
-		add_history(line);
+		else
+			add_history(line);
 		free(line);
 	}
 	return (0);

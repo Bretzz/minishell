@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:28:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 19:11:56 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:16:24 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int	ft_echo(int *fd, t_cmd cmd);
 
-static void put_echo_words(int *fd, char **words)
+static void put_echo_words(int fd, char **words)
 {
 	int i;
 	
 	i = 0;
 	while (words[i] != NULL)
 	{
-		write(fd[1], words[i], ft_strlen(words[i]));
+		write(fd, words[i], ft_strlen(words[i]));
 		if (words[i + 1] && words[i + 1][0] != '\0')
-			write(fd[1], " ", 1);
+			write(fd, " ", 1);
 		i++;
 	}
 }
@@ -37,11 +37,11 @@ int	ft_echo(int *fd, t_cmd cmd)
 	
 	if (cmd.words[1] && !ft_strncmp("-n", cmd.words[1], 2))
 	{
-		put_echo_words(fd, &cmd.words[2]);
+		put_echo_words(fd[1], &cmd.words[2]);
 		safeclose(fd[1]);
 		return (0);
 	}
-	put_echo_words(fd, &cmd.words[1]);
+	put_echo_words(fd[1], &cmd.words[1]);
 	write(fd[1], "\n", 1);
 	safeclose(fd[1]);
 	return (0);

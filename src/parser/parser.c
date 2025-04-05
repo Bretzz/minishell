@@ -6,12 +6,13 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/05 00:30:36 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 18:10:39 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
+#include "parser.h"
 
 void print_cmd_array(t_cmd *cmd_array, size_t num_cmds);
 
@@ -61,10 +62,14 @@ void add_arg_to_cmd(t_cmd *cmd, char *arg)
 {
 	int i;
 
+	if (arg == NULL)
+		return ;
 	i = 0;
 	while (cmd->words[i] != NULL)
 		i++;
 	cmd->words[i] = ft_strdup(arg);
+	if (!cmd->words[i])
+		write(STDERR_FILENO, "malloc failure\n", 15);
 	//ft_strlcpy(cmd->words[i], arg, ft_strlen(arg));
 	//ft_memmove(&cmd->words[i], arg, ft_strlen(arg));
 }
@@ -96,11 +101,11 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 {
 	t_token_type redirType;
 
-	redirType = (*tokens)->type;
 	/* Assumi che il token corrente sia un operatore di redirezione, 
 	   quindi il token successivo deve essere il nome del file */
 	if (*tokens && (*tokens)->next && ((*tokens)->next->type == TOKEN_WORD))
 	{
+		redirType = (*tokens)->type;
 		if (redirType == TOKEN_RED_INPUT)
 		{
 			safeclose(current_cmd->fd[0]);
@@ -203,7 +208,10 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	printf("\n\n"); */
 	cmd_array = ft_calloc(sizeof(t_cmd), cmds_count(tokens[0]));
 	if (!cmd_array)
+	{
+		write(STDERR_FILENO, "malloc failure\n", 15);
 		return (NULL);
+	}
 	cmd_index = 0;
 	//current_cmd = create_cmd();
 	ft_bzero(&current_cmd, sizeof(t_cmd));
@@ -228,7 +236,8 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		if (tokens[0]->type == TOKEN_PIPE)
 		{
 			/* Imposta l'outfile del comando corrente con "|" */
-			current_cmd.redir[1] = PIPE;
+			if (current_cmd.redir[1] == 0)
+				current_cmd.redir[1] = PIPE;
 			
 			append_cmd(cmd_array, &cmd_index, current_cmd);
 			
@@ -287,10 +296,10 @@ int	ft_cmdlen(t_cmd *cmd_array)
 	
 	i = 0;
 	if(cmd_array == NULL)
-		return(0);
+		return (0);
 	while(cmd_array[i].words[0] != NULL && cmd_array[i].words[0][0] != '\0')
 		i++;
-	return(i);
+	return (i);
 }
 
 /* copies the enviroment passed as parameters and returns

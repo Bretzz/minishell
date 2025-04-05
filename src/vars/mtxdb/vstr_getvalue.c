@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vstr_getvalue.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:30:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:40:38 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:10:06 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ case retusn an allocated space of size=1 cointaining a '\0'. */
 char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 {
 	size_t	i;
+	char	*value;
 
 	if (varstr == NULL)
 		return (NULL);
@@ -44,5 +45,8 @@ char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 		ft_strlcpy(buff, &varstr[i + 1], size);
 		return (buff);
 	}
-	return(ft_strdup(&varstr[i + 1]));
+	value = ft_strdup(&varstr[i + 1]);
+	if (value == NULL)
+		write(STDERR_FILENO, "malloc failure\n", 15);
+	return(value);
 }

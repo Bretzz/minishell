@@ -58,7 +58,7 @@ SRC_FILES		= main.c \
 				vstr_getname.c vstr_getvalue.c \
 				\
 				print_stuff.c free_space.c cleanup.c \
-				ft_freentf.c ft_readline.c
+				ft_readline.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 

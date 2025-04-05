@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 10:49:19 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 18:23:05 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,8 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 			// ...or just return
 		}
 		else
-		{
 			execfd[1] = pipefd[1];
-			safeclose(pipefd[0]);
-		}
+		safeclose(pipefd[0]);
 	}
 	if (ft_strichr(cmd[0].words[0], '=') != 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_stolen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:37:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 13:58:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 15:28:10 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	**ft_split_tail(char *str, char c, char *tail)
 		arr[i] = ft_strjoin_free(arr[i], tail);
 		if (arr[i] == NULL)
 		{
-			ft_freentf("2", arr);
+			free_mtx((void **)arr);
 			return (NULL);
 		}
 		i++;
@@ -89,7 +89,7 @@ char	*find_env_path(char *cmd, char **env)
 	while (paths[i] != NULL && access(paths[i], X_OK) != 0)
 		i++;
 	cmd_path = ft_strdup(paths[i]);
-	ft_freentf("2", paths);
+	free_mtx((void **)paths);
 	free(cmd);
 	return (cmd_path);
 }

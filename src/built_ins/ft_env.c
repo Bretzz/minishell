@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:51 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 19:12:02 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:27:21 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_env(int *fd, const char ***vars);
 int	ft_env(int *fd, const char ***vars)
 {
 	unsigned int	i;
-	char			buff[2];
+	char			*value;
 
 	if (vars[1] == NULL)	//should never happen
 	{
@@ -28,8 +28,11 @@ int	ft_env(int *fd, const char ***vars)
 	i = 1;
 	while (vars[1][i] != NULL)
 	{
-		if (vstr_getvalue((char *)vars[1][i], buff, sizeof(buff)) != NULL)
+		value = vstr_getvalue((char *)vars[1][i], NULL, 0);
+		//if (vstr_getvalue((char *)vars[1][i], buff, sizeof(buff)) != NULL)
+		if (value != NULL)
 			ft_printfd(fd[1], "%s\n", vars[1][i]);
+		free(value);
 		i++;
 	}
 	safeclose(fd[1]);

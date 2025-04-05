@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 21:04:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:20:46 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	get_best_ascii(int *printed, unsigned int len, char **exp)
 	return (best_ascii);
 }
 
-/* static  */void	print_sort_export(int fd, char **exp)
+static void	print_sort_export(int fd, char **exp)
 {
 	int				best_ascii;
 	unsigned int	len;
@@ -60,7 +60,10 @@ static int	get_best_ascii(int *printed, unsigned int len, char **exp)
 	len = ft_mtxlen((const void **)exp);
 	printed = (int *)ft_calloc(len, sizeof(int));
 	if (printed == NULL)
-	return ;
+	{
+		write(STDERR_FILENO, "malloc failure\n", 15);
+		return ;
+	}
 	all_done = len;
 	while (all_done > 0)
 	{
@@ -81,7 +84,6 @@ static void	overwrite(char *varstr, char ***vars)
 	int		index;
 
 	vars[1] = mtx_vstr_copy(varstr, vars[1]);
-	//vars[2] = mtx_vstr_copy(varstr, vars[2]);
 	vstr_getname(varstr, name, MAX_NAME);
 	index = mtx_getindex(name, vars[0]);
 	if (index >= 0)
@@ -105,11 +107,6 @@ static void	rank_up(char *varstr, char ***vars)
 		vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
 		mtx_safedel(index, vars[0]);
 	}
-	// {
-	// 	vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
-	// 	//vars[2] = mtx_vstr_copy(vars[0][index], vars[2]);
-	// }
-	// else
 }
 
 //env no, shv no
