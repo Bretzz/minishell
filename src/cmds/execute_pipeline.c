@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 23:14:02 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 10:49:47 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ static int	redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 	}
 	return (garb[index].pipefd[1]);
 }
-
-#include <time.h> /* ! ! ! REMOVE ! ! ! */
 
 /* Closes all the fds of the files opened for the next command(s) in line.
 Then closes all the fds of the previous 'hanging pipes', ex: cat | <file grep "str". */
@@ -260,6 +258,9 @@ int	execute_pipeline(char *line, t_cmd *cmd, char ***vars)
 		}
 		if (garb[i].pid == 0) //child
 		{
+			/* Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT */
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			child_closes(cmd, garb, i, len);
 			free(garb); free(line);
 			single_execute(execfd, i, cmd, vars);

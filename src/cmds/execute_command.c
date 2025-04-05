@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 00:33:20 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 10:49:19 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ static int	fork_external(int *execfd, char *line, t_cmd *cmd, char ***vars)
 	}
 	if (pid == 0)
 	{
+		/* Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT */
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		exit_status = ft_execve(execfd, cmd[0], vars[1] + 1);
 		clean_exit(cmd, line, vars, exit_status);
 	}

@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 00:24:49 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 11:09:51 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,8 @@ void	safeclose(int fd);
 void	multicose(int *fd);
 
 
-void	sig_initializer(void);
-
+void	idle_initializer(void);
+void    input_initializer(void);
+void    doc_initializer(void);
 
 #endif

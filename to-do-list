@@ -131,6 +131,25 @@ ENV MANAGEMENT: (DONE) ( ! ! ! CHECK LEAKS ! ! ! )
 	topiana-@c2r3p6:~/live_projects/github$ env | grep PWD
 	topiana-@c2r3p6:~/live_projects/github$ 
 
+(JUST FOR CRASH-TESTING)
+'env -i' removes env from the following program (or not really)
+	try: 'env -i ls' in bash
+
+also Ctrl-D in heredoc: (DONE)
+	zsh: list wierd stuff (ZSH BULLSHIT)
+	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
+
+======================== ONGOING =======================
+
+heredoc sighandler: ( ! ! ! CHECK LEAKS ! ! ! )
+	basic functioning:
+		1. Ctrl+D ends the hheredooc with EOF (DONE)
+		2. Ctrl+C passes an empty doc (DONE)
+	extra features:
+		1. clean the "^C" or "^D"
+		2. (Ctr+D) ask for termination
+			2.1 (Ctr+D) warning message (DONE)
+
 ======================== T O D O =======================
 
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
@@ -158,9 +177,6 @@ EXTRA (FAKE NEWS)
 
 ----------------------> TO INVESTIGATE <-----------------------
 
-'env -i' removes env from the following program (or not really)
-	try: 'env -i ls' in bash
-
 VARS:
 	$12: prints value of $1, then 2: '2'
 
@@ -177,12 +193,6 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
-
-also Ctrl-D in heredoc:
-	zsh: list wierd stuff
-	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
-
-sighandler
 
 -------------------> THINGS TO DISCUSS <-------------------
 

@@ -16,6 +16,7 @@ RESET			= \033[0m
 NAME			= minishell
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g
+OS				= $(shell uname)
 
 # Libs
 LIBFT_DIR		:= libft
@@ -25,6 +26,12 @@ MTX_DIR			:= src/vars/mtxdb
 DEFS			=
 INK				= -I$(LIBFT_DIR) -I$(MTX_DIR) -I$(CURDIR)
 LINKS			= -lreadline #-ltinfo
+
+
+ifeq ($(OS),Darwin)
+	INK			+= -I/usr/local/opt/readline/include
+	LINKS		+= -L/usr/local/opt/readline/lib
+endif
 
 #source files (full path optional)
 SRCS_DIR		=
@@ -63,6 +70,7 @@ VPATH			= src \
 				  src/built_ins \
 				  src/cmds \
 				  src/parser \
+				  src/signals \
 				  src/utils \
 				  src/vars \
 				  src/vars/mtxdb

@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 00:24:58 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/05 11:22:01 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static int	handle_line(char *line, char ***vars)
 	
 	if (len == 0)
 		return (free_cmd(cmd_arr), 1);
+	input_initializer();
 	if (len == 1)
 	{
 		exit_status = execute_command(line, cmd_arr, vars);
@@ -138,6 +139,7 @@ static int	handle_line(char *line, char ***vars)
 static char *close_unclosed(char *line)
 {
 	char	*closed_line;
+	char	*rdl;
 	char	quote;
 	char	last;
 	size_t	i;
@@ -159,12 +161,16 @@ static char *close_unclosed(char *line)
 	}
 	if (quote != 0)
 	{
-		closed_line = close_unclosed(ft_strjoin_free_nl(line, readline("> ")));
+		rdl = readline("> ");
+		closed_line = close_unclosed(ft_strjoin_free_nl(line, rdl));
+		free(rdl);
 		return (closed_line);
 	}
 	if (last == '|' || last == '&') //also for "||", "&" and "&&"
 	{
-		closed_line = close_unclosed(ft_strjoin_free_nl(line, readline("> ")));
+		rdl = readline("> ");
+		closed_line = close_unclosed(ft_strjoin_free_nl(line, rdl));
+		free(rdl);
 		return (closed_line);
 	}
 	return (line);
@@ -206,11 +212,11 @@ int	main(int argc, char *argv[], char *__environ[])
 	if (!vars[0] || !vars[1])
 		return (1);
 
-	sig_initializer();
 	//ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
-	//rl_catch_signals = 0;	MacOS issues
+	rl_catch_signals = 0;	//MacOS issues... but what does it do?
 	while (1)
 	{
+		idle_initializer();
 		line = readline("minishell% ");
 		//check g_last_signal
 		// ft_signals (che chiama signal con i vari SIGNORE DEF o la tua function)

@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 22:55:09 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/05 12:30:53 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	here_doc(char *limiter, const char ***vars);
+
+static int	dummy_pipe(int *pipefd)
+{
+	close(pipefd[0]);
+	close(pipefd[1]);
+	if (pipe(pipefd) < 0)
+	{
+		write(STDERR_FILENO, "pipe failure\n", 13);
+		return (STDIN_FILENO);
+		// ...or just return
+	}
+	close(pipefd[1]);
+	return (pipefd[0]);
+}
 
 /* Takes a string as parameter,
 if the string is inquotes (ex: 'LIMITER', or "LIMITER")
@@ -21,12 +35,20 @@ static int	strip_limiter(char *limiter)
 {
 	size_t	len;
 
-	len = ft_strlen(limiter);
+	/* len = ft_strlen(limiter);
 	if (limiter[0] == '\'' || limiter[0] == '"')
-		ft_memmove(limiter, (limiter + 1), len/*  - 1 */);
+		ft_memmove(limiter, (limiter + 1), len);
 	if (limiter[len - 1] == '\'' || limiter[len - 1] == '"')
 	{
 		limiter[len - 1] = '\0';
+		return (0);
+	}
+	return (1); */
+	len = ft_strlen(limiter);
+	if ((limiter[0] == '\'' || limiter[0] == '"') && limiter[0] == limiter[len - 1])
+	{
+		limiter[len - 1] = '\0';
+		ft_memmove(limiter, (limiter + 1), len);
 		return (0);
 	}
 	return (1);
@@ -44,12 +66,10 @@ static void	exp_write(int fd, char exp_flag, char *line, const char ***vars)
 		exp_line = just_expand_string(line, vars);
 		write(fd, exp_line, ft_strlen(exp_line));
 		free(exp_line);
-		free(line);
 	}
 	else
 	{
 		write(fd, line, ft_strlen(line));
-		free(line);
 	}
 }
 
@@ -61,25 +81,36 @@ int	here_doc(char *limiter, const char ***vars)
 	int		pipefd[2];
 	char	*line;
 	char	exp_flag;
+	int		i;
 
 	if (pipe(pipefd) < 0)
 		return (-1);
 	exp_flag = strip_limiter(limiter);
-	write(STDOUT_FILENO, ">", 1);
+	doc_initializer();
+	write(STDOUT_FILENO, "> ", 2);
 	line = get_next_line(STDIN_FILENO);
+	i = 1;
 	while (/* line != NULL &&  */!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
 			&& line[ft_strlen(limiter)] == '\n'))
 	{
 		if (line != NULL)
+		{
 			exp_write(pipefd[1], exp_flag, line, vars);
+			free(line);
+		}
 		else
 		{
-			ft_printf("\nminishell: is weak...\n");
+			if (g_last_sig == SIGINT)
+				return (dummy_pipe(pipefd));
+			ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
+delimited by end-of-file (wanted `%s')\n", i, limiter);
 			break ;
 		}
-		write(STDOUT_FILENO, ">", 1);
+		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
+		i++;
 	}
+	idle_initializer();
 	close(pipefd[1]);
 	free(line);
 	return (pipefd[0]);
