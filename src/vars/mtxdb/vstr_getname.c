@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:41:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 19:46:24 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:47:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	vstr_name_is_valid(char *varstr)
 	{
 		if (i == 0 && !(ft_isalpha(name[i]) || name[i] == '_'))
 			return (0);
-		else if (!ft_isalpha(name[i]) && !ft_isdigit(name[i]) && name[i] != '_')
+		else if (!(ft_isalpha(name[i]) || ft_isdigit(name[i]) || name[i] == '_'))
 			return (0);
 		i++;
 	}
