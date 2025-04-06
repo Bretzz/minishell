@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:46:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 18:11:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ int	execute_pipeline(char *line, t_cmd *cmd, char ***vars)
 	{
 		execfd[0] = redir_input(cmd, garb, i, len);
 		execfd[1] = redir_output(cmd, garb, i, len);
+		garb[i].pid = fork();
 		if (garb[i].pid < 0)
 		{
 			ft_printfd(STDERR_FILENO, "minishell: %s: fork failure\n", cmd[i].words[0]);
