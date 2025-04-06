@@ -156,10 +156,13 @@ REDO: pwd, cd
 REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
 
 SYNTAX:
-	basics (DONE)
-	raccata roba (here_docs)
-	check valgrind
-	extensive testing
+	1. basics (DONE)
+	2. raccata roba (here_docs)
+	3. check valgrind
+	4. extensive testing
+NOTES:
+	heading whitespace before '#' and exclude if in quotes
+	general quotes exclusion in word_check()
 
 ======================== T O D O =======================
 
