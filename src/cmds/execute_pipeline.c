@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 18:11:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 18:59:49 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,16 @@ If we are at the first command and no preferred fd is specified, returns STDIN_F
 NOTE: with 'preferred fd' we are refering to tho the fd written in the t_cmd struct */
 static int	redir_input(t_cmd *cmd, t_garb *garb, int index, size_t len)
 {
+	if (DEBUG) {ft_printf("redir[0]: %d\n", cmd[index].redir[0]);}
 	(void)len;
 	if (cmd[index].redir[0] == FILE || cmd[index].redir[0] == HERE_DOC)
 		return(cmd[index].fd[0]);
 	if (index == 0)
+	{
+		if (cmd[index].redir[0] == PIPE)
+			return (dummy_in_pipe());
 		return (STDIN_FILENO);
+	}
 	if (index > 0 && cmd[index - 1].redir[1] == FILE)
 		return (STDIN_FILENO);
 	return (garb[index - 1].pipefd[0]);

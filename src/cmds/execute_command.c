@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:30:18 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 18:52:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int		execute_command(char *line, t_cmd *cmd, char ***vars);
 t_cmd	pop_arg(t_cmd cmd, int index);
+int		dummy_in_pipe(void);
 
 static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 {
@@ -23,6 +24,21 @@ static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 	mtx_free(vars[1]);
 	free(line);
 	exit(code);
+}
+
+int	dummy_in_pipe(void)
+{
+	int	pipefd[2];
+	
+	pipefd[0] = STDIN_FILENO;
+	pipefd[1] = STDOUT_FILENO;
+	if (pipe(pipefd) < 0)
+	{
+		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
+		return (STDIN_FILENO);
+	}
+	safeclose(pipefd[1]);
+	return (pipefd[0]);
 }
 
 t_cmd	pop_arg(t_cmd cmd, int index)
@@ -114,6 +130,8 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		}
 		//safeclose(pipefd[0]);
 	}
+	if (cmd->redir[0] == PIPE)
+		execfd[0] = dummy_in_pipe();
 	if (ft_strichr(cmd->words[0], '=') != 0)
 	{
 		if (cmd->words[1] != NULL)

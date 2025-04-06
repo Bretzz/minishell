@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/06 16:17:49 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:01:11 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 		{
 			safeclose(current_cmd->fd[0]);
 			ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
-			//ft_printf("opening: %s\n", (*tokens)->next->value);
 			current_cmd->fd[0] = open((*tokens)->next->value, O_RDONLY);
 			current_cmd->redir[0] = FILE;
 		}
@@ -210,7 +209,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	t_cmd current_cmd;
 	int cmd_index;
 
-	ft_printf("NOTE: right now '|' and ';' works the same: both pipes\n");
+	if (DEBUG) {ft_printf("NOTE: right now '|' and ';' works the same: both pipes\n");}
 	tokens[0] = tokenizer(line, vars);
 	tokens[1] = tokens[0];
 	/* print_tokens(tokens);
@@ -249,10 +248,16 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		if (tokens[0]->type == TOKEN_PIPE)
 		{
 			/* Imposta l'outfile del comando corrente con "|" */
-			if (current_cmd.redir[1] == 0)
+			if (current_cmd.redir[1] == STDL)
 				current_cmd.redir[1] = PIPE;
 			
-			append_cmd(cmd_array, &cmd_index, current_cmd);
+			if (current_cmd.words[0] != NULL)
+				append_cmd(cmd_array, &cmd_index, current_cmd);
+			else
+			{
+				safeclose(current_cmd.fd[0]);
+				safeclose(current_cmd.fd[1]);
+			}
 			
 			/* Crea un nuovo comando e imposta il suo infile con "|" */
 			ft_bzero(&current_cmd, sizeof(t_cmd));
@@ -275,7 +280,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		raccattagarbage(current_cmd);
 	else
 		append_cmd(cmd_array, &cmd_index, current_cmd);
-	print_cmd_array(cmd_array, ft_cmdlen(cmd_array));
+	if (DEBUG) {print_cmd_array(cmd_array, ft_cmdlen(cmd_array));}
 	return (cmd_array);
 }
 

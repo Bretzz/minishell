@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:12:39 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 18:58:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	handle_line(char *line, char ***vars)
 	input_initializer();
 	if (len == 1)
 	{
-		ft_printf("EXECUTING COMMAND\n");
+		if (DEBUG) {ft_printf("EXECUTING COMMAND\n");}
 		exit_status = execute_command(line, cmd_arr, vars);
 		if (exit_status < 0)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
@@ -113,7 +113,7 @@ static int	handle_line(char *line, char ***vars)
 	}
 	else
 	{
-		ft_printf("EXECUTING PIPELINE\n");
+		if (DEBUG) {ft_printf("EXECUTING PIPELINE\n");}
 		exit_status = execute_pipeline(line, cmd_arr, vars);
 		if (exit_status < 0)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);

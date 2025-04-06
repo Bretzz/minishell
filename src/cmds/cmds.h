@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmds.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:15:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 15:23:42 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 18:50:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,9 @@ void	builtin_and_die(int *fd, int index, t_cmd *cmd_arr, char ***vars);
 
 int		ft_execve(int *fd, t_cmd cmd, char **env);
 char	*find_env_path(char *cmd, char **env);
+
+//dummy pipes
+
+int dummy_in_pipe(void);
 
 #endif

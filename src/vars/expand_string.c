@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 10:30:11 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 19:02:02 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 	if (!ft_strncmp("$?", &str[*i], 2)) // to be fixed $ab?, or $?ab
 	{
 		exp_val = ft_itoa(*((unsigned int *)vars[0] + 1));
-		ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");
+		if (DEBUG) {ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");}
 	}
 	else
 		exp_val = wide_search(&str[*i + 1], vars);

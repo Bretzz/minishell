@@ -131,6 +131,9 @@ also Ctrl-D in heredoc: (DONE)
 	zsh: list wierd stuff (ZSH BULLSHIT)
 	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
 
+<< X | grep a (DONE)
+<< X cat >out | <out grep a (DONE)
+
 ======================== ONGOING =======================
 
 heredoc sighandler: ( ! ! ! CHECK LEAKS ! ! ! )

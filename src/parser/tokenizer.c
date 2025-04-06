@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/06 16:19:22 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:01:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ t_token	*tokenizer(char *line, const char ***vars)
 				return (free_tokens(tokens), NULL);
 		}
 	}
-	print_tokens(tokens);
+	if (DEBUG) {print_tokens(tokens);}
 	return (tokens);
 }
 

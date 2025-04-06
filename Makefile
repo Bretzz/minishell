@@ -111,6 +111,7 @@ loading:
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
+#-D DEBUG=0
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR) 
 	@$(CC) $(CFLAGS) $(INK) $(DEFS) -c $< -o $@
 

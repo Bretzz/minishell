@@ -6,27 +6,28 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:48:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 18:53:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "cmds.h"
 
 int	here_doc(char *limiter, const char ***vars);
 
-static int	dummy_pipe(int *pipefd)
-{
-	close(pipefd[0]);
-	close(pipefd[1]);
-	if (pipe(pipefd) < 0)
-	{
-		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
-		return (STDIN_FILENO);
-		// ...or just return
-	}
-	close(pipefd[1]);
-	return (pipefd[0]);
-}
+// static int	dummy_in_pipe(int *pipefd)
+// {
+// 	close(pipefd[0]);
+// 	close(pipefd[1]);
+// 	if (pipe(pipefd) < 0)
+// 	{
+// 		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
+// 		return (STDIN_FILENO);
+// 		// ...or just return
+// 	}
+// 	close(pipefd[1]);
+// 	return (pipefd[0]);
+// }
 
 /* Takes a string as parameter,
 if the string is inquotes (ex: 'LIMITER', or "LIMITER")
@@ -101,7 +102,8 @@ int	here_doc(char *limiter, const char ***vars)
 			{
 				free(line);
 				idle_initializer();
-				return (dummy_pipe(pipefd));
+				multicose(pipefd);
+				return (dummy_in_pipe());
 			}
 			free(line);
 		}
@@ -110,7 +112,8 @@ int	here_doc(char *limiter, const char ***vars)
 			if (g_last_sig == SIGINT)
 			{
 				idle_initializer();
-				return (dummy_pipe(pipefd));
+				multicose(pipefd);
+				return (dummy_in_pipe());
 			}
 			ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
 delimited by end-of-file (wanted `%s')\n", i, limiter);
