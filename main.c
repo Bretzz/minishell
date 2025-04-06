@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:32:51 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 13:42:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ static int	handle_line(char *line, char ***vars)
 	input_initializer();
 	if (len == 1)
 	{
+		ft_printf("EXECUTING COMMAND\n");
 		exit_status = execute_command(line, cmd_arr, vars);
 		if (exit_status < 0)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
@@ -112,6 +113,7 @@ static int	handle_line(char *line, char ***vars)
 	}
 	else
 	{
+		ft_printf("EXECUTING PIPELINE\n");
 		exit_status = execute_pipeline(line, cmd_arr, vars);
 		if (exit_status < 0)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
@@ -124,13 +126,14 @@ static int	handle_line(char *line, char ***vars)
 static char *close_unclosed(char *line)
 {
 	char	*closed_line;
-	char	*rdl;
+	char	*next_line;
 	char	quote;
 	char	last;
 	size_t	i;
 
 	if (line == NULL)	//never happens
 		return (NULL);
+	last = 0;
 	quote = 0;
 	i = 0;
 	while (line[i] != '\0')
@@ -146,16 +149,16 @@ static char *close_unclosed(char *line)
 	}
 	if (quote != 0)
 	{
-		rdl = readline("> ");
-		closed_line = close_unclosed(ft_strjoin_free_nl(line, rdl));
-		free(rdl);
+		next_line = readline("> ");
+		closed_line = close_unclosed(ft_strjoin_free_nl(line, next_line));
+		free(next_line);
 		return (closed_line);
 	}
 	if (last == '|' || last == '&') //also for "||", "&" and "&&"
 	{
-		rdl = readline("> ");
-		closed_line = close_unclosed(ft_strjoin_free_nl(line, rdl));
-		free(rdl);
+		next_line = readline("> ");
+		closed_line = close_unclosed(ft_strjoin_free_space(line, next_line));
+		free(next_line);
 		return (closed_line);
 	}
 	return (line);

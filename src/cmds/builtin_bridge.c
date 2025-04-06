@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 19:04:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/04 21:16:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 13:46:30 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	is_builtin(char *cmd)
 returns the command 'exit code', -1 on dangerous errors. */
 int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 {
+	ft_printf("executing '%s' on [%d,%d]\n", cmd.words[0], fd[0], fd[1]);
 	if (!ft_strncmp("echo", cmd.words[0], 5))
 		return(ft_echo(fd, cmd));
 	else if (!ft_strncmp("cd", cmd.words[0], 3))
@@ -77,8 +78,9 @@ void	builtin_and_die(int *fd, int index, t_cmd *cmd_arr, char ***vars)
 	int	exit_code;
 
 	exit_code = exec_builtin(fd, cmd_arr[index], vars);
-	multicose(fd);
 	if (exit_code < 0)
 		exit_code = EXIT_SUCCESS;
+	else
+		safeclose(fd[0]);
 	clean_exit(cmd_arr, NULL, vars, exit_code);
 }

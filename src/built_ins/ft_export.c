@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:20:46 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 13:49:24 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ static void	print_sort_export(int fd, char **exp)
 	{
 		best_ascii = get_best_ascii(printed, len, exp);
 		if (best_ascii < 0)
-			return ;
+			break ;
 		print_var_export(fd, exp[best_ascii]);
 		printed[best_ascii] = 1;
 		all_done--;
 	}
+	free(printed);
 }
 
 /* Adds the varstr to both exp and env, regardless if is present or not.
@@ -107,6 +108,8 @@ static void	rank_up(char *varstr, char ***vars)
 		vars[1] = mtx_vstr_copy(vars[0][index], vars[1]);
 		mtx_safedel(index, vars[0]);
 	}
+	else
+		vars[1] = mtx_setval(name, NULL, vars[1]);
 }
 
 //env no, shv no

@@ -96,9 +96,8 @@ unclosed quotes and pipes (DONE)
 
 (DONE)
 also "ls | > out" redirect inside the pipe and don't write in 'out' (just parsing check)
-( ! ! ! CHECK FDS ! ! ! )
 
-(DONE) ( ! ! ! CHECK LEAKS ! ! ! )
+(DONE)
 also unfollowd pipe, ex: 'cat |', does weird stuff:
 	waits for a command to be executed after the pipe:
 	EXAMPLE:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:15:47 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 14:06:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,26 @@ static void	update_pwd(char *oldpwd, char *pwd, char ***vars)
 {
 	static int	fresh;
 	int			index;
-	char		*env_oldpwd;
+	// char		*env_oldpwd;
 
 	if (pwd != NULL)
 	{
 		index = mtx_getindex("PWD", vars[1]);
 		if (index >= 0)
 			mtx_setval("PWD", pwd, vars[1]);
-		else
-		{
-			index = mtx_getindex("OLDPWD", vars[1]);
-			if (index >= 0)
-			{
-				env_oldpwd = mtx_findval("OLDPWD", NULL, 0, vars[1]);
-				if (env_oldpwd == NULL)
-					fresh++;
-				else if (!ft_strncmp(env_oldpwd, pwd, ft_strlen(oldpwd) + 1))
-					*(ft_strchr(vars[1][index], '=')) = '\0';
-			}
-		}
+		// else
+		// {
+		// 	index = mtx_getindex("OLDPWD", vars[1]);
+		// 	if (index >= 0)
+		// 	{
+		// 		env_oldpwd = mtx_findval("OLDPWD", NULL, 0, vars[1]);
+		// 		if (env_oldpwd == NULL)
+		// 			fresh++;
+		// 		else if (!ft_strncmp(env_oldpwd, pwd, ft_strlen(oldpwd) + 1))
+		// 			*(ft_strchr(vars[1][index], '=')) = '\0';
+		// 		free(env_oldpwd);
+		// 	}
+		// }
 	}
 	if (oldpwd != NULL)
 	{
@@ -73,6 +74,13 @@ static void	update_pwd(char *oldpwd, char *pwd, char ***vars)
 			The length of a pathname exceeds {PATH_MAX}, or pathname resolution of a
 			symbolic link produced an intermediate result with a length that exceeds
 			{PATH_MAX}.
+
+	! ! ! NOTE ! ! !
+	If,  during  the  execution of the above steps, the PWD environment variable is
+	set, the OLDPWD environment variable shall also be set to the value of the  old
+	working  directory  (that is the current working directory immediately prior to
+	the call to cd).
+
 RETURNS: 1 on error, 0 on successfull execution. */
 int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 {
@@ -107,8 +115,9 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 	}
 	pwd = getcwd(NULL, 0);	//catch error
 	update_pwd(oldpwd, pwd, vars);
-	//vars[1] = mtx_setval("OLDPWD", oldpwd, vars[1]);
 	free(oldpwd); free(pwd);
+	if (cmd.words[1] == NULL)
+		free(tar_dir);
 	//ft_printf("  TODO: update PWD automatically\n\tgo HOME if only 'cd'\n\tjust read the man...\n");
 	return (0);
 }
