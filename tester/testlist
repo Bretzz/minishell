@@ -11,4 +11,8 @@ echo "ciao | ls" | grep '$ciao' | w"c" -l >out; echo $? cat out; rm -f out
 export a=Paperon"de"Paperoni
 echo '"ciao doveri ieri sera $a?" - "non sono fatti tuoi"'; echo $?
 echo "ciao dov'eri ieri sera $a?" - "non sono fatti tuoi"; echo $?
+ls | grep out; echo $?
+ciao$"$ciao"$$'$ciao
+ci$ao$"$ciao"$'$ciao'
+
 echo DONE

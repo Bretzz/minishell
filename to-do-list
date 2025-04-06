@@ -221,3 +221,12 @@ alalready excluded?: found in heredoc and grep'd
 		check date creation of file appended is VS date di modifica del file dei test.
 		poi famo un diff
 		bellali
+
+
+
+
+
+pipe da solo non da error
+ls | grep out; echo $?
+ciao$"$ciao"$$'$ciao
+ci$ao$"$ciao"$'$ciao'
