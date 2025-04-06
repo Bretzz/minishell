@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 13:27:57 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:30:18 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,25 @@ static int	fork_external(int *execfd, char *line, t_cmd *cmd, char ***vars)
 	pid = fork();
 	if (pid < 0)
 	{
-		write(STDERR_FILENO, "fork failure\n", 13);
+		write(STDERR_FILENO, "minishell: fork failure\n", 24);
 		safeclose(execfd[0]);
 		safeclose(execfd[1]);
+		safeclose(cmd->close_me);
 		return (EXIT_FAILURE);
 	}
 	if (pid == 0)
 	{
+		safeclose(cmd->close_me);
 		/* Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT */
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		safeclose(cmd->fd[0]);
 		exit_status = ft_execve(execfd, cmd[0], vars[1] + 1);
 		clean_exit(cmd, line, vars, exit_status);
 	}
 	safeclose(execfd[0]);
 	safeclose(execfd[1]);
 	waitpid(pid, &exit_status, WUNTRACED);
-	safeclose(cmd->fd[0]);
+	safeclose(cmd->close_me);
 	return (((exit_status) & 0xff00) >> 8);
 }
 
@@ -88,7 +89,7 @@ closed after the command execution. */
 int	execute_command(char *line, t_cmd *cmd, char ***vars)
 {
 	int		execfd[2];
-//	int		pipefd[2];
+	int		pipefd[2];
 	int		exit_status;
 
 	execfd[0] = STDIN_FILENO;
@@ -99,16 +100,19 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		execfd[1] = cmd->fd[1];
 	if (cmd->redir[1] == PIPE)
 	{
-		cmd->fd[0] = STDIN_FILENO;
-		cmd->fd[1] = STDOUT_FILENO;
-		if (pipe(cmd->fd) < 0)	//dummy pipe creation
+		pipefd[0] = STDIN_FILENO;
+		pipefd[1] = STDOUT_FILENO;
+		if (pipe(pipefd) < 0)	//dummy pipe creation
 		{
-			write(STDERR_FILENO, "pipe failure\n", 13);
+			write(STDERR_FILENO, "minishell: pipe failure\n", 25);
 			// ...or just return
 		}
 		else
-			execfd[1] = cmd->fd[1];
-		//safeclose(cmd->fd[0]);
+		{
+			execfd[1] = pipefd[1];
+			cmd->close_me = pipefd[0];
+		}
+		//safeclose(pipefd[0]);
 	}
 	if (ft_strichr(cmd->words[0], '=') != 0)
 	{
@@ -117,7 +121,7 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		else
 		{
 			handle_vars(cmd[0], vars);
-			safeclose(cmd->fd[0]);
+			safeclose(cmd->close_me);
 			safeclose(execfd[0]);
 			safeclose(execfd[1]);
 			return (EXIT_SUCCESS);
@@ -126,7 +130,7 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 	if (is_builtin(cmd->words[0]))
 	{
 		exit_status = exec_builtin(execfd, cmd[0], vars);
-		safeclose(cmd->fd[0]);
+		safeclose(cmd->close_me);
 		return (exit_status);
 	}
 	return (fork_external(execfd, line, cmd, vars));

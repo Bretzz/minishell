@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/05 18:10:39 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:17:49 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,25 @@ t_cmd create_cmd(void)
 	return (cmd);
 }
 
-/* Aggiunge l'argomento 'arg' nella prima posizione libera dell'array words di t_cmd */
-void add_arg_to_cmd(t_cmd *cmd, char *arg)
+/* Aggiunge l'argomento 'arg' nella prima posizione libera
+dell'array words di t_cmd.
+RETURNS: 1 on successful execution, 0 on malloc failure. */
+int add_arg_to_cmd(t_cmd *cmd, char *arg)
 {
 	int i;
 
 	if (arg == NULL)
-		return ;
+		return (1);
 	i = 0;
 	while (cmd->words[i] != NULL)
 		i++;
 	cmd->words[i] = ft_strdup(arg);
 	if (!cmd->words[i])
-		write(STDERR_FILENO, "malloc failure\n", 15);
+	{
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
+		return (0);
+	}
+	return (1);
 	//ft_strlcpy(cmd->words[i], arg, ft_strlen(arg));
 	//ft_memmove(&cmd->words[i], arg, ft_strlen(arg));
 }
@@ -92,9 +98,12 @@ void append_cmd(t_cmd *cmd_array, int *index, t_cmd cmd)
    - Infine, aggiunge l'ultimo comando e restituisce l'array.
 */
 
-static void process_word(t_token *token, t_cmd *current_cmd)
+/* RETURNS: 1 on successful execution, 0 on malloc failure. */
+static int process_word(t_token *token, t_cmd *current_cmd)
 {
-	add_arg_to_cmd(current_cmd, token->value);
+	if (!add_arg_to_cmd(current_cmd, token->value))
+		return (0);
+	return (1);
 }
 
 static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char ***vars)
@@ -209,7 +218,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	cmd_array = ft_calloc(sizeof(t_cmd), cmds_count(tokens[0]));
 	if (!cmd_array)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (NULL);
 	}
 	cmd_index = 0;
@@ -220,7 +229,11 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 		//ft_printf("looking at '%s'\n", tokens->value);
 		if (tokens[0]->type == TOKEN_WORD)
 		{
-			process_word(tokens[0], &current_cmd);
+			if (!process_word(tokens[0], &current_cmd))
+			{
+				free_cmd(cmd_array);
+				return (NULL);
+			}
 			tokens[0] = tokens[0]->next;
 			continue;
 		}

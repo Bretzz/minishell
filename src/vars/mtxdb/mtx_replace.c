@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:49:04 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 21:53:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:21:06 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char *build_var(char *name, char *value)
 	var = (char *)ft_calloc(len, sizeof(char));
 	if (var == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "mtx: malloc failure\n", 20);
 		return (NULL);
 	}
 	ft_strlcpy(var, name, ft_strlen(name) + 1);

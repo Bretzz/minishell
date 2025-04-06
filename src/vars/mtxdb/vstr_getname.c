@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vstr_getname.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:41:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:13:34 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:21:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ char	*vstr_getname(char *varstr, char *buff, size_t size)
 	}
 	name = ft_substr(varstr, 0, i);
 	if (name == NULL)
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "vstr: malloc failure\n", 21);
 	return(name);
 }

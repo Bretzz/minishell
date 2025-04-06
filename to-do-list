@@ -111,14 +111,7 @@ also unfollowd pipe, ex: 'cat |', does weird stuff:
 	ciao
 	as if I just wrote: cat | ps
 
-( ! ! ! CHECK LEAKS ! ! ! )
-(DONE) (without redoing getcwd() and chdir())
-REDO: pwd, cd
-	(just change the PWD='/global/path/to/folder' variable)
-	(beware of errors)
-REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
-
-ENV MANAGEMENT: (DONE) ( ! ! ! CHECK LEAKS ! ! ! )
+ENV MANAGEMENT: (DONE)
 	topiana-@c2r3p6:~/live_projects/github/minishell$ unset PWD
 	topiana-@c2r3p6:~/live_projects/github/minishell$ pwd
 	/nfs/homes/topiana-/live_projects/github/minishell
@@ -148,6 +141,13 @@ heredoc sighandler: ( ! ! ! CHECK LEAKS ! ! ! )
 		1. clean the "^C" or "^D"
 		2. (Ctr+D) ask for termination
 			2.1 (Ctr+D) warning message (DONE)
+
+( ! ! ! CHECK LEAKS ! ! ! )
+(without redoing getcwd() and chdir())
+REDO: pwd, cd
+	(just change the PWD='/global/path/to/folder' variable)
+	(beware of errors)
+REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
 
 ======================== T O D O =======================
 

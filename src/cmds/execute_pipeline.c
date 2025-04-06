@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:30:28 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:46:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,9 @@ static int	redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 		return (STDOUT_FILENO);
 	if (pipe(garb[index].pipefd) < 0)
 	{
-		write(STDERR_FILENO, "pipe failure\n", 13);
-		// ...or just return
+		garb[index].pipefd[0] = STDIN_FILENO;
+		garb[index].pipefd[1] = STDOUT_FILENO;
+		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
 		return (STDOUT_FILENO);
 	}
 	return (garb[index].pipefd[1]);
@@ -238,7 +239,7 @@ int	execute_pipeline(char *line, t_cmd *cmd, char ***vars)
 	garb = (t_garb *)ft_calloc(len, sizeof(t_garb));
 	if (garb == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (1);
 	}
 	i = 0;
@@ -246,15 +247,14 @@ int	execute_pipeline(char *line, t_cmd *cmd, char ***vars)
 	{
 		execfd[0] = redir_input(cmd, garb, i, len);
 		execfd[1] = redir_output(cmd, garb, i, len);
-		garb[i].pid = fork();
 		if (garb[i].pid < 0)
 		{
-			write(STDERR_FILENO, "fork failure\n", 13);
-			safeclose(execfd[0]);
-			safeclose(execfd[1]);
-			i++;
-			continue;
-			// ...or just return
+			ft_printfd(STDERR_FILENO, "minishell: %s: fork failure\n", cmd[i].words[0]);
+			father_closes(cmd, garb, i, len);
+			exit_status = mass_wait(garb, i + 1);
+		//	print_garbage(garb, len);
+			free(garb);
+			return (exit_status);
 		}
 		if (garb[i].pid == 0) //child
 		{

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:55:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/02 10:44:48 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:20:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ char	**mtx_init()
 
 	mtx = (char **)malloc(16 * sizeof(char *));
 	if (mtx == NULL)
+	{
+		write(STDERR_FILENO, "mtx: malloc failure\n", 20);
 		return (NULL);
+	}
 	ft_memset(mtx, 0, 16 * sizeof(char *));
 	*(unsigned int *)mtx += 16;
 	return (mtx);
@@ -40,7 +43,7 @@ char	**mtx_expand(char **mtx)
 	new_mtx = ft_realloc(mtx, (*(unsigned int *)mtx) * sizeof(char *), (*(unsigned int *)mtx + 16) * sizeof(char *));
 	if (new_mtx == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "mtx: malloc failure\n", 20);
 		return (mtx);
 	}
 	ft_memset(&new_mtx[*(unsigned int *)new_mtx], 0, 16 * sizeof(char *));

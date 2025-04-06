@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 13:49:24 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:12:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int	get_best_ascii(int *printed, unsigned int len, char **exp)
 		best_ascii++;
 	if (exp[best_ascii] == NULL)
 		return (-1);
-	//ft_printf("new cycle start: %d, len: %d\n", best_ascii, len);
 	i = 1;
 	while (exp[i] != NULL)
 	{
@@ -61,7 +60,7 @@ static void	print_sort_export(int fd, char **exp)
 	printed = (int *)ft_calloc(len, sizeof(int));
 	if (printed == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return ;
 	}
 	all_done = len;
@@ -118,8 +117,8 @@ static void	rank_up(char *varstr, char ***vars)
 //env si, shv si
 int	ft_export(int *fd, t_cmd cmd, char ***vars)
 {
+	int		exit_status;
 	int		i;
-	int		errno;
 
 	if (!cmd.words[1] || cmd.words[1][0] == '\0')
 	{
@@ -128,14 +127,14 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 		return (0);
 	}
 	safeclose(fd[1]);
-	errno = 0;
+	exit_status = 0;
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
 		if (!vstr_name_is_valid(cmd.words[i]))
 		{
 			ft_printfd(STDERR_FILENO, "minishell: export: `%s': not a valid identifier\n", cmd.words[i]);
-			errno = 1;
+			exit_status = 1;
 		}
 		else if (ft_strichr(cmd.words[i], '=') != 0)
 			overwrite(cmd.words[i], vars);
@@ -143,5 +142,5 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 			rank_up(cmd.words[i], vars);
 		i++;
 	}
-	return (errno);
+	return (exit_status);
 }

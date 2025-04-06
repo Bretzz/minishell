@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vstr_getvalue.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:30:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:10:06 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:21:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 	size_t	i;
 	char	*value;
 
+	if (buff != NULL)
+		ft_memset(buff, 0, size);
 	if (varstr == NULL)
 		return (NULL);
 	i = 0;
@@ -36,8 +38,6 @@ char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 	if (varstr[i] == '\0')
 	{
 		//ft_printfd(STDERR_FILENO, "not a var-string: %s\n", varstr);
-		if (buff != NULL)
-			ft_memset(buff, 0, size);
 		return (NULL);
 	}
 	if (buff != NULL)
@@ -47,6 +47,6 @@ char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 	}
 	value = ft_strdup(&varstr[i + 1]);
 	if (value == NULL)
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "vstr: malloc failure\n", 21);
 	return(value);
 }

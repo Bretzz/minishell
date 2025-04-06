@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:28:14 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:48:07 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	dummy_pipe(int *pipefd)
 	close(pipefd[1]);
 	if (pipe(pipefd) < 0)
 	{
-		write(STDERR_FILENO, "pipe failure\n", 13);
+		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
 		return (STDIN_FILENO);
 		// ...or just return
 	}
@@ -58,7 +58,7 @@ static int	exp_write(int fd, char exp_flag, char *line, const char ***vars)
 		exp_line = just_expand_string(line, vars);
 		if (exp_line == NULL)
 		{
-			write(STDOUT_FILENO, "malloc failure\n", 15);
+			write(STDOUT_FILENO, "minishell malloc failure\n", 26);
 			return (0);
 		}
 		else
@@ -83,7 +83,10 @@ int	here_doc(char *limiter, const char ***vars)
 	int		i;
 
 	if (pipe(pipefd) < 0)
-		return (-1);
+	{
+		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
+		return (STDIN_FILENO);
+	}
 	exp_flag = strip_limiter(limiter);
 	doc_initializer();
 	write(STDOUT_FILENO, "> ", 2);

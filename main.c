@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 13:42:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:12:39 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ static int	handle_line(char *line, char ***vars)
 
 static char *close_unclosed(char *line)
 {
-	char	*closed_line;
 	char	*next_line;
 	char	quote;
 	char	last;
@@ -147,20 +146,20 @@ static char *close_unclosed(char *line)
 			quote = 0;
 		i++;
 	}
+	input_initializer();
 	if (quote != 0)
 	{
 		next_line = readline("> ");
-		closed_line = close_unclosed(ft_strjoin_free_nl(line, next_line));
+		line = close_unclosed(ft_strjoin_free_nl(line, next_line));
 		free(next_line);
-		return (closed_line);
 	}
-	if (last == '|' || last == '&') //also for "||", "&" and "&&"
+	else if (last == '|' || last == '&') //also for "||", "&" and "&&"
 	{
 		next_line = readline("> ");
-		closed_line = close_unclosed(ft_strjoin_free_space(line, next_line));
+		line = close_unclosed(ft_strjoin_free_space(line, next_line));
 		free(next_line);
-		return (closed_line);
 	}
+	idle_initializer();
 	return (line);
 }
 
@@ -219,7 +218,7 @@ int	main(int argc, char *argv[], char *__environ[])
 		}
 		line = close_unclosed(line);
 		if (line == NULL)
-			write(STDOUT_FILENO, "malloc failure\n", 15);
+			write(STDOUT_FILENO, "minishell: malloc failure\n", 26);
 		else if (!handle_line(line, vars))
 			return (1);
 		else

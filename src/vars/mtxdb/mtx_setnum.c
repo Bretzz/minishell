@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 19:21:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 19:39:54 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:21:22 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**mtx_setnum(char *name, int value, char **mtx)
 	strval = ft_itoa(value);
 	if (strval == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "mtx: malloc failure\n", 20);
 		return (mtx);
 	}
 	index = mtx_getindex(name, mtx);

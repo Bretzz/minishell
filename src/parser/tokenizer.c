@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/05 18:27:41 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 16:19:22 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ static char	*get_next_word(t_token_type prev_type, const char *line, int *i, con
 	word = ft_substr(line, start, *i - start);
 	if (word == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (NULL);
 	}
 	// cleaned_word = remove_quotes(word);
@@ -176,7 +176,7 @@ static char	*get_next_word(t_token_type prev_type, const char *line, int *i, con
 	else
 		cleaned_word = ft_strdup(word);
 	if (!cleaned_word)
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 	free(word);
 	return (cleaned_word);
 }
@@ -191,7 +191,7 @@ static char	*get_next_word(t_token_type prev_type, const char *line, int *i, con
 	new = malloc(sizeof(t_token));
 	if (new == NULL)
 	{
-		write(STDERR_FILENO, "malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 15);
 		return (0);
 	}
 	new->type = type;
