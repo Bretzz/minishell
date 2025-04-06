@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/06 20:07:31 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 00:35:37 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,32 @@ static void	raccattagarbage(t_cmd garbage)
 	safeclose(garbage.fd[1]);
 }
 
+static int	expand_tokens(t_token *tokens, const char ***vars)
+{
+	char	*exp_value;
+	t_token	*prev;
+	
+	prev = NULL;
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_WORD
+			&& (!prev || prev->type != TOKEN_HERE_DOC))
+		{
+			exp_value = expand_string(tokens->value, vars);
+			if (exp_value == NULL)
+			{
+				write(STDERR_FILENO, "minishell: malloc failure\n", 26);
+				return (0);
+			}
+			free(tokens->value);
+			tokens->value = exp_value;
+		}
+		prev = tokens;
+		tokens = tokens->next;
+	}
+	return (1);
+}
+
 t_cmd *parse_tokens(char *line, const char ***vars)
 {
 	t_token	*tokens[2];
@@ -210,10 +236,13 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	int		cmd_index;
 
 	if (DEBUG) {ft_printf("NOTE: right now '|' and ';' works the same: both pipes\n");}
-	if (!syntax_check(line))
-		return (NULL);
-	tokens[0] = tokenizer(line, vars);
+	// if (!syntax_check(line))
+	// 	return (NULL);
+	cut_comment(line);
+	tokens[0] = tokenizer(line);
 	tokens[1] = tokens[0];
+	if (!syntax_tokens(tokens[0]) || !expand_tokens(tokens[0], vars))
+		return (NULL);
 	/* print_tokens(tokens);
 	printf("\n\n"); */
 	cmd_array = ft_calloc(sizeof(t_cmd), cmds_count(tokens[0]));

@@ -43,7 +43,7 @@ SRC_FILES		= main.c \
 				ft_execve.c pipex_stolen.c builtin_bridge.c\
 				execute_pipeline.c execute_command.c \
 				\
-				parser.c tokenizer.c syntax_check.c \
+				parser.c tokenizer.c syntax_check.c syntax_tokens.c \
 				\
 				handle_vars.c expand_string.c here_doc.c \
 				signals.c\

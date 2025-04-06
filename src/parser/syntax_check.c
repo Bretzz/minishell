@@ -3,17 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 19:49:12 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 21:21:35 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 23:28:42 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-int	syntax_check(char *line);
+int		syntax_check(char *line);
+void	cut_comment(char *line);
+
+void	cut_comment(char *line)
+{
+	size_t	i;
+
+	if (line == NULL)
+		return ;
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '#')
+		{
+			line[i] = '\0';
+			break ;
+		}
+		i++;
+	}
+}
 
 static void	skip_quotes(char *line, size_t *i)
 {
@@ -76,7 +95,7 @@ static int	redir_in_check(char *line)
 	if (*(line) == '\0')
 		return (1 + is_double);
 	next = next_not_whitespace(line);
-	if (ft_strchr("~`!@#%^&*()[]{}+-\\/:<|>", next))
+	if (ft_strchr("`#&*()\\<|>", next))
 		return (1 + is_double);
 	while (*(line) && ft_isspace(*line))
 		line++;
@@ -103,7 +122,7 @@ static int	redir_out_check(char *line)
 	if (*(line) == '\0')
 		return (1 + is_double);
 	next = next_not_whitespace(line);
-	if (ft_strchr("~`!@#%^&*()[]{}+-\\/:<|>", next))
+	if (ft_strchr("`#&*()\\<|>", next))
 		return (1 + is_double);
 	while (*(line) && ft_isspace(*line))
 		line++;
@@ -114,7 +133,7 @@ static int	redir_out_check(char *line)
 
 static int	valid_char_check(char c)
 {
-	if (ft_strchr("~`!@#%^&*()[]{}+-\\/:", c))
+	if (ft_strchr("`#%^&*()[]{}\\:", c))
 		return (1);
 	return (0);
 }

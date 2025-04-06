@@ -134,6 +134,9 @@ also Ctrl-D in heredoc: (DONE)
 << X | grep a (DONE)
 << X cat >out | <out grep a (DONE)
 
+"| | |" (DONE)
+bash: syntax error near unexpected token `|'
+
 ======================== ONGOING =======================
 
 heredoc sighandler: ( ! ! ! CHECK LEAKS ! ! ! )
@@ -152,6 +155,12 @@ REDO: pwd, cd
 	(beware of errors)
 REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
 
+SYNTAX:
+	basics (DONE)
+	raccata roba (here_docs)
+	check valgrind
+	extensive testing
+
 ======================== T O D O =======================
 
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
@@ -160,12 +169,7 @@ REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, p
 
 SHLVL=3 :)))))))))))))))))))))))
 
-raccata roba dopo syntax error.
-
 ------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
-
-"| | |"
-bash: syntax error near unexpected token `|'
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 
@@ -180,6 +184,9 @@ EXTRA (FAKE NEWS)
 	"pwd; cd .." doesn't
 
 ----------------------> MIXED PROBLEMS <-----------------------
+
+bash-3.2$ echo $
+$
 
 ----------------------> TO INVESTIGATE <-----------------------
 
@@ -199,6 +206,8 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
+
+temp files or pipes?
 
 -------------------> THINGS TO DISCUSS <-------------------
 

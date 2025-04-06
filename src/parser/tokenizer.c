@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/06 19:01:17 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 00:35:48 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,12 +140,11 @@ char	*remove_quotes(char *str)
 
 
 /* returns a dynamicly allocated mem addres */
-static char	*get_next_word(t_token_type prev_type, const char *line, int *i, const char ***vars)
+static char	*get_next_word(const char *line, int *i)
 {
 	int		start;
 	char	quote;
 	char	*word;
-	char	*cleaned_word;
 
 	start = *i;
 	quote = 0;
@@ -169,16 +168,7 @@ static char	*get_next_word(t_token_type prev_type, const char *line, int *i, con
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (NULL);
 	}
-	// cleaned_word = remove_quotes(word);
-	// free(word);
-	if (prev_type != TOKEN_HERE_DOC)
-		cleaned_word = expand_string(word, vars);
-	else
-		cleaned_word = ft_strdup(word);
-	if (!cleaned_word)
-		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
-	free(word);
-	return (cleaned_word);
+	return (word);
 }
 
 /* static  */int	add_token(t_token **tokens, t_token_type type, char *value)
@@ -212,7 +202,6 @@ static char	*get_next_word(t_token_type prev_type, const char *line, int *i, con
 	return (1);
 }
 
-/* ! ! ! UNUSED FUNCTION ! ! ! */
 char *get_rekd(t_token_type type)
 {
     if (type == TOKEN_PIPE)
@@ -229,20 +218,12 @@ char *get_rekd(t_token_type type)
         return (ft_strdup("<<"));
     return (NULL);
 }
- 
-static t_token_type last_token_type(t_token *tokens)
-{
-	if (tokens == NULL)
-		return (TOKEN_WORD);
-	while(tokens->next != NULL)
-		tokens = tokens->next;
-	return (tokens->type);
-}
 
-t_token	*tokenizer(char *line, const char ***vars)
+t_token	*tokenizer(char *line)
 {
-	t_token		*tokens;
-	int			i;
+	t_token			*tokens;
+	t_token_type	type;
+	int				i;
 
 	if (line == NULL)
 		return (NULL);
@@ -255,12 +236,13 @@ t_token	*tokenizer(char *line, const char ***vars)
 			break ;
 		if (is_operator(line, i))
 		{
-			if (!add_token(&tokens, get_next_operator(line, &i), NULL))
+			type = get_next_operator(line, &i);
+			if (!add_token(&tokens, type, get_rekd(type)))
 				return (free_tokens(tokens), NULL);
 		}
 		else
 		{
-			if (!add_token(&tokens, TOKEN_WORD, get_next_word(last_token_type(tokens), line, &i, vars)))
+			if (!add_token(&tokens, TOKEN_WORD, get_next_word(line, &i)))
 				return (free_tokens(tokens), NULL);
 		}
 	}

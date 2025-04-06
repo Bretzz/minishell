@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 20:26:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 00:41:03 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ int	main(int argc, char *argv[], char *__environ[])
 			write(STDOUT_FILENO, "exit\n", 5);
 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
 		}
-		line = close_unclosed(line);
+		// line = close_unclosed(line);	//NOTE: should make a syntax check before going forward
 		if (line == NULL)
 			write(STDOUT_FILENO, "minishell: malloc failure\n", 26);
 		else if (!handle_line(line, vars))
