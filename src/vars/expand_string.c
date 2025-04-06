@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 19:02:02 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:46:36 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ static char	*wide_search(char *str, const char ***vars)
 	name = ft_substr(str, 0, ft_varlen(str));
 	if (!name)
 		return (NULL);
-	//ft_printf("searching: '%s'\n", name);
+//	ft_printf("searching: '%s'\n", name);
 	i = 1;
 	while (i >= 0)
 	{
 		value = mtx_findval(name, NULL, 0, (char **)(vars[i]));
 		if (value != NULL)
 		{
-			//ft_printf("found: %s\n", value);
+//			ft_printf("found: %s\n", value);
 			free(name);
 			return (value);
 		}
