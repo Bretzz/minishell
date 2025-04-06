@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 18:58:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 20:26:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ static char *close_unclosed(char *line)
 		line = close_unclosed(ft_strjoin_free_nl(line, next_line));
 		free(next_line);
 	}
-	else if (last == '|' || last == '&') //also for "||", "&" and "&&"
+	else if (last == '|'/*  || last == '&' */) //also for "||", "&" and "&&"
 	{
 		next_line = readline("> ");
 		line = close_unclosed(ft_strjoin_free_space(line, next_line));

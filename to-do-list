@@ -158,6 +158,10 @@ REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, p
 	/		! ! ! REMOVE FT_FREENTF ! ! !			/
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 
+SHLVL=3 :)))))))))))))))))))))))
+
+raccata roba dopo syntax error.
+
 ------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
 
 "| | |"

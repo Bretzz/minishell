@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/06 19:01:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 20:07:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,12 +204,14 @@ static void	raccattagarbage(t_cmd garbage)
 
 t_cmd *parse_tokens(char *line, const char ***vars)
 {
-	t_token *tokens[2];
-	t_cmd *cmd_array;
-	t_cmd current_cmd;
-	int cmd_index;
+	t_token	*tokens[2];
+	t_cmd	*cmd_array;
+	t_cmd	current_cmd;
+	int		cmd_index;
 
 	if (DEBUG) {ft_printf("NOTE: right now '|' and ';' works the same: both pipes\n");}
+	if (!syntax_check(line))
+		return (NULL);
 	tokens[0] = tokenizer(line, vars);
 	tokens[1] = tokens[0];
 	/* print_tokens(tokens);

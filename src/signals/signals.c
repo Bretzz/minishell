@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/05 12:02:39 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/06 20:25:38 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void idle_handler(int signal)
     if (signal == SIGINT)
     {
         // Stampa un newline (così se sei in un comando come "cat", va a capo)
-        write(STDOUT_FILENO, "^C\n", 3);    //heheh
+        write(STDOUT_FILENO, "\n", 1);    //heheh
         // Cancella la linea corrente e prepara readline per una nuova linea
         rl_replace_line("", 0);   //MacOS issues
         rl_on_new_line();
