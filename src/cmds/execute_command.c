@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 18:52:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:11:30 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_cmd	pop_arg(t_cmd cmd, int index)
 	len = ft_mtxlen((const void **)cmd.words);
 	if (index < 0 || (size_t)index >= len)
 		return (cmd);
+	free(cmd.words[index]);
 	cmd.words[index] = NULL;
 	i = 0;
 	while (i < len)
