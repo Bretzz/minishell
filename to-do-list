@@ -183,6 +183,14 @@ NOTES:
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 
+minishell% cat
+^\
+minishell% echo $?
+0
+minishell% 
+
+AND HEREDOC IS CORRUPTED AFTER ^\
+
 PIPESTATUS (NOT NECESSARY)
 	An array variable de containing a list of
 	exit status values from the processes in the most-recently-executed foreground

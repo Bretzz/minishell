@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 19:25:45 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:43:20 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ int	here_doc(char *limiter, const char ***vars)
 		return (STDIN_FILENO);
 	exp_flag = strip_limiter(limiter);
 	doc_initializer();
-	write(STDOUT_FILENO, "> ", 2);
-	line = get_next_line(STDIN_FILENO);
+	line = readline("> ");
 	i = 1;
 	while (!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
 			&& line[ft_strlen(limiter)] == '\n'))
@@ -110,12 +109,16 @@ int	here_doc(char *limiter, const char ***vars)
 				return (safeclose(open_doc(CREATE)),
 					read_doc(open_doc(GETNUM)));
 			}
-			ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
+			else if (g_last_sig == SIGQUIT)
+				g_last_sig = 0;
+			else
+			{
+				ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
 delimited by end-of-file (wanted `%s')\n", i, limiter);
-			break ;
+				break ;
+			}
 		}
-		write(STDOUT_FILENO, "> ", 2);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("> ");
 		i++;
 	}
 	free(line);
@@ -126,3 +129,64 @@ delimited by end-of-file (wanted `%s')\n", i, limiter);
 		return (STDIN_FILENO);
 	return (fd);
 }
+
+// int	here_doc(char *limiter, const char ***vars)
+// {
+// 	int			fd;
+// 	char		*line;
+// 	char		exp_flag;
+// 	int			i;
+
+// 	fd = open_doc(CREATE);
+// 	if (fd < 0)
+// 		return (STDIN_FILENO);
+// 	exp_flag = strip_limiter(limiter);
+// 	doc_initializer();
+// 	write(STDOUT_FILENO, "> ", 2);
+// 	line = get_next_line(STDIN_FILENO);
+// 	i = 1;
+// 	while (!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
+// 			&& line[ft_strlen(limiter)] == '\n'))
+// 	{
+// 		if (line != NULL)
+// 		{
+// 			if (!exp_write(fd, exp_flag, line, vars))
+// 			{
+// 				free(line);
+// 				clean_exit(fd);
+// 				return (safeclose(open_doc(CREATE)),
+// 					read_doc(open_doc(GETNUM)));
+// 			}
+// 			free(line);
+// 		}
+// 		else
+// 		{
+// 			if (g_last_sig == SIGINT)
+// 			{
+// 				g_last_sig = 0;
+// 				clean_exit(fd);
+// 				return (safeclose(open_doc(CREATE)),
+// 					read_doc(open_doc(GETNUM)));
+// 			}
+// 			else if (g_last_sig != SIGQUIT)
+// 			{
+// 				ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
+// delimited by end-of-file (wanted `%s')\n", i, limiter);
+// 				break ;
+// 			}
+// 		}
+// 		if (g_last_sig == SIGQUIT)
+// 			g_last_sig = 0;
+// 		else
+// 			write(STDOUT_FILENO, "> ", 2);
+// 		line = get_next_line(STDIN_FILENO);
+// 		i++;
+// 	}
+// 	free(line);
+// 	safeclose(fd);
+// //	idle_initializer();
+// 	fd = read_doc(open_doc(GETNUM));
+// 	if (fd < 0)
+// 		return (STDIN_FILENO);
+// 	return (fd);
+// }

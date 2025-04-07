@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/07 19:29:17 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:18:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ static void idle_handler(int signal)
     }
     else if (signal == SIGQUIT)
     {
-		write(STDOUT_FILENO, "\n", 1);    //heheh
-		rl_replace_line("Pterodattilo!\n", 14);
+	//	write(STDOUT_FILENO, "\n", 1);    //heheh
+	//	rl_replace_line("Pterodattilo!\n", 14);
+		write(STDERR_FILENO, "\b\b  \b\b", 6);    //heheh
         //ft_printf("Pterodattilo!\n");
-//		rl_replace_line("", 0);   //MacOS issues
-        rl_on_new_line();
-        rl_redisplay();
+		// rl_replace_line("", 0);   //MacOS issues
+        // //rl_on_new_line();
+        // rl_redisplay();
 
 		g_last_sig = SIGQUIT;
     }
@@ -54,14 +55,20 @@ static void input_handler(int signal)
         // Stampa un newline (così se sei in un comando come "cat", va a capo)
         write(STDOUT_FILENO, "\n", 1);    //heheh
         // Cancella la linea corrente e prepara readline per una nuova linea
-        rl_replace_line("", 0);   //MacOS issues
-        rl_on_new_line();
+   //     rl_replace_line("", 0);   //MacOS issues
+    //	    rl_on_new_line();
         // rl_redisplay();
         g_last_sig = SIGINT;
     }
     else if (signal == SIGQUIT)
     {
-        ft_printf("Pterodattilo!\n");
+		write(STDOUT_FILENO, "\n", 1);    //heheh
+        // Cancella la linea corrente e prepara readline per una nuova linea
+        rl_replace_line("", 0);   //MacOS issues
+        //rl_on_new_line();
+        rl_redisplay();
+        //ft_printf("Pterodattilo!\n");
+		g_last_sig = SIGQUIT;
     }
 }
 
@@ -81,7 +88,12 @@ static void doc_handler(int signal)
     }
     else if (signal == SIGQUIT)
     {
-        ft_printf("Pterodattilo!\n");
+	//	rl_replace_line("", 0);   //MacOS issues
+		write(STDERR_FILENO, "\b\b  \b\b", 6);
+	//	rl_on_new_line();
+     //   rl_redisplay();
+        //ft_printf("Pterodattilo!\n");
+		g_last_sig = SIGQUIT;
     }
 }
 
