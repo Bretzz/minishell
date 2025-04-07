@@ -186,7 +186,7 @@ NOTES:
 minishell% cat
 ^\
 minishell% echo $?
-0
+0 (should be 131)
 minishell% 
 
 AND HEREDOC IS CORRUPTED AFTER ^\
