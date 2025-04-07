@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 19:25:34 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 23:37:36 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define CLEAN_EXIT -1 /* Return value to close the program */
 
 # define MAX_ARGS 100	/* Max number of arguments to a command */
-# define MAX_PATH 1024	/* Max number of cahrs that can compose a path. */
+# define MAX_PATH 4097	/* Max number of cahrs that can compose a path. */
 
 /* I/O REDIRECTION FLAGS */
 # define STDL 0		/* Standard Location: STDIN STDOUT execution */
@@ -85,6 +85,7 @@ void	close_docs(void);
 
 int		execute_command(char *line, t_cmd *cmd, char ***vars);
 int		execute_pipeline(char *line, t_cmd *cmd_arr, char ***vars);
+int		ft_wifexited(pid_t pid);
 
 t_cmd	pop_arg(t_cmd cmd, int index);
 

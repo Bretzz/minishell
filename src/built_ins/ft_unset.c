@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:21:42 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/07 21:16:05 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,22 @@ static void	mass_drop(char ***vars, char *var)
 
 int	ft_unset(int *fd, t_cmd cmd, char ***vars)
 {
-	int		errno;
+	int		exit_status;
 	int		i;
 
-	errno = 0;
+	exit_status = 0;
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
 		if (!vstr_name_is_valid(cmd.words[i]))
 		{
 			ft_printfd(STDERR_FILENO, "minishell: unset: `%s': not a valid identifier\n", cmd.words[i]);
-			errno = 1;
+			exit_status = 1;
 		}
 		else
 			mass_drop(vars, cmd.words[i]);
 		i++;
 	}
 	safeclose(fd[1]);
-	return (errno);
+	return (exit_status);
 }

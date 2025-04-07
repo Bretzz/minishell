@@ -272,3 +272,6 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 
 
 cd ~ non funziona. deve cambiare la diectory con home. seems easy enough
+
+ACCESS deve controllare se il comando passatoe  una dritacctory
+fne\THE DNdeE

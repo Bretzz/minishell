@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:45:18 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:46:44 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 int		execute_command(char *line, t_cmd *cmd, char ***vars);
 t_cmd	pop_arg(t_cmd cmd, int index);
 int		dummy_in_pipe(void);
+int		ft_wifexited(pid_t pid);
+
+int	ft_wifexited(pid_t pid)
+{
+	int	status;
+	
+	waitpid(pid, &status, WUNTRACED);
+	if ((status & 0xFF) == 0)
+		return ((status >> 8) & 0xFF);
+	else
+		return (128 + (status & 0x7F));
+	return (EXIT_SUCCESS);	
+}
+
 
 static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 {
@@ -64,13 +78,14 @@ t_cmd	pop_arg(t_cmd cmd, int index)
 	return (cmd);
 }
 
+
 /* Launches an ft_execve inside a fork for the single command.
 Returns the exit code of ft_execve, which is either 127, 1, the one of the command launched
 of -1 (in really bad cases) */
 static int	fork_external(int *execfd, char *line, t_cmd *cmd, char ***vars)
 {
 	pid_t 	pid;
-	int		exit_status;
+	int		exit_code;
 	
 	pid = fork();
 	if (pid < 0)
@@ -84,17 +99,15 @@ static int	fork_external(int *execfd, char *line, t_cmd *cmd, char ***vars)
 	if (pid == 0)
 	{
 		safeclose(cmd->close_me);
-		/* Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT */
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		exit_status = ft_execve(execfd, cmd[0], vars[1] + 1);
-		clean_exit(cmd, line, vars, exit_status);
+		exit_code = ft_execve(execfd, cmd[0], vars[1] + 1);
+		clean_exit(cmd, line, vars, exit_code);
 	}
 	safeclose(execfd[0]);
 	safeclose(execfd[1]);
-	waitpid(pid, &exit_status, WUNTRACED);
 	safeclose(cmd->close_me);
-	return (((exit_status) & 0xff00) >> 8);
+	return (ft_wifexited(pid));
 }
 
 /* execute the first command and returns the exit code.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/07 20:18:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 23:25:45 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void idle_handler(int signal)
         rl_replace_line("", 0);   //MacOS issues
         rl_on_new_line();
         rl_redisplay();
-        g_last_sig = SIGINT;
     }
     else if (signal == SIGQUIT)
     {
@@ -43,9 +42,8 @@ static void idle_handler(int signal)
 		// rl_replace_line("", 0);   //MacOS issues
         // //rl_on_new_line();
         // rl_redisplay();
-
-		g_last_sig = SIGQUIT;
     }
+	g_last_sig = signal;
 }
 
 static void input_handler(int signal)
@@ -58,18 +56,17 @@ static void input_handler(int signal)
    //     rl_replace_line("", 0);   //MacOS issues
     //	    rl_on_new_line();
         // rl_redisplay();
-        g_last_sig = SIGINT;
     }
     else if (signal == SIGQUIT)
     {
-		write(STDOUT_FILENO, "\n", 1);    //heheh
+		write(STDOUT_FILENO, "(Quit)Core bumped\n", 19);    //heheh
         // Cancella la linea corrente e prepara readline per una nuova linea
         rl_replace_line("", 0);   //MacOS issues
         //rl_on_new_line();
         rl_redisplay();
         //ft_printf("Pterodattilo!\n");
-		g_last_sig = SIGQUIT;
     }
+	g_last_sig = signal;
 }
 
 static void doc_handler(int signal)
@@ -78,23 +75,12 @@ static void doc_handler(int signal)
     {
         // Stampa un newline (così se sei in un comando come "cat", va a capo)
         write(STDOUT_FILENO, "\n", 1);    //heheh
-       // ioctl(STDOUT_FILENO, I_FLUSH);
-        // write(STDIN_FILENO, "\n", 1); 
-        // Cancella la linea corrente e prepara readline per una nuova linea
-        // rl_replace_line("", 0);   //MacOS issues
-        // rl_on_new_line();
-        // rl_redisplay();
-        g_last_sig = SIGINT;
     }
-    else if (signal == SIGQUIT)
+    else if (signal == SIGQUIT || signal == SIGTSTP)
     {
-	//	rl_replace_line("", 0);   //MacOS issues
 		write(STDERR_FILENO, "\b\b  \b\b", 6);
-	//	rl_on_new_line();
-     //   rl_redisplay();
-        //ft_printf("Pterodattilo!\n");
-		g_last_sig = SIGQUIT;
     }
+	g_last_sig = signal;
 }
 
 void	idle_initializer(void)
@@ -106,6 +92,7 @@ void	idle_initializer(void)
 	waiter.sa_flags = 0;
 	sigaction(SIGINT, &waiter, NULL);
 	sigaction(SIGQUIT, &waiter, NULL);
+	//rl_catch_signals = 0;
 }
 
 void    input_initializer(void)
@@ -128,6 +115,7 @@ void    doc_initializer(void)
 	doc_here.sa_flags = 0;
 	sigaction(SIGINT, &doc_here, NULL);
 	sigaction(SIGQUIT, &doc_here, NULL);
+	sigaction(SIGTSTP, &doc_here, NULL);
 }
 
 // studiare con signal

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:03:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:16:05 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ not freeing any external stuff (like the cmd array). */
 int	ft_execve(int *fd, t_cmd cmd, char **env)
 {
 	char	*path;
-	int		errno;
+	int		exit_status;
 
 	path = NULL;
 	if (!cmd.words[0])
@@ -75,9 +75,9 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 		path = ft_strdup(cmd.words[0]);
 	else
 		path = find_env_path(cmd.words[0], env);
-	errno = error_check(cmd, path);
-	if (errno != 0)
-		return (clean_exit(path, fd), errno);
+	exit_status = error_check(cmd, path);
+	if (exit_status != 0)
+		return (clean_exit(path, fd), exit_status);
 	if (DEBUG) {ft_printf("executing '%s' on: [%d,%d]\n", cmd.words[0], fd[0], fd[1]);}
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:45:35 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:48:39 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,8 +175,8 @@ static int	mass_wait(t_garb *garb, size_t len)
 		waitpid(garb[i].pid, NULL, WUNTRACED);
 		i++;
 	}
-	exit_code = 0;
-	waitpid(garb[i].pid, &exit_code, WUNTRACED);
+	exit_code = ft_wifexited(garb[i].pid);
+	//waitpid(garb[i].pid, &exit_code, WUNTRACED);
 	i = 0;
 	while (i < len) /* AWWWWWWW SOOOO CUTEEE :3 */
 	{
@@ -184,7 +184,7 @@ static int	mass_wait(t_garb *garb, size_t len)
 		safeclose(garb[i].pipefd[1]);
 		i++;
 	}
-	return (((exit_code) & 0xff00) >> 8);
+	return (exit_code);
 }
 
 // static void print_garbage(t_garb *garb, size_t len)

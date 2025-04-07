@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:33:39 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 23:36:42 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 {
 	char	*oldpwd;
 	char	*pwd;
-	char	*tar_dir;
+	char	tar_dir[MAX_PATH];
 
 	safeclose(fd[1]);
 	if (cmd.words[2] != NULL)
@@ -112,12 +112,12 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 	if (cmd.words[1] == NULL)
 	{
 		// → cd senza argomenti => vai in HOME
-		tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
-		if (!tar_dir)
-		{
-			write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
-			return (1);
-		}
+		mtx_findval("HOME", tar_dir, MAX_PATH, vars[1]);
+		// if (!tar_dir)
+		// {
+		// 	write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
+		// 	return (1);
+		// }
 	}
 	else if (!ft_strncmp(cmd.words[1], "~", 1))
 	{
@@ -125,20 +125,21 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 		// Se è "~" da solo, tar_dir = HOME
 		// Se è "~/qualcosa", tar_dir = HOME + "/qualcosa"
 		// etc.
-		tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
-		if (!tar_dir)
-		{
-			write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
-			return (1);
-		}
+		mtx_findval("HOME", tar_dir, MAX_PATH, vars[1]);
+		// if (!tar_dir)
+		// {
+		// 	write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
+		// 	return (1);
+		// }
 		if (!ft_strncmp(cmd.words[1], "~/", 2))
-			tar_dir = ft_strjoin(tar_dir, cmd.words[1] + 1);
+			ft_strlcat(tar_dir, cmd.words[1] + 1, MAX_PATH);
+			//tar_dir = ft_strjoin_free(tar_dir, cmd.words[1] + 1);
 		// Altrimenti (~ da solo) rimane tar_dir = HOME
 	}
 	else
 	{
 		// → cd <altro path>
-		tar_dir = cmd.words[1];
+		ft_strlcpy(tar_dir, cmd.words[1], MAX_PATH);
 	}
 
 	oldpwd = getcwd(NULL, 0);
@@ -151,8 +152,8 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 	pwd = getcwd(NULL, 0);	//catch error
 	update_pwd(oldpwd, pwd, vars);
 	free(oldpwd); free(pwd);
-	if (cmd.words[1] == NULL)
-		free(tar_dir);
+	// if (cmd.words[1] == NULL || !ft_strncmp(cmd.words[1], "~", 1))
+	// 	free(tar_dir);
 	//ft_printf("  TODO: update PWD automatically\n\tgo HOME if only 'cd'\n\tjust read the man...\n");
 	return (0);
 }
