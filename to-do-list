@@ -254,3 +254,13 @@ pipe da solo non da error
 ls | grep out; echo $?
 ciao$"$ciao"$$'$ciao
 ci$ao$"$ciao"$'$ciao'
+
+
+
+1. cd chiama la funzione chdir che modifica la working directing
+prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiamare chdir
+
+2. le varibili PWD e OLD_PWD vengono modificate da cd e capire come e farlo e implemetalro.e  sistemarlo. e runnarlo. e debuggarlo.
+
+
+cd ~ non funziona. deve cambiare la diectory con home. seems easy enough

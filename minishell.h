@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 17:39:12 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:17:21 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <term.h>
-
+# include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
