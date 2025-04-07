@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 14:06:27 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:50:41 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ static void	update_pwd(char *oldpwd, char *pwd, char ***vars)
 	the call to cd).
 
 RETURNS: 1 on error, 0 on successfull execution. */
+
 int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 {
 	char	*oldpwd;
@@ -93,24 +94,57 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 	{
 		write(STDERR_FILENO, "minishell: cd: too many argument\n", 33);
 		return (1);
-		//better error handling
 	}
+	
+	// if (cmd.words[1] == NULL || !ft_strncmp(cmd.words[1], "~", 1))
+	// {
+	// 	tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
+	// 	if (tar_dir == NULL)
+	// 	{
+	// 		write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
+	// 		return (1);
+	// 	}
+	// 	else if (!ft_strncmp(cmd.words[1], "~/", 2))
+	// 		tar_dir = ft_strjoin(mtx_findval("HOME", NULL, 0, vars[1]), cmd.words[1] + 1);
+	// 	else
+	// 		tar_dir = cmd.words[1];
+	// }
 	if (cmd.words[1] == NULL)
 	{
+		// → cd senza argomenti => vai in HOME
 		tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
-		if (tar_dir == NULL)
+		if (!tar_dir)
 		{
 			write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
 			return (1);
 		}
 	}
+	else if (!ft_strncmp(cmd.words[1], "~", 1))
+	{
+		// → cd ~ [qualcosa] => espandi la tilde
+		// Se è "~" da solo, tar_dir = HOME
+		// Se è "~/qualcosa", tar_dir = HOME + "/qualcosa"
+		// etc.
+		tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
+		if (!tar_dir)
+		{
+			write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
+			return (1);
+		}
+		if (!ft_strncmp(cmd.words[1], "~/", 2))
+			tar_dir = ft_strjoin(tar_dir, cmd.words[1] + 1);
+		// Altrimenti (~ da solo) rimane tar_dir = HOME
+	}
 	else
+	{
+		// → cd <altro path>
 		tar_dir = cmd.words[1];
-	//ft_printf("new-dir=%s\n", cmd.words[1]);
+	}
+
 	oldpwd = getcwd(NULL, 0);
 	if (chdir(tar_dir) < 0)
 	{
-		//handle errno
+		ft_printf("minishell: cd: %s: %s\n", tar_dir, strerror(errno));
 		return (1); //return errno
 	}
 	pwd = getcwd(NULL, 0);	//catch error

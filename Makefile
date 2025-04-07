@@ -113,7 +113,7 @@ $(OBJS_DIR):
 
 #-D DEBUG=1				(dopo $(CFLAGS))
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR) 
-	@$(CC) $(CFLAGS) -D DEBUG=1	$(INK) $(DEFS) -c $< -o $@
+	@$(CC) $(CFLAGS) -D DEBUG=0	$(INK) $(DEFS) -c $< -o $@
 
 $(EXE_DIR):
 	@mkdir -p $(EXE_DIR)
