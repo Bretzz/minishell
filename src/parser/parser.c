@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/07 00:35:37 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/07 13:06:38 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,10 @@ static void	raccattagarbage(t_cmd garbage)
 	safeclose(garbage.fd[1]);
 }
 
+/* Takes a token list and the vars as parameter.
+Expands every TOKEN_WORD's value with env or shell variables inside,
+then removes quotes.
+RETURNS: 0 on malloc failure, 1 on successful expansion. */
 static int	expand_tokens(t_token *tokens, const char ***vars)
 {
 	char	*exp_value;
@@ -213,6 +217,7 @@ static int	expand_tokens(t_token *tokens, const char ***vars)
 		if (tokens->type == TOKEN_WORD
 			&& (!prev || prev->type != TOKEN_HERE_DOC))
 		{
+			if (DEBUG) {ft_printf("expanding: [%s]...\n", tokens->value);}
 			exp_value = expand_string(tokens->value, vars);
 			if (exp_value == NULL)
 			{
@@ -221,6 +226,7 @@ static int	expand_tokens(t_token *tokens, const char ***vars)
 			}
 			free(tokens->value);
 			tokens->value = exp_value;
+			if (DEBUG) {ft_printf("...expanded: [%s]\n", tokens->value);}
 		}
 		prev = tokens;
 		tokens = tokens->next;
@@ -236,12 +242,9 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	int		cmd_index;
 
 	if (DEBUG) {ft_printf("NOTE: right now '|' and ';' works the same: both pipes\n");}
-	// if (!syntax_check(line))
-	// 	return (NULL);
-	cut_comment(line);
 	tokens[0] = tokenizer(line);
 	tokens[1] = tokens[0];
-	if (!syntax_tokens(tokens[0]) || !expand_tokens(tokens[0], vars))
+	if (/* !syntax_tokens(tokens[0]) ||  */!expand_tokens(tokens[0], vars))
 		return (NULL);
 	/* print_tokens(tokens);
 	printf("\n\n"); */

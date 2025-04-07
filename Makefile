@@ -43,7 +43,7 @@ SRC_FILES		= main.c \
 				ft_execve.c pipex_stolen.c builtin_bridge.c\
 				execute_pipeline.c execute_command.c \
 				\
-				parser.c tokenizer.c syntax_check.c syntax_tokens.c \
+				parser.c tokenizer.c syntax_tokens.c syntax_line.c \
 				\
 				handle_vars.c expand_string.c here_doc.c \
 				signals.c\
@@ -111,9 +111,9 @@ loading:
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
-#-D DEBUG=0				(dopo $(CFLAGS))
+#-D DEBUG=1				(dopo $(CFLAGS))
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR) 
-	@$(CC) $(CFLAGS) $(INK) $(DEFS) -c $< -o $@
+	@$(CC) $(CFLAGS) -D DEBUG=1	$(INK) $(DEFS) -c $< -o $@
 
 $(EXE_DIR):
 	@mkdir -p $(EXE_DIR)

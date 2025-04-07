@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_space.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 17:36:33 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/07 12:28:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 char	*ft_strjoin_free_nl(char *s1, char *s2);
 
 size_t	ft_strlen_space(const char *s);
+size_t	ft_strlen_nl(const char *s);
+
 size_t	ft_mtxlen(const void **mtx);
 size_t	ft_varlen(const char *s);
 
@@ -47,7 +49,7 @@ size_t	ft_mtxlen(const void **mtx)
 	return (i);
 }
 
-/* size_t	ft_strlen_nl(const char *s)
+size_t	ft_strlen_nl(const char *s)
 {
 	size_t	i;
 
@@ -55,7 +57,7 @@ size_t	ft_mtxlen(const void **mtx)
 	while (s[i] && s[i] != '\n')
 		i++;
 	return (i);
-} */
+}
 
 size_t	ft_strlen_space(const char *s)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 23:29:52 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/07 00:40:17 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/07 12:02:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	pipe_check(t_token *pipe, t_token *prev)
 		return (0);
 	if (prev == NULL)
 		return (1);
-	if (!pipe->next || pipe->near->type == TOKEN_PIPE)
+	if (pipe->next && pipe->next->type == TOKEN_PIPE)
 		return (1);
 	return (0);
 }

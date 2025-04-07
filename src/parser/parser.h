@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/07 00:35:22 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/07 12:01:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ char 			*get_rekd(t_token_type type);
 
 void			print_tokens(t_token *tokens);
 
-int				syntax_check(char *line);
+//int				syntax_check(char *line);
 int				syntax_tokens(t_token *tokens);
-
-void			cut_comment(char *line);
+char			*syntax_line(char *line);
 
 #endif

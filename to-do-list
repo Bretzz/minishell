@@ -132,6 +132,7 @@ also Ctrl-D in heredoc: (DONE)
 	bash: warning: here-document at line 4 delimited by end-of-file (wanted `LIMITER')
 
 << X | grep a (DONE)
+
 << X cat >out | <out grep a (DONE)
 
 "| | |" (DONE)
@@ -161,7 +162,7 @@ SYNTAX:
 	3. check valgrind
 	4. extensive testing
 NOTES:
-	heading whitespace before '#' and exclude if in quotes
+	heading whitespace before '#' and exclude if in quotes (DONE)
 	general quotes exclusion in word_check()
 
 ======================== T O D O =======================
@@ -209,6 +210,8 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
+
+check this shit
 
 temp files or pipes?
 

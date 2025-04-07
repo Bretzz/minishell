@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 00:41:03 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/07 12:40:33 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,45 +123,45 @@ static int	handle_line(char *line, char ***vars)
 	return (1);
 }
 
-static char *close_unclosed(char *line)
-{
-	char	*next_line;
-	char	quote;
-	char	last;
-	size_t	i;
+// static char *close_unclosed(char *line)
+// {
+// 	char	*next_line;
+// 	char	quote;
+// 	char	last;
+// 	size_t	i;
 
-	if (line == NULL)	//never happens
-		return (NULL);
-	last = 0;
-	quote = 0;
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (!ft_isspace(line[i]))
-			last = line[i];
-		if (quote == 0
-			&& (line[i] == '\'' || line[i] == '"'))
-			quote = line[i];
-		else if (line[i] == quote)
-			quote = 0;
-		i++;
-	}
-	input_initializer();
-	if (quote != 0)
-	{
-		next_line = readline("> ");
-		line = close_unclosed(ft_strjoin_free_nl(line, next_line));
-		free(next_line);
-	}
-	else if (last == '|'/*  || last == '&' */) //also for "||", "&" and "&&"
-	{
-		next_line = readline("> ");
-		line = close_unclosed(ft_strjoin_free_space(line, next_line));
-		free(next_line);
-	}
-	idle_initializer();
-	return (line);
-}
+// 	if (line == NULL)	//never happens
+// 		return (NULL);
+// 	last = 0;
+// 	quote = 0;
+// 	i = 0;
+// 	while (line[i] != '\0')
+// 	{
+// 		if (!ft_isspace(line[i]))
+// 			last = line[i];
+// 		if (quote == 0
+// 			&& (line[i] == '\'' || line[i] == '"'))
+// 			quote = line[i];
+// 		else if (line[i] == quote)
+// 			quote = 0;
+// 		i++;
+// 	}
+// 	input_initializer();
+// 	if (quote != 0)
+// 	{
+// 		next_line = readline("> ");
+// 		line = close_unclosed(ft_strjoin_free_nl(line, next_line));
+// 		free(next_line);
+// 	}
+// 	else if (last == '|'/*  || last == '&' */) //also for "||", "&" and "&&"
+// 	{
+// 		next_line = readline("> ");
+// 		line = close_unclosed(ft_strjoin_free_space(line, next_line));
+// 		free(next_line);
+// 	}
+// 	idle_initializer();
+// 	return (line);
+// }
 
 /* copies the enviroment passed as parameters and returns
 the newly initialized matrix. */
@@ -188,6 +188,7 @@ int	main(int argc, char *argv[], char *__environ[])
 {
 	char	*line;
 	char	**vars[2]; //vars[0]: shv, var[1]: env, var[2]: env
+	char	*strip_line;
 	//char	stack[1000000000];
 
 	//line = malloc(167772160000000000);
@@ -216,14 +217,22 @@ int	main(int argc, char *argv[], char *__environ[])
 			write(STDOUT_FILENO, "exit\n", 5);
 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
 		}
-		// line = close_unclosed(line);	//NOTE: should make a syntax check before going forward
-		if (line == NULL)
-			write(STDOUT_FILENO, "minishell: malloc failure\n", 26);
-		else if (!handle_line(line, vars))
-			return (1);
-		else
+		line = syntax_line(line);
+		if (line != NULL)
+		{
 			add_history(line);
-		free(line);
+			strip_line = drop_comment(line);
+			free(line);
+			if (!handle_line(strip_line, vars))
+				return (1);
+			free(strip_line);
+		}
+		// 	// write(STDOUT_FILENO, "minishell: malloc failure\n", 26);
+		// else if (!handle_line(line, vars))
+		// 	return (1);
+		// else
+		// 	add_history(line);
+		// free(line);
 	}
 	return (0);
 }

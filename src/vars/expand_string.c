@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 19:46:36 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 11:28:38 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,32 @@
 
 char *expand_string(char *str, const char ***vars);
 char *just_expand_string(char *str, const char ***vars);
+
+// static char	expander_quote_check(char *line)
+// {
+// 	static char	quote;
+// 	size_t	i;
+
+// 	if (line == NULL)	//never happens
+// 		return (quote);
+// 	i = 0;
+// 	while (line[i] != '\0')
+// 	{
+// 		if (quote == 0
+// 			&& (line[i] == '\'' || line[i] == '"'))
+// 		{
+// 			quote = line[i];
+// 			break ;
+// 		}
+// 		else if (line[i] == quote)
+// 		{
+// 			quote = 0;
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// 	return (quote);
+// }
 
 /* Mallocates a new string with the '$var' found at 'tar_index' cut off. */
 static char	*cut_string(char *str, int tar_index)
@@ -143,14 +169,13 @@ RETURNS: the expanded string, NULL on malloc error. */
 char *expand_string(char *str, const char ***vars)
 {
 	char	*my_str;
-	char	quote;
+	static char	quote;
 	size_t	i;
 
 	(void)vars;
 	my_str = ft_strdup(str);
 	if (my_str == NULL)
 		return (NULL);
-	quote = 0;
 	i = 0;
 	while (my_str && my_str[i] != '\0')
 	{
