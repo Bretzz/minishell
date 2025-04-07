@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 17:40:55 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:31:15 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 	{
 		exit_status = exec_builtin(execfd, cmd[0], vars);
 		close_docs();
+		safeclose(execfd[0]);
 		safeclose(cmd->close_me);
 		return (exit_status);
 	}
