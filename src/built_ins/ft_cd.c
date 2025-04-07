@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 17:50:41 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:33:39 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 	if (chdir(tar_dir) < 0)
 	{
 		ft_printf("minishell: cd: %s: %s\n", tar_dir, strerror(errno));
+		free(oldpwd);
 		return (1); //return errno
 	}
 	pwd = getcwd(NULL, 0);	//catch error

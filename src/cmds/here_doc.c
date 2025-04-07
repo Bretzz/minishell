@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 17:51:03 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:25:45 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	clean_exit(int fd)
 
 	safeclose(fd);
 	unlink(get_doc_path(open_doc(GETNUM), path, MAX_PATH));
-	idle_initializer();
+	//idle_initializer();
 }
 
 /* Takes a string as parameter,
@@ -120,7 +120,7 @@ delimited by end-of-file (wanted `%s')\n", i, limiter);
 	}
 	free(line);
 	safeclose(fd);
-	idle_initializer();
+//	idle_initializer();
 	fd = read_doc(open_doc(GETNUM));
 	if (fd < 0)
 		return (STDIN_FILENO);

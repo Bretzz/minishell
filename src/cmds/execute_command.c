@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:31:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:45:18 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		else
 		{
 			handle_vars(cmd[0], vars);
-			close_docs();
+		//	close_docs();
 			safeclose(execfd[0]);
 			safeclose(execfd[1]);
 			safeclose(cmd->close_me);
@@ -150,12 +150,12 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 	if (is_builtin(cmd->words[0]))
 	{
 		exit_status = exec_builtin(execfd, cmd[0], vars);
-		close_docs();
+	//	close_docs();
 		safeclose(execfd[0]);
 		safeclose(cmd->close_me);
 		return (exit_status);
 	}
 	exit_status = fork_external(execfd, line, cmd, vars);
-	close_docs();
+//	close_docs();
 	return (exit_status);
 }

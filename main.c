@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 16:59:54 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:27:00 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ int	main(int argc, char *argv[], char *__environ[])
 		idle_initializer();
 		line = readline("minishell% ");
 		//check g_last_signal
-		// ft_signals (che chiama signal con i vari SIGNORE DEF o la tua function)
+		// ft_signals (che chiama signal con i vari SIGNORE (Jhonny?) DEF o la tua function)
 		if (line == NULL)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
@@ -248,6 +248,7 @@ int	main(int argc, char *argv[], char *__environ[])
 		if (line != NULL && !handle_line(line, vars))
 			return (EXIT_FAILURE);
 		free(line);
+		close_docs();
 	}
 	return (EXIT_SUCCESS);
 }

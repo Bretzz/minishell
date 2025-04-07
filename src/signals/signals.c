@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/06 20:25:38 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:29:17 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ static void idle_handler(int signal)
     }
     else if (signal == SIGQUIT)
     {
-        ft_printf("Pterodattilo!\n");
+		write(STDOUT_FILENO, "\n", 1);    //heheh
+		rl_replace_line("Pterodattilo!\n", 14);
+        //ft_printf("Pterodattilo!\n");
+//		rl_replace_line("", 0);   //MacOS issues
+        rl_on_new_line();
+        rl_redisplay();
+
+		g_last_sig = SIGQUIT;
     }
 }
 
@@ -84,7 +91,7 @@ void	idle_initializer(void)
 
 	bzero(&waiter, sizeof(waiter));
 	waiter.sa_handler = idle_handler;
-	waiter.sa_flags = SA_RESTART;
+	waiter.sa_flags = 0;
 	sigaction(SIGINT, &waiter, NULL);
 	sigaction(SIGQUIT, &waiter, NULL);
 }

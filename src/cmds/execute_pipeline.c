@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 17:41:03 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:45:35 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ int	execute_pipeline(char *line, t_cmd *cmd, char ***vars)
 	exit_status = mass_wait(garb, len);
 //	print_garbage(garb, len);
 	free(garb);
-	close_docs();
+//	close_docs();
 	return (exit_status);
 }
 

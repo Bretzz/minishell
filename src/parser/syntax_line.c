@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 12:52:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:09:48 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static char	*append_line(char *line, t_token_type last_type)
 {
 	char	*next_line;
 	
-	input_initializer();
+//	input_initializer();
 	if (last_type == TOKEN_PIPE)
 	{
 		next_line = readline("> ");
@@ -144,7 +144,7 @@ static char	*append_line(char *line, t_token_type last_type)
 		line = ft_strjoin_free_nl(line, next_line);
 		free(next_line);
 	}
-	idle_initializer();
+//	idle_initializer();
 	return (line);
 }
 

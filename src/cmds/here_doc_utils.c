@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 17:35:08 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:00:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:43:21 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	close_docs(void)
 	while (i <= doc_num)
 	{
 		unlink(get_doc_path(i, path, MAX_PATH));
-		ft_printf("heredoc: unlinked %s\n", path);
+		if(DEBUG){ft_printf("heredoc: unlinked %s\n", path);}
 		i++;
 	}
 	open_doc(RESET);
