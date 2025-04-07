@@ -11,6 +11,7 @@
 #added rules
 minishell
 minishell.tar
+here_docs/*
 .nfs*
 **/exec
 tester/expected_output

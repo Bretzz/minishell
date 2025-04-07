@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 19:00:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:03:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 	if (!cmd.words[0])
 		return (-1); // this should never happen (right now we just ignore, leaving all things open)
 	if (access(cmd.words[0], X_OK) == 0)
-		path = cmd.words[0];
+		path = ft_strdup(cmd.words[0]);
 	else
 		path = find_env_path(cmd.words[0], env);
 	errno = error_check(cmd, path);

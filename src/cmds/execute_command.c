@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 19:11:30 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:40:55 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,17 +140,21 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		else
 		{
 			handle_vars(cmd[0], vars);
-			safeclose(cmd->close_me);
+			close_docs();
 			safeclose(execfd[0]);
 			safeclose(execfd[1]);
+			safeclose(cmd->close_me);
 			return (EXIT_SUCCESS);
 		}
 	}
 	if (is_builtin(cmd->words[0]))
 	{
 		exit_status = exec_builtin(execfd, cmd[0], vars);
+		close_docs();
 		safeclose(cmd->close_me);
 		return (exit_status);
 	}
-	return (fork_external(execfd, line, cmd, vars));
+	exit_status = fork_external(execfd, line, cmd, vars);
+	close_docs();
+	return (exit_status);
 }

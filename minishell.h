@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 12:39:03 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:39:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ size_t	ft_mtxlen(const void **mtx);
 //here_doc.c
 
 int		here_doc(char *limiter, const char ***vars);
+void	close_docs(void);
 
 /* FINAL EXECUTION */
 

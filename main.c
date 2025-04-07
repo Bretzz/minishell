@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 12:40:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:59:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,11 +184,35 @@ static char	**env_copy(char **his_env)
 	return (my_env);
 }
 
+static void	level_up(char ***vars)
+{
+	char	value[12];
+	int		new_val;
+
+	mtx_findval("SHLVL", value, sizeof(value), vars[1]);
+	if (value[0] == '\0')
+		new_val = 1;
+	else
+		new_val = ft_atoi(value) + 1;
+	vars[1] = mtx_setnum("SHLVL", new_val, vars[1]);
+}
+
+static char	*history_is_set(char *line)
+{
+	char	*strip_line;
+	
+	if (line == NULL)
+		return (NULL);
+	add_history(line);
+	strip_line = drop_comment(line);
+	free(line);
+	return (strip_line);
+}
+
 int	main(int argc, char *argv[], char *__environ[])
 {
 	char	*line;
 	char	**vars[2]; //vars[0]: shv, var[1]: env, var[2]: env
-	char	*strip_line;
 	//char	stack[1000000000];
 
 	//line = malloc(167772160000000000);
@@ -201,11 +225,11 @@ int	main(int argc, char *argv[], char *__environ[])
 	{
 		mtx_free(vars[0]);
 		mtx_free(vars[1]);
-		return (1);
+		return (EXIT_FAILURE);
 	}
-
+	level_up(vars);
 	//ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
-	rl_catch_signals = 0;	//MacOS issues... but what does it do?
+	// rl_catch_signals = 0;	//MacOS issues... but what does it do?
 	while (1)
 	{
 		idle_initializer();
@@ -218,21 +242,12 @@ int	main(int argc, char *argv[], char *__environ[])
 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
 		}
 		line = syntax_line(line);
-		if (line != NULL)
-		{
-			add_history(line);
-			strip_line = drop_comment(line);
-			free(line);
-			if (!handle_line(strip_line, vars))
-				return (1);
-			free(strip_line);
-		}
-		// 	// write(STDOUT_FILENO, "minishell: malloc failure\n", 26);
-		// else if (!handle_line(line, vars))
-		// 	return (1);
-		// else
-		// 	add_history(line);
-		// free(line);
+		if (line == NULL)
+			mtx_setdata(2, vars[0]);
+		line = history_is_set(line);
+		if (line != NULL && !handle_line(line, vars))
+			return (EXIT_FAILURE);
+		free(line);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

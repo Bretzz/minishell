@@ -42,11 +42,12 @@ SRC_FILES		= main.c \
 				\
 				ft_execve.c pipex_stolen.c builtin_bridge.c\
 				execute_pipeline.c execute_command.c \
+				here_doc.c here_doc_utils.c \
 				\
 				parser.c tokenizer.c syntax_tokens.c syntax_line.c \
 				\
-				handle_vars.c expand_string.c here_doc.c \
-				signals.c\
+				handle_vars.c expand_string.c \
+				signals.c \
 				\
 				mtx_addnum.c mtx_addval.c \
 				mtx_init.c mtx_free.c \
@@ -62,6 +63,7 @@ SRC_FILES		= main.c \
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 
+HERE_DOCS_DIR	= here_docs
 EXE_DIR			= exec/
 EXE_BUILT		= 
 
@@ -108,6 +110,9 @@ loading:
 		i=$$((i + 1)); \
 	done
 
+$(HERE_DOCS_DIR):
+	@mkdir -p $(HERE_DOCS_DIR)
+
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
@@ -125,13 +130,13 @@ $(LIBFT):
 	@echo "${BOLD}creating libft...${RESET}"
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
 	@sl -le
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
 
-notrainnopainnogain: $(LIBFT) $(OBJS)
+notrainnopainnogain: $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"

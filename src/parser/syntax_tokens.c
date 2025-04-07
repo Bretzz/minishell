@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 23:29:52 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/07 12:02:46 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:51:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	word_check(t_token *word, t_token *prev)
 	i = 0;
 	while (word->value[i] != '\0')
 	{
-		if (prev == NULL || prev->type == PIPE)
+		if (prev == NULL || prev->type == TOKEN_PIPE)
 		{
 			ret = ft_strchr(command, word->value[i]);
 			if (ret != NULL)

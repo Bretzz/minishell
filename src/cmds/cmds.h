@@ -6,12 +6,16 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:15:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 18:50:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:39:18 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CMDS_H
 # define CMDS_H
+
+#define CREATE 0 /* open_doc() creation flag. */
+#define RESET 1	/* reset the doc_num static variable. */
+#define GETNUM 2 /* open_doc() information flag. */
 
 typedef struct s_garb
 {
@@ -25,6 +29,13 @@ typedef struct s_garb
 int		is_builtin(char *cmd);
 int		exec_builtin(int *fd, t_cmd cmd, char ***vars);
 void	builtin_and_die(int *fd, int index, t_cmd *cmd_arr, char ***vars);
+
+/* HERE_DOC UTILS */
+
+int		open_doc(char flag);
+void	close_docs(void);
+int		read_doc(int doc_num);
+char	*get_doc_path(int doc_num, char *buff, size_t size);
 
 //pipex_stolen.c
 

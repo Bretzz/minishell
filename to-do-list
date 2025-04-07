@@ -138,16 +138,24 @@ also Ctrl-D in heredoc: (DONE)
 "| | |" (DONE)
 bash: syntax error near unexpected token `|'
 
-======================== ONGOING =======================
-
-heredoc sighandler: ( ! ! ! CHECK LEAKS ! ! ! )
+heredoc sighandler:
 	basic functioning:
 		1. Ctrl+D ends the hheredooc with EOF (DONE)
 		2. Ctrl+C passes an empty doc (DONE)
 	extra features:
-		1. clean the "^C" or "^D"
-		2. (Ctr+D) ask for termination
+		1. clean the "^C" or "^D" (DONE)
+		2. (Ctr+D) ask for termination (NOT TRUE)
 			2.1 (Ctr+D) warning message (DONE)
+
+SHLVL=3 :))))))))))))))))))))))) (DONE)
+
+<< X cat, close minishell, repeat, (check for old heredoc stuff) (DONE)
+
+check this shit (DONE)
+
+temp files or pipes? (DONE)
+
+======================== ONGOING =======================
 
 ( ! ! ! CHECK LEAKS ! ! ! )
 (without redoing getcwd() and chdir())
@@ -163,15 +171,13 @@ SYNTAX:
 	4. extensive testing
 NOTES:
 	heading whitespace before '#' and exclude if in quotes (DONE)
-	general quotes exclusion in word_check()
+	outside-quote exclusion in word_check()
 
 ======================== T O D O =======================
 
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 	/		! ! ! REMOVE FT_FREENTF ! ! !			/
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
-
-SHLVL=3 :)))))))))))))))))))))))
 
 ------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
 
@@ -210,10 +216,6 @@ playlist: file found by ls, and grep'd
 alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
-
-check this shit
-
-temp files or pipes?
 
 -------------------> THINGS TO DISCUSS <-------------------
 
