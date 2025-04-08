@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_stolen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:37:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 15:28:10 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/08 15:19:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,15 @@ char	*find_env_path(char *cmd, char **env);
 and frees s1 */
 static char	*ft_strjoin_free(char *s1, char *s2)
 {
-	int		i;
-	int		j;
 	char	*twelve;
 	size_t	size;
 
 	size = ft_strlen(s1) + ft_strlen(s2) + 1;
-	twelve = (char *)malloc(size * sizeof(char));
+	twelve = (char *)ft_calloc(size, sizeof(char));
 	if (twelve == NULL)
 		return (NULL);
-	i = -1;
-	while (s1[++i])
-		twelve[i] = s1[i];
-	j = 0;
-	while (s2[j])
-		twelve[i++] = s2[j++];
-	twelve[i] = '\0';
+	ft_strlcpy(twelve, s1, size);
+	ft_strlcat(twelve, s2, size);
 	free(s1);
 	return (twelve);
 }

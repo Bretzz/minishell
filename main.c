@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 01:10:36 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:52:28 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ static int	handle_line(char *line, char ***vars)
 
 /* copies the enviroment passed as parameters and returns
 the newly initialized matrix. */
+/* ! ! ! SETUP SHLVL, SHELL, PWD, TMPDIR ! ! ! */
 static char	**env_copy(char **his_env)
 {
 	size_t	i;

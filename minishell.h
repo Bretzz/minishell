@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 01:14:13 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/08 15:19:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int		ft_env(int *fd, const char ***vars);
 void	idle_initializer(void);
 void    runtime_initializer(void);
 void    input_initializer(void);
+void	ft_readline_initializer(void);
 
 /* UTILS */
 
@@ -112,6 +113,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 size_t	ft_strlen_space(const char *s); //replace with ft_varlen when measuring vars
 size_t	ft_strlen_nl(const char *s);
 
+//char	*ft_strjoin_free(char *s1, char *s2);
 char	*ft_strjoin_free_space(char *s1, char *s2);
 char	*ft_strjoin_free_nl(char *s1, char *s2);
 char	*ft_strjoin_free_nl_space(char *s1, char *s2);

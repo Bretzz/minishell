@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 17:35:08 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 18:43:21 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 12:56:28 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	read_doc(int doc_num)
 }
 
 /* if flag is set to CREATE, creates a new heredoc,
+if flag is set to GETNUM, gets the number of the last here-document,
+if flag is set to RESET, sets the heredoc number to 0,
 otherwise returns the number of the last heredoc created,
 0 if none was created. */
 int	open_doc(char flag)
