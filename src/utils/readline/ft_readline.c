@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:21:20 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 00:53:42 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 01:00:43 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static int cycle_history(int arrow_key, char **history, int *hist_line)
 /* Reads a single input from the 'fd',
 if a SIGINT is recieved returns NULL,
 if a SIGQUIT or a SIGTSTP another read is done. */
-static char	*safe_getchar(int fd)
+static char	*safe_getchar(int fd) /* ! ! ! REMOVE ! ! ! */
 {
 	char	*input;
 

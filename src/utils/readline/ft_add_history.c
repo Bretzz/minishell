@@ -6,7 +6,7 @@
 /*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:25:23 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 00:53:24 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 01:02:36 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ void	ft_add_history(char *line)
 The pointer passed to the function will be treated
 as the first entry of the history.
 RETURNS: the history pointer. */
-char	**ft_get_history(void) /* ! ! ! REMOVE ! ! ! */
+/* DOESN'T LOOK GOOD >:(
+alternative: char **ft_add_history(char *) */
+char	**ft_get_history(void)
 {
 	static char	*history[MAX_HISTORY];
 	
