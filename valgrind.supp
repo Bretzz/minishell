@@ -33,3 +33,25 @@
    ...
    obj:/usr/bin/*
 }
+# JUST FOR SL
+{
+   MALLOC FAILURE OF /usr/games/*
+   Memcheck:Leak
+   fun:malloc
+   ...
+   obj:/usr/games/*
+}
+{
+   CALLOC FAILURE of /usr/games/*
+   Memcheck:Leak
+   fun:calloc
+   ...
+   obj:/usr/games/*
+}
+{
+   REALLOC FAILURE of /usr/games/*
+   Memcheck:Leak
+   fun:realloc
+   ...
+   obj:/usr/games/*
+}
