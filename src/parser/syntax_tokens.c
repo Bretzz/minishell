@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 23:29:52 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/07 14:51:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/08 01:37:03 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ static char	pipe_check(t_token *pipe, t_token *prev)
 	if (pipe->type != TOKEN_PIPE)
 		return (0);
 	if (prev == NULL)
-		return (1);
+		return ('|');
 	if (pipe->next && pipe->next->type == TOKEN_PIPE)
-		return (1);
+		return ('|');
+	// if (pipe->next == NULL)
+	// 	return (1);
 	return (0);
 }
 
@@ -128,7 +130,7 @@ int	syntax_tokens(t_token *tokens)
 		}
 		err_code[0] = is_error(err_code);
 		if (err_code[0] == 1)
-			ft_printfd(STDERR_FILENO, "minishell: syntax error near unexpected token `%s'\n", tokens->value);
+			ft_printfd(STDERR_FILENO, "minishell: syntax error near unexpected end of file\n");
 		else
 			ft_printfd(STDERR_FILENO, "minishell: syntax error near unexpected token `%c'\n", err_code[0]);
 		return (0);

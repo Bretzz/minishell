@@ -138,7 +138,7 @@ also Ctrl-D in heredoc: (DONE)
 "| | |" (DONE)
 bash: syntax error near unexpected token `|'
 
-heredoc sighandler:
+heredoc sighandler: (DONE)
 	basic functioning:
 		1. Ctrl+D ends the hheredooc with EOF (DONE)
 		2. Ctrl+C passes an empty doc (DONE)
@@ -151,9 +151,7 @@ SHLVL=3 :))))))))))))))))))))))) (DONE)
 
 << X cat, close minishell, repeat, (check for old heredoc stuff) (DONE)
 
-check this shit (DONE)
-
-temp files or pipes? (DONE)
+temp files or pipes? (spoiler: temp files) (DONE)
 
 cd ~ non funziona. deve cambiare la diectory con home. seems easy enough (DONE)
 
@@ -165,6 +163,13 @@ minishell% echo $?
 minishell% 
 
 AND HEREDOC IS CORRUPTED AFTER ^\ (DONE)
+
+(DONE) ( ! ! ! CHECK LEAKS ! ! ! )
+dquote use gnl please (double free con ctr+D e test altri nterruptions)
+	
+BASH: (DONE)
+	mapascal@c2r3p10:~/sgoinfre/GitHub_School_42/Milestone_3/Minishell$ ls |
+	> bash: syntax error: unexpected end of file
 
 ======================== ONGOING =======================
 
@@ -190,15 +195,14 @@ NOTES:
 	/		! ! ! REMOVE FT_FREENTF ! ! !			/
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 
-dquote use gnl please (double free con ctr+D e test altri nterruptions)
-BASH:
-	mapascal@c2r3p10:~/sgoinfre/GitHub_School_42/Milestone_3/Minishell$ ls |
-	> bash: syntax error: unexpected end of file
-	exit
-
 ------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
+
+if an 'ls' file is present make it so that you can execute it with './ls'
+(so that it doesn't overwrite the command). Also:
+ACCESS deve controllare se il comando passatoe  una dritacctory
+fne\THE DNdeE
 
 PIPESTATUS (NOT NECESSARY)
 	An array variable de containing a list of
@@ -234,6 +238,12 @@ alalready excluded?: found in heredoc and grep'd
 
 ----------------------> HERE DOC <-----------------------
 
+here_doc(NULL) returns string to add to line for history
+
+----------------------> FT_READLINE <-----------------------
+
+FIX ARROWS: Up: '^[[A', Down: '^[[B', Right: '^[[C', Left: '^[[D'
+
 -------------------> THINGS TO DISCUSS <-------------------
 
 1. var value length (and varous mallocs) (DONE)
@@ -267,7 +277,7 @@ alalready excluded?: found in heredoc and grep'd
 
 
 
-pipe da solo non da error
+pipe da solo non da error (???)
 ls | grep out; echo $?
 ciao$"$ciao"$$'$ciao
 ci$ao$"$ciao"$'$ciao'
@@ -278,6 +288,3 @@ ci$ao$"$ciao"$'$ciao'
 prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiamare chdir
 
 2. le varibili PWD e OLD_PWD vengono modificate da cd e capire come e farlo e implemetalro.e  sistemarlo. e runnarlo. e debuggarlo.
-
-ACCESS deve controllare se il comando passatoe  una dritacctory
-fne\THE DNdeE

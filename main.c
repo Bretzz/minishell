@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 19:27:00 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 01:10:36 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	handle_line(char *line, char ***vars)
 	
 	if (len == 0)	//both NULL cmd_arr and no actual command to execute
 		return (free_cmd(cmd_arr), 1);
-	input_initializer();
+	runtime_initializer();
 	if (len == 1)
 	{
 		if (DEBUG) {ft_printf("EXECUTING COMMAND\n");}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/07 23:25:45 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 01:20:56 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 #include <sys/ioctl.h>
 
 void	idle_initializer(void);
+void    runtime_initializer(void);
 void    input_initializer(void);
-void    doc_initializer(void);
 
 static void idle_handler(int signal)
 {
@@ -46,7 +46,7 @@ static void idle_handler(int signal)
 	g_last_sig = signal;
 }
 
-static void input_handler(int signal)
+static void runtime_handler(int signal)
 {
     if (signal == SIGINT)
     {
@@ -69,7 +69,7 @@ static void input_handler(int signal)
 	g_last_sig = signal;
 }
 
-static void doc_handler(int signal)
+static void input_handler(int signal)
 {
     if (signal == SIGINT)
     {
@@ -83,6 +83,7 @@ static void doc_handler(int signal)
 	g_last_sig = signal;
 }
 
+/* Handle signals while waiting for a new command line. */
 void	idle_initializer(void)
 {
 	struct sigaction	waiter;
@@ -95,27 +96,30 @@ void	idle_initializer(void)
 	//rl_catch_signals = 0;
 }
 
-void    input_initializer(void)
+/* Handle signals during the execution of other commands. */
+void    runtime_initializer(void)
 {
-    struct sigaction	notebook;
+    struct sigaction	fire_fighter;
 
-	bzero(&notebook, sizeof(notebook));
-	notebook.sa_handler = input_handler;
-	notebook.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &notebook, NULL);
-	sigaction(SIGQUIT, &notebook, NULL);
+	bzero(&fire_fighter, sizeof(fire_fighter));
+	fire_fighter.sa_handler = runtime_handler;
+	fire_fighter.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &fire_fighter, NULL);
+	sigaction(SIGQUIT, &fire_fighter, NULL);
 }
 
-void    doc_initializer(void)
+/* Handle signals while the user is providing
+an input, ex: here-document, unclosed quotes, etc.. */
+void    input_initializer(void)
 {
-    struct sigaction	doc_here;
+    struct sigaction	input_guard;
 
-	bzero(&doc_here, sizeof(doc_here));
-	doc_here.sa_handler = doc_handler;
-	doc_here.sa_flags = 0;
-	sigaction(SIGINT, &doc_here, NULL);
-	sigaction(SIGQUIT, &doc_here, NULL);
-	sigaction(SIGTSTP, &doc_here, NULL);
+	bzero(&input_guard, sizeof(input_guard));
+	input_guard.sa_handler = input_handler;
+	input_guard.sa_flags = 0;
+	sigaction(SIGINT, &input_guard, NULL);
+	sigaction(SIGQUIT, &input_guard, NULL);
+	sigaction(SIGTSTP, &input_guard, NULL);
 }
 
 // studiare con signal

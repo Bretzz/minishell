@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 23:37:36 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 01:14:13 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ size_t	ft_mtxlen(const void **mtx);
 
 int		here_doc(char *limiter, const char ***vars);
 void	close_docs(void);
+char	*safe_line(int fd);
 
 /* FINAL EXECUTION */
 
@@ -101,8 +102,8 @@ int		ft_env(int *fd, const char ***vars);
 /* SIGNALS */
 
 void	idle_initializer(void);
+void    runtime_initializer(void);
 void    input_initializer(void);
-void    doc_initializer(void);
 
 /* UTILS */
 

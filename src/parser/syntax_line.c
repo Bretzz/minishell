@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 19:09:48 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 02:01:47 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char	*drop_comment(char *line);
 
 static void	clean_exit(char *line, char *check_this, t_token *tokens)
 {
-	add_history(line);
+	if (line != NULL)
+		add_history(line);
 	free(check_this);
 	free_tokens(tokens);
 }
@@ -85,13 +86,6 @@ char	*drop_comment(char *line)
 		}
 		i++;
 	}
-	// if (line[i] == '\0')
-	// 	my_line = ft_strdup(line);
-	// else
-	// 	my_line = ft_substr(line, 0, i);
-	// if (my_line == NULL)
-	// 	write(STDERR_FILENO, "minishell: malloc failure\n", 26);
-	// //free(line);
 	return (my_line);
 }
 
@@ -122,30 +116,17 @@ static int	is_closed(char *line)
 	return (1);
 }
 
-/* If there are some unclosed buisiness asks the user fore new input. */
-static char	*append_line(char *line, t_token_type last_type)
+static void	cleanup(char *line)
 {
-	char	*next_line;
-	
-//	input_initializer();
-	if (last_type == TOKEN_PIPE)
+	add_history(line);
+	free(line);
+	if (g_last_sig == SIGINT)
 	{
-		next_line = readline("> ");
-		if (next_line == NULL)
-			return (free(line), NULL);
-		line = ft_strjoin_free_space(line, next_line);
-		free(next_line);
+		g_last_sig = 0;
+		return ;
 	}
-	else if (last_type == TOKEN_WORD)
-	{
-		next_line = readline("> ");
-		if (next_line == NULL)
-			return (free(line), NULL);
-		line = ft_strjoin_free_nl(line, next_line);
-		free(next_line);
-	}
-//	idle_initializer();
-	return (line);
+	ft_printfd(STDERR_FILENO, "minishell: syntax error near unexpected end of file\n");
+	return ;
 }
 
 static t_token_type get_last_type(t_token *tokens)
@@ -171,6 +152,44 @@ static int	is_white(char *str)
 	return (0);
 }
 
+static char *real_line(const char *prompt)
+{
+	char	*real_line;
+	
+	real_line = ft_readline(prompt);
+	while (real_line && is_white(real_line))
+	{
+		free(real_line);
+		real_line = ft_readline(prompt);
+	}
+	return (real_line);
+}
+
+static char	*append_line(char *line, t_token_type last_type)
+{
+	char	*next_line;
+	
+	input_initializer();
+	if (last_type == TOKEN_PIPE)
+	{
+		next_line = real_line("> ");
+		if (next_line == NULL)
+			return (cleanup(line), NULL);
+		line = ft_strjoin_free_space(line, next_line);
+		free(next_line);
+	}
+	else if (last_type == TOKEN_WORD)
+	{
+		next_line = ft_readline("> ");
+		if (next_line == NULL)
+			return (cleanup(line), NULL);
+		line = ft_strjoin_free_nl(line, next_line);
+		free(next_line);
+	}
+	idle_initializer();
+	return (line);
+}
+
 /* checks weather a line is syntattically correct and expands it if necessary. */
 char	*syntax_line(char *line)
 {
@@ -194,18 +213,18 @@ char	*syntax_line(char *line)
 		line = append_line(line, get_last_type(tokens));
 		free_tokens(tokens);
 		if (line == NULL)
-			break ;
+			return (clean_exit(NULL, NULL, NULL), NULL);
 		check_this = drop_comment(line);
 		if (check_this == NULL)
 		{
-			clean_exit(line, check_this, tokens);
-			break; 
+			return (clean_exit(line, check_this, NULL), NULL);
+			//return (NULL);
 		}
 		tokens = tokenizer(check_this);
 		if (!syntax_tokens(tokens))
 		{
-			clean_exit(line, check_this, tokens);
-			return (NULL);
+			return (clean_exit(line, check_this, tokens), NULL);
+			//return (NULL);
 		}
 		free(check_this);
 	}

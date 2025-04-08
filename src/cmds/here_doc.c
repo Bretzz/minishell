@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 23:28:17 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 01:14:16 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "cmds.h"
 
 int		here_doc(char *limiter, const char ***vars);
+char	*safe_line(int fd);
 
 static void	clean_exit(int fd)
 {
@@ -99,7 +100,9 @@ delimited by end-of-file (wanted `%s')\n", line_count, limiter);
 	return (fd);
 }
 
-static char *safe_line(int fd)
+/* returns a line read from the 'fd'.
+If a SIGQUIT or a SIGTSTP is intercepted tries again. */
+char	*safe_line(int fd)
 {
 	char	*line;
 	
@@ -126,7 +129,7 @@ int	here_doc(char *limiter, const char ***vars)
 	if (fd < 0)
 		return (STDIN_FILENO);
 	exp_flag = strip_limiter(limiter);
-	doc_initializer();
+	input_initializer();
 	write(STDOUT_FILENO, "> ", 2);
 	line = safe_line(STDIN_FILENO);
 	i = 1;
