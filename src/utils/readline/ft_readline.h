@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 13:48:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 21:25:00 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/08 23:55:47 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*ft_readline(const char *prompt);
 /* HISTORY */
 
 void	ft_add_history(char *line);
-char	**ft_get_history(char *history);
-void	ft_set_history(char **history);
+char	**ft_get_history(void);
+//void	ft_set_history(char **history);
 void	ft_free_history(void);
 
 /* GETCHAR */

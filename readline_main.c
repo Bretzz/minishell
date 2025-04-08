@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:00:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 21:30:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/08 23:50:27 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "minishell.h"
 #include "ft_readline.h"
-
+#include <signal.h>
 
 int	g_last_sig = 0;
 

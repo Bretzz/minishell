@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_history.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:25:23 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 21:17:48 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 00:53:24 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "libft.h"
 
 void	ft_add_history(char *line);
-char	**ft_get_history(char *history);
-void	ft_set_history(char **history);
+char	**ft_get_history(void);
+//void	ft_set_history(char **history);
 void	ft_free_history(void);
 
 /* The first call ever is an assignment call.
@@ -25,21 +25,28 @@ Successive calls will add new entries to the history
 up to MAX_HISTORY enries. */
 void	ft_add_history(char *line)
 {
-	static char	**history;
-	static int	index;
+	char			**history;
+	static int		index;
+	unsigned int	i;
 	
 	if (line == NULL)
 	{
-		;	//dunno
+		return ;	//dunno
 	}
 	if (index == 0)
 	{
-		history = (char **)line;
 		index++;
 	}
-	else if (index < MAX_HISTORY)
+	if (index < MAX_HISTORY)
 	{
-		history[index] = ft_strdup(line);
+		history = ft_get_history();
+		i = index - 1;
+		while (i > 0)
+		{
+			history[i + 1] = history[i];
+			i--;
+		}
+		history[1] = ft_strdup(line);
 		index++;
 	}
 }
@@ -48,31 +55,26 @@ void	ft_add_history(char *line)
 The pointer passed to the function will be treated
 as the first entry of the history.
 RETURNS: the history pointer. */
-char	**ft_get_history(char *history)
+char	**ft_get_history(void) /* ! ! ! REMOVE ! ! ! */
 {
-	static char	**storage;
-	static int	index;
-
-	if (!index && !history)
-		return (NULL);
-	if (index++ == 0)
-		storage = (char **)history;
-	return (storage);
+	static char	*history[MAX_HISTORY];
+	
+	return (history);
 }
 
 /* Simple setter. */
-void	ft_set_history(char **history)
-{
-	ft_add_history((char *)history);
-	ft_get_history((char *)history);
-}
+// void	ft_set_history(char **history)
+// {
+// 	ft_add_history((char *)history);
+// 	ft_get_history((char *)history);
+// }
 
 void	ft_free_history(void)
 {
 	char	**history;
 	int		i;
 
-	history = ft_get_history(NULL);
+	history = ft_get_history();
 	if (history == NULL)
 		return ;
 	i = 0;

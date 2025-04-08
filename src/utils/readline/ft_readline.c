@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_readline.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:21:20 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 21:25:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 00:53:42 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 //static int	trim_back_nl(char *str);
 static char	*build_safe_line(int fd, char **history);
 static char	*ft_strjoin_free(char *s1, char *s2);
+static char	**ft_mtxdup(char **mtx, size_t size);
 
 /* DESCRIPTION
 	readline  will read a line from the terminal and return it, using prompt as
@@ -43,19 +44,19 @@ special characters are processed instantly */
 char	*ft_readline(const char *prompt)
 {
 	char		*line;
-	static char	*history[42];
-	static int	count;
+	char		**curr_hist;
 
-	if (count++ == 0)
-		ft_set_history(history);
+	curr_hist = ft_mtxdup(ft_get_history(), MAX_HISTORY);
 	write(STDOUT_FILENO, prompt, ft_strlen(prompt));
-	line = build_safe_line(STDIN_FILENO, history);
+	line = build_safe_line(STDIN_FILENO, curr_hist);
 	while (line && line[0] == '\0')
 	{
-		free(line);
+		/* free(line);  */free_mtx((void **)curr_hist);	//may need to skip the first NULL
+		curr_hist = ft_mtxdup(ft_get_history(), MAX_HISTORY);
 		write(STDOUT_FILENO, prompt, ft_strlen(prompt));
-		line = build_safe_line(STDIN_FILENO, history);
+		line = build_safe_line(STDIN_FILENO, curr_hist);
 	}
+	free_mtx((void **)curr_hist);	//same here
 	return (line);
 }
 
@@ -83,23 +84,34 @@ static void	delete_key(int num)
 	}
 }
 
-static int cycle_history(char *input, int *typed, char **history, int *hist_line)
+static void	move_key(int arrow_key)
 {
-	int		arrow;
-	
-	if (input == NULL)
-		return (0);
-	arrow = is_arrow_key(input);
-	if (arrow != 0)
+	if (arrow_key < 0)
+		write(STDOUT_FILENO, "\b", 1);
+	else
+		write(STDOUT_FILENO, "\a", 1);
+}
+
+static void ft_redisplay(int *typed, char *new_line)
+{
+	delete_key(*typed);
+	write(STDOUT_FILENO, new_line, ft_strlen(new_line));
+	*typed = ft_strlen(new_line);
+}
+
+static int cycle_history(int arrow_key, char **history, int *hist_line)
+{
+	if (arrow_key != 0)
 	{
-		if (*hist_line + arrow < 0
-			|| *hist_line + arrow > MAX_HISTORY
-			|| history[*hist_line + arrow] == NULL)
+		if (*hist_line + arrow_key < 0
+			|| *hist_line + arrow_key > MAX_HISTORY
+			|| history[*hist_line + arrow_key] == NULL
+			|| arrow_key % 2 == 0)
 			return (1);
-		*hist_line += arrow;
-		delete_key(*typed);
-		write(STDOUT_FILENO, history[*hist_line], ft_strlen(history[*hist_line]));
-		*typed = ft_strlen(history[*hist_line]);
+		*hist_line += arrow_key;
+		// delete_key(*typed);
+		// write(STDOUT_FILENO, history[*hist_line], ft_strlen(history[*hist_line]));
+		// *typed = ft_strlen(history[*hist_line]);
 		return (1);
 	}
 	return (0);
@@ -146,13 +158,19 @@ static char	*build_safe_line(int fd, char **history)
 		if (input == NULL || is_end_of_trans(input))
 		{
 			free(input);
-			free(history[0]);
-			history[0] = NULL;
+			//free(history[hist_line]);
+			//history[0] = NULL;
 			return (NULL);
 		}
 		if (is_arrow_key(input))
 		{
-			cycle_history(input, &typed, history, &hist_line);
+			if (is_arrow_key(input) % 2 != 0)
+			{
+				cycle_history(is_arrow_key(input), history, &hist_line);
+				ft_redisplay(&typed, history[hist_line]);
+			}
+			else
+				move_key(is_arrow_key(input));
 			free(input);
 			continue ;
 		}
@@ -161,7 +179,7 @@ static char	*build_safe_line(int fd, char **history)
 			if (typed != 0)
 			{
 				history[hist_line][typed - 1] = '\0';
-				write(STDOUT_FILENO, "\b \b", 3);
+				delete_key(1);
 				typed--;
 			}
 			free(input);
@@ -225,4 +243,31 @@ static char	*ft_strjoin_free(char *s1, char *s2)
 	ft_strlcat(twelve, s2, size);
 	free(s1);
 	return (twelve);
+}
+
+/* duplicates a matrix of size 'size'.
+if only 'n' < size pointer are present in the matrix
+just strdups those. */
+static char	**ft_mtxdup(char **mtx, size_t size)
+{
+	char			**new_mtx;
+	unsigned int	i;
+
+	if (mtx == NULL)
+		return (NULL);
+	new_mtx = ft_calloc(size, sizeof(char *));
+	if (new_mtx == NULL)
+		return (NULL);
+	i = 0;
+	while (i < size)
+	{
+		new_mtx[i] = ft_strdup(mtx[i]);
+		if (mtx[i] && !new_mtx[i])
+		{
+			free_mtx((void **)new_mtx);
+			return (NULL);
+		}
+		i++;
+	}
+	return (new_mtx);
 }

@@ -195,6 +195,8 @@ NOTES:
 	/		! ! ! REMOVE FT_FREENTF ! ! !			/
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 
+riorrganizzazione librerie (libft, mtx, readline)
+
 ------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
@@ -250,9 +252,12 @@ here_doc(NULL) returns string to add to line for history
 FIX ARROWS: Up: '^[[A', Down: '^[[B', Right: '^[[C', Left: '^[[D'
 
 allora:
-	1. fare che la history sta' direttamente in ft_add_history
+	1. fare che la history sta' direttamente in ft_add_history (DONE)
 	2. spezzettare build_safe_line
 	3. ristrutturare il ragionamento base.
+
+move_key() sfancula tutto.
+check leaks for hitory
 
 -------------------> THINGS TO DISCUSS <-------------------
 
