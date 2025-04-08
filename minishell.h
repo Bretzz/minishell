@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 15:19:12 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/08 21:31:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "mtx_safe.h"
+# include <dirent.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>

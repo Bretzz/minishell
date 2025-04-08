@@ -298,3 +298,13 @@ ci$ao$"$ciao"$'$ciao'
 prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiamare chdir
 
 2. le varibili PWD e OLD_PWD vengono modificate da cd e capire come e farlo e implemetalro.e  sistemarlo. e runnarlo. e debuggarlo.
+
+1) ls non deve eseguire l'eseguibile ls nella mia directory ma deve eseguire il comando ls
+	FATTO
+2) heredoc. dovrebbe creare un nuovo file in TMPDIR. quindi dovrebbe andare a cercare la cartella TMPDIR. Se tmpdir non esiste non so cosa deve fare. crearla?
+	NON SERVE
+3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
+	FATTO
+
+
+
