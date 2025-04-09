@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:42 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 17:32:55 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 00:04:06 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	*build_line(int fd, char **history)
 			free(input);
 			if (handle_esc_seq(esc_seq, &cursor, history, &hist_line))
 				continue ;
-			return (NULL);
+			break ;
 		}
 		if (!handle_std_char(input, &cursor, history, hist_line))
 			return (free(input),
