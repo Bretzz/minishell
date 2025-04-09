@@ -234,9 +234,49 @@ EXTRA (FAKE NEWS)
 	"cd ..; pwd" changes dir
 	"pwd; cd .." doesn't
 
+pipe da solo non da error (???) (DONE)
+ls | grep out; echo $? (DONE)
+
+1. var value length (and varous mallocs) (DONE)
+2. var name length (and various mallocs) (DONE)
+3. mallocs protections (see funny printfs) (DONE)
+	se un malloc fallisce freeiamo quello che dobbiamo freeare
+	stampiamo errore;
+	e non chiudiamo minishell
+4. autocorrezione di ecoh in echo??
+	NO
+5. builtins should return the exit code wanted
+	(DONE)
+6. non uscire da minishell con ctrl C --> fai a capo e aggiorna var con valore giusto
+7. testare $? - example: unset export (var nn valida) -> 
+8. ls | > out (DONE)
+	deve creare un file out. out viene tokenizzato come word. pero non viene creato il comando 
+	Comando 0:
+	arg[0]: ls
+	infile: 
+	outfile: |
+	append flag: 0
+
+ci$ao$"$ciao"$'$ciao' (DONE)
+
+(DONE)
+1. cd chiama la funzione chdir che modifica la working directing
+prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiamare chdir
+	NON SERVER
+2. le varibili PWD e OLD_PWD vengono modificate da cd e capire come e farlo e implemetalro.e  sistemarlo. e runnarlo. e debuggarlo.
+	FATTO
+1) ls non deve eseguire l'eseguibile ls nella mia directory ma deve eseguire il comando ls
+	FATTO
+2) heredoc. dovrebbe creare un nuovo file in TMPDIR. quindi dovrebbe andare a cercare la cartella TMPDIR. Se tmpdir non esiste non so cosa deve fare. crearla?
+	NON SERVE
+3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
+	FATTO
+
 ----------------------> MIXED PROBLEMS <-----------------------
 
 ----------------------> TO INVESTIGATE <-----------------------
+
+isatty!!! disattivare i sigandlers in non tty
 
 -------------------------> HERE DOC <--------------------------
 
@@ -271,25 +311,6 @@ check leaks for hitory
 
 --------------------> THINGS TO DISCUSS <--------------------
 
-1. var value length (and varous mallocs) (DONE)
-2. var name length (and various mallocs) (DONE)
-3. mallocs protections (see funny printfs) 
-	se un malloc fallisce freeiamo quello che dobbiamo freeare
-	stampiamo errore;
-	e non chiudiamo minishell
-4. autocorrezione di ecoh in echo??
-	NO
-5. builtins should return the exit code wanted
-	(DONE)
-6. non uscire da minishell con ctrl C --> fai a capo e aggiorna var con valore giusto
-7. testare $? - example: unset export (var nn valida) -> 
-8. ls | > out (DONE)
-	deve creare un file out. out viene tokenizzato come word. pero non viene creato il comando 
-	Comando 0:
-	arg[0]: ls
-	infile: 
-	outfile: |
-	append flag: 0
 9. modificare makefile per compilare parser e tokenizer exec
 10. minishell tester. 1 file testo con tutti i test. 
 	runnare in automatico su bash. creare file out dei risultati
@@ -298,31 +319,19 @@ check leaks for hitory
 		poi famo un diff
 		bellali
 
-
-
-
-
-pipe da solo non da error (???)
-ls | grep out; echo $?
-ciao$"$ciao"$$'$ciao
-ci$ao$"$ciao"$'$ciao'
-
-
-
-1. cd chiama la funzione chdir che modifica la working directing
-prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiamare chdir
-	NON SERVER
-2. le varibili PWD e OLD_PWD vengono modificate da cd e capire come e farlo e implemetalro.e  sistemarlo. e runnarlo. e debuggarlo.
-	FATTO
-1) ls non deve eseguire l'eseguibile ls nella mia directory ma deve eseguire il comando ls
-	FATTO
-2) heredoc. dovrebbe creare un nuovo file in TMPDIR. quindi dovrebbe andare a cercare la cartella TMPDIR. Se tmpdir non esiste non so cosa deve fare. crearla?
-	NON SERVE
-3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
-	FATTO
-
 1. tilde clotilde matilde
-	FATTO
+	FATTO (VORRESTI)
+BASH:
+	bash-3.2$ unset HOME
+	bash-3.2$ echo ~
+	/Users/totommi
+	bash-3.2$ echo $HOME
+
+	bash-3.2$
+
+ciao$"$ciao"$$'$ciao' (JUST $$ PID HANDLING)
+
+
 
 
 

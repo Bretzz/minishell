@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   re_get_next_line_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:29:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 23:21:35 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 01:01:19 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ t_list_fd	*list_fd_add_back(t_list_fd *list, int fd, char *str)
 
 t_list_fd	*list_fd_del_fd(int fd, t_list_fd *list)
 {
-	unsigned int	i;
 	t_list_fd		*temp[2];
 
 	if (list == NULL)
@@ -56,7 +55,6 @@ t_list_fd	*list_fd_del_fd(int fd, t_list_fd *list)
 		list_fd_delone(temp[0]);
 		return (list);
 	}
-	i = 0;
 	while (temp[0])
 	{
 		if (temp[0]->next && temp[0]->next->fd == fd)
@@ -66,7 +64,6 @@ t_list_fd	*list_fd_del_fd(int fd, t_list_fd *list)
 			list_fd_delone(temp[1]);
 		}
 		temp[0] = temp[0]->next;
-		i++;
 	}
 	return (list);
 }
