@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 11:28:38 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:57:30 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,25 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 	char	*new_str;
 	int		var_len;
 
+	//exp_val == NULL;
 	if (!ft_strncmp("$?", &str[*i], 2)) // to be fixed $ab?, or $?ab
 	{
 		exp_val = ft_itoa(*((unsigned int *)vars[0] + 1));
 		if (DEBUG) {ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");}
+	}
+	else if (str[*i] == '~') 
+	{
+		if (*i != 0 && !ft_isspace(str[*i - 1]))
+		{
+			(*i)++;
+			return (str);
+		}
+		if (str[*i + 1] != '\0' && str[*i + 1] != '/' && !ft_isspace(str[*i + 1]))
+		{
+			(*i)++;
+			return (str);
+		}
+		exp_val = mtx_findval("HOME", NULL, MAX_PATH, (char **)vars[1]);
 	}
 	else
 		exp_val = wide_search(&str[*i + 1], vars);
@@ -180,7 +195,7 @@ char *expand_string(char *str, const char ***vars)
 	while (my_str && my_str[i] != '\0')
 	{
 		quote = skip_quotes(my_str, i, quote);
-		if (my_str[i] == '$' && quote != '\'')
+		if ((my_str[i] == '$' || my_str[i] == '~') && quote != '\'')
 			my_str = single_expand(&i, my_str, vars);
 		else
 			i++;

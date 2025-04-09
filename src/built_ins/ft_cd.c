@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 23:36:42 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:13:15 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,23 +118,6 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 		// 	write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
 		// 	return (1);
 		// }
-	}
-	else if (!ft_strncmp(cmd.words[1], "~", 1))
-	{
-		// → cd ~ [qualcosa] => espandi la tilde
-		// Se è "~" da solo, tar_dir = HOME
-		// Se è "~/qualcosa", tar_dir = HOME + "/qualcosa"
-		// etc.
-		mtx_findval("HOME", tar_dir, MAX_PATH, vars[1]);
-		// if (!tar_dir)
-		// {
-		// 	write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
-		// 	return (1);
-		// }
-		if (!ft_strncmp(cmd.words[1], "~/", 2))
-			ft_strlcat(tar_dir, cmd.words[1] + 1, MAX_PATH);
-			//tar_dir = ft_strjoin_free(tar_dir, cmd.words[1] + 1);
-		// Altrimenti (~ da solo) rimane tar_dir = HOME
 	}
 	else
 	{

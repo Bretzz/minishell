@@ -153,7 +153,8 @@ SHLVL=3 :))))))))))))))))))))))) (DONE)
 
 temp files or pipes? (spoiler: temp files) (DONE)
 
-cd ~ non funziona. deve cambiare la diectory con home. seems easy enough (DONE)
+(DONE)
+cd ~ non funziona. deve cambiare la diectory con home. seems easy enough
 
 (DONE)
 minishell% cat
@@ -162,7 +163,8 @@ minishell% echo $?
 0 (should be 131)
 minishell% 
 
-AND HEREDOC IS CORRUPTED AFTER ^\ (DONE)
+(DONE)
+AND HEREDOC IS CORRUPTED AFTER ^\
 
 (DONE) ( ! ! ! CHECK LEAKS ! ! ! )
 dquote use gnl please (double free con ctr+D e test altri nterruptions)
@@ -170,6 +172,12 @@ dquote use gnl please (double free con ctr+D e test altri nterruptions)
 BASH: (DONE)
 	mapascal@c2r3p10:~/sgoinfre/GitHub_School_42/Milestone_3/Minishell$ ls |
 	> bash: syntax error: unexpected end of file
+
+(DONE)
+if an 'ls' file is present make it so that you can execute it with './ls'
+(so that it doesn't overwrite the command). Also:
+ACCESS deve controllare se il comando passatoe  una dritacctory
+fne\THE DNdeE
 
 ======================== ONGOING =======================
 
@@ -198,11 +206,6 @@ NOTES:
 ------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
-
-if an 'ls' file is present make it so that you can execute it with './ls'
-(so that it doesn't overwrite the command). Also:
-ACCESS deve controllare se il comando passatoe  una dritacctory
-fne\THE DNdeE
 
 PIPESTATUS (NOT NECESSARY)
 	An array variable de containing a list of
@@ -297,4 +300,5 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 	FATTO
 
 
-
+tilde clotilde matilde
+	FATTO
