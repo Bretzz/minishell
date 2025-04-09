@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/09 17:46:27 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/09 23:49:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,34 +43,34 @@ char *just_expand_string(char *str, const char ***vars);
 // }
 
 /* Mallocates a new string with the '$var' found at 'tar_index' cut off. */
-static char	*cut_string(char *str, int tar_index)
-{
-	char	*new_str;
-	char	*tar_ptr;
-	int		tar_len;
-	int		i;
+// static char	*cut_string(char *str, int tar_index)
+// {
+// 	char	*new_str;
+// 	char	*tar_ptr;
+// 	int		tar_len;
+// 	int		i;
 
-	if (str == NULL)
-		return (NULL);
-	tar_len = ft_varlen(&str[tar_index]) + 1;
-	tar_ptr = &str[tar_index];
-	new_str = (char *)malloc(ft_strlen(str) - tar_len + 1);
-	if (new_str == NULL)
-		return (NULL);
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (&str[i] != tar_ptr)
-		{
-			new_str[i] = str[i];
-			i++;
-		}
-		else
-			str += tar_len;
-	}
-	new_str[i] = '\0';
-	return (new_str);
-}
+// 	if (str == NULL)
+// 		return (NULL);
+// 	tar_len = ft_varlen(&str[tar_index]) + 1;
+// 	tar_ptr = &str[tar_index];
+// 	new_str = (char *)malloc(ft_strlen(str) - tar_len + 1);
+// 	if (new_str == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		if (&str[i] != tar_ptr)
+// 		{
+// 			new_str[i] = str[i];
+// 			i++;
+// 		}
+// 		else
+// 			str += tar_len;
+// 	}
+// 	new_str[i] = '\0';
+// 	return (new_str);
+// }
 
 /* searches all the vars arrays for the var pointer by str */
 static char	*wide_search(char *str, const char ***vars)
@@ -99,6 +99,31 @@ static char	*wide_search(char *str, const char ***vars)
 	return (NULL);
 }
 
+static char *set_exp_val(size_t *i, char *str, const char ***vars)
+{
+	if (str[*i] == '$' && (str[*i + 1] == '\0' || ft_isspace(str[*i + 1])))
+		return ((*i)++, NULL);
+	else if (str[*i] == '$' && ft_isdigit(str[*i + 1]))
+	{
+		if (str[*i + 1] == '0')
+			return (ft_strdup("minishell"));
+		return (NULL);
+	}
+	else if (!ft_strncmp("$?", &str[*i], 2))
+	{
+		if (DEBUG) {ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");}
+		return (ft_itoa(*((unsigned int *)vars[0] + 1)));
+	}
+	else if (str[*i] == '~') 
+	{
+		if (*i != 0 && !ft_isspace(str[*i - 1]))
+			return ((*i)++, NULL);
+		if (str[*i + 1] != '\0' && str[*i + 1] != '/' && !ft_isspace(str[*i + 1]))
+			return ((*i)++, NULL);
+		return (mtx_findval("HOME", NULL, MAX_PATH, (char **)vars[1]));
+	}
+	return(wide_search(&str[*i + 1], vars));
+}
 
 /* takes a string (to be free'd) and the index of the var found.
 Allocates with malloc(3) a new string that's a copy of the imput string
@@ -111,32 +136,15 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 	char	*new_str;
 	int		var_len;
 
-	//exp_val == NULL;
-	if (!ft_strncmp("$?", &str[*i], 2)) // to be fixed $ab?, or $?ab
-	{
-		exp_val = ft_itoa(*((unsigned int *)vars[0] + 1));
-		if (DEBUG) {ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");}
-	}
-	else if (str[*i] == '~') 
-	{
-		if (*i != 0 && !ft_isspace(str[*i - 1]))
-		{
-			(*i)++;
-			return (str);
-		}
-		if (str[*i + 1] != '\0' && str[*i + 1] != '/' && !ft_isspace(str[*i + 1]))
-		{
-			(*i)++;
-			return (str);
-		}
-		exp_val = mtx_findval("HOME", NULL, MAX_PATH, (char **)vars[1]);
-	}
-	else
-		exp_val = wide_search(&str[*i + 1], vars);
+	exp_val = set_exp_val(i, str, vars);
 	if (exp_val == NULL)
 	{
-		new_str = cut_string(str, *i);
-		return (free(str), new_str);
+		if (str[*i] == '$' || str[*i] == '~')
+		{
+			new_str = drop_string(str, *i, ft_varlen(&str[*i]) + 1);
+			return (free(str), new_str);
+		}
+		return (str);
 	}
 	var_len = ft_varlen(&str[*i]) + 1;
 	new_str = (char *)malloc(ft_strlen(str) - var_len + ft_strlen(exp_val) + 1);

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:47:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 13:49:20 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 23:53:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	if (twelve == NULL)
 		return (NULL);
 	if (s1 != NULL)
-	ft_strlcpy(twelve, s1, size);
+		ft_strlcpy(twelve, s1, size);
 	if (s2 != NULL)
 		ft_strlcat(twelve, s2, size);
 	free(s1);

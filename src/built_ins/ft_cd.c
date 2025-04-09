@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 17:13:15 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:00:35 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,22 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars);
 
 static void	update_pwd(char *oldpwd, char *pwd, char ***vars)
 {
-	static int	fresh;
 	int			index;
-	// char		*env_oldpwd;
 
 	if (pwd != NULL)
 	{
 		index = mtx_getindex("PWD", vars[1]);
 		if (index >= 0)
 			mtx_setval("PWD", pwd, vars[1]);
-		// else
-		// {
-		// 	index = mtx_getindex("OLDPWD", vars[1]);
-		// 	if (index >= 0)
-		// 	{
-		// 		env_oldpwd = mtx_findval("OLDPWD", NULL, 0, vars[1]);
-		// 		if (env_oldpwd == NULL)
-		// 			fresh++;
-		// 		else if (!ft_strncmp(env_oldpwd, pwd, ft_strlen(oldpwd) + 1))
-		// 			*(ft_strchr(vars[1][index], '=')) = '\0';
-		// 		free(env_oldpwd);
-		// 	}
-		// }
+		else
+			return ;
 	}
 	if (oldpwd != NULL)
 	{
 		index = mtx_getindex("OLDPWD", vars[1]);
-		if (index >= 0 && (ft_strchr(vars[1][index], '=') != NULL || fresh != 0))
+		if (index >= 0)
 		{
 			mtx_setval("OLDPWD", oldpwd, vars[1]);
-			fresh = 0;
 		}
 	}
 }
@@ -95,48 +81,23 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 		write(STDERR_FILENO, "minishell: cd: too many argument\n", 33);
 		return (1);
 	}
-	
-	// if (cmd.words[1] == NULL || !ft_strncmp(cmd.words[1], "~", 1))
-	// {
-	// 	tar_dir = mtx_findval("HOME", NULL, 0, vars[1]);
-	// 	if (tar_dir == NULL)
-	// 	{
-	// 		write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
-	// 		return (1);
-	// 	}
-	// 	else if (!ft_strncmp(cmd.words[1], "~/", 2))
-	// 		tar_dir = ft_strjoin(mtx_findval("HOME", NULL, 0, vars[1]), cmd.words[1] + 1);
-	// 	else
-	// 		tar_dir = cmd.words[1];
-	// }
 	if (cmd.words[1] == NULL)
 	{
-		// → cd senza argomenti => vai in HOME
 		mtx_findval("HOME", tar_dir, MAX_PATH, vars[1]);
-		// if (!tar_dir)
-		// {
-		// 	write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
-		// 	return (1);
-		// }
 	}
 	else
 	{
-		// → cd <altro path>
 		ft_strlcpy(tar_dir, cmd.words[1], MAX_PATH);
 	}
-
 	oldpwd = getcwd(NULL, 0);
 	if (chdir(tar_dir) < 0)
 	{
-		ft_printf("minishell: cd: %s: %s\n", tar_dir, strerror(errno));
+		ft_printfd(STDERR_FILENO, "minishell: cd: %s: %s\n", tar_dir, strerror(errno));
 		free(oldpwd);
-		return (1); //return errno
+		return (errno);
 	}
-	pwd = getcwd(NULL, 0);	//catch error
+	pwd = getcwd(NULL, 0);
 	update_pwd(oldpwd, pwd, vars);
 	free(oldpwd); free(pwd);
-	// if (cmd.words[1] == NULL || !ft_strncmp(cmd.words[1], "~", 1))
-	// 	free(tar_dir);
-	//ft_printf("  TODO: update PWD automatically\n\tgo HOME if only 'cd'\n\tjust read the man...\n");
 	return (0);
 }

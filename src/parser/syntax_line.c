@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 02:01:47 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 23:43:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 char	*syntax_line(char *line);
 char	*drop_comment(char *line);
+char	*drop_string(char *str, int start, size_t len);
 
 static void	clean_exit(char *line, char *check_this, t_token *tokens)
 {
@@ -24,7 +25,8 @@ static void	clean_exit(char *line, char *check_this, t_token *tokens)
 	free_tokens(tokens);
 }
 
-static char	*drop_string(char *str, int start, size_t len)
+/* Removes 'len' bytes from the string starting from start */
+char	*drop_string(char *str, int start, size_t len)
 {
 	char	*new_str;
 	char	*tar_ptr;
@@ -33,6 +35,10 @@ static char	*drop_string(char *str, int start, size_t len)
 	if (str == NULL)
 		return (NULL);
 	//tar_len = ft_varlen(&str[tar_index]) + 1;
+	if ((size_t)start > ft_strlen(str))
+		return (ft_strdup(str));
+	else if (start + len > ft_strlen(str))
+		len = ft_strlen(str) - start;
 	tar_ptr = &str[start];
 	new_str = (char *)ft_calloc(ft_strlen(str) - len + 1, sizeof(char));
 	if (new_str == NULL)
@@ -156,11 +162,11 @@ static char *real_line(const char *prompt)
 {
 	char	*real_line;
 	
-	real_line = ft_readline(prompt);
+	real_line = /* ft_ */readline(prompt);
 	while (real_line && is_white(real_line))
 	{
 		free(real_line);
-		real_line = ft_readline(prompt);
+		real_line = /* ft_ */readline(prompt);
 	}
 	return (real_line);
 }
@@ -180,7 +186,7 @@ static char	*append_line(char *line, t_token_type last_type)
 	}
 	else if (last_type == TOKEN_WORD)
 	{
-		next_line = ft_readline("> ");
+		next_line = /* ft_ */readline("> ");
 		if (next_line == NULL)
 			return (cleanup(line), NULL);
 		line = ft_strjoin_free_nl(line, next_line);

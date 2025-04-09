@@ -166,7 +166,7 @@ minishell%
 (DONE)
 AND HEREDOC IS CORRUPTED AFTER ^\
 
-(DONE) ( ! ! ! CHECK LEAKS ! ! ! )
+(DONE) (RECHECK AFTER FT_READLINE IMPLEMENTATION)
 (d)quote use gnl please (double free con ctr+D e test altri nterruptions)
 	
 BASH: (DONE)
@@ -179,14 +179,27 @@ if an 'ls' file is present make it so that you can execute it with './ls'
 ACCESS deve controllare se il comando passatoe  una dritacctory
 fne\THE DNdeE
 
-======================== ONGOING =======================
-
-( ! ! ! CHECK LEAKS ! ! ! )
-(without redoing getcwd() and chdir())
+(DONE)
+(QUICK NOTE: man cd)
+(without redoing getcwd() and chdir()) 
 REDO: pwd, cd
 	(just change the PWD='/global/path/to/folder' variable)
 	(beware of errors)
 REDO: PWD and CD, just change the variable 'PWD' (not that easy, if unset PWD, pwd still works)
+
+(DONE)
+bash-3.2$ echo $
+$
+
+(DONE)
+cat << EOF + Ctrl-D
+/usr/bin/cat: -: Bad file descriptor
+
+(DONE)
+VARS:
+	$12: prints value of $1, then 2: '2'
+
+======================== ONGOING =======================
 
 SYNTAX:
 	1. basics (DONE)
@@ -204,9 +217,10 @@ NOTES:
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 
 riorrganizzazione librerie (libft, mtx, readline)
+
 MAX_PATH CONSEQUENCES!!!
 
-------------------> EXCLUSIVELY PARSING PROBLEMS <------------------
+----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 
@@ -222,36 +236,13 @@ EXTRA (FAKE NEWS)
 
 ----------------------> MIXED PROBLEMS <-----------------------
 
-bash-3.2$ echo $
-$
-
 ----------------------> TO INVESTIGATE <-----------------------
 
-VARS:
-	$12: prints value of $1, then 2: '2'
-
-----------------------> FUNNY STUFF <-----------------------
-
-( ! ! ! IGNORE THIS ! ! ! )
-CURSED COMMAND (ZSH):
-	c2r3p6% ls | << prut cat | grep la | > pippo; cat pippo
-	heredoc> lol
-	heredoc> alalready excluded?
-	heredoc> prut
-	playlists
-	alalready excluded?
-playlist: file found by ls, and grep'd
-alalready excluded?: found in heredoc and grep'd
-
-----------------------> HERE DOC <-----------------------
-
-cat << EOF + Ctrl-D
-/usr/bin/cat: -: Bad file descriptor
-
+-------------------------> HERE DOC <--------------------------
 
 here_doc(NULL) returns string to add to line for history
 
-----------------------> FT_READLINE <-----------------------
+-----------------------> FT_READLINE <------------------------
 
 FIX ARROWS: Up: '^[[A', Down: '^[[B', Right: '^[[C', Left: '^[[D'
 
@@ -264,10 +255,11 @@ thngs to fix:
 	1. delete should bring back stuff with him.
 	2. move forward with arrow right.
 	3. deleting line before (if cursor != 0 and end of terminal go top)
+	4. go on newline if reached end of terminal. (ADVANCED)
 
 check leaks for hitory
 
--------------------> THINGS TO DISCUSS <-------------------
+--------------------> THINGS TO DISCUSS <--------------------
 
 1. var value length (and varous mallocs) (DONE)
 2. var name length (and various mallocs) (DONE)
@@ -309,9 +301,9 @@ ci$ao$"$ciao"$'$ciao'
 
 1. cd chiama la funzione chdir che modifica la working directing
 prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiamare chdir
-
+	NON SERVER
 2. le varibili PWD e OLD_PWD vengono modificate da cd e capire come e farlo e implemetalro.e  sistemarlo. e runnarlo. e debuggarlo.
-
+	FATTO
 1) ls non deve eseguire l'eseguibile ls nella mia directory ma deve eseguire il comando ls
 	FATTO
 2) heredoc. dovrebbe creare un nuovo file in TMPDIR. quindi dovrebbe andare a cercare la cartella TMPDIR. Se tmpdir non esiste non so cosa deve fare. crearla?
@@ -319,6 +311,22 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
 	FATTO
 
-
-tilde clotilde matilde
+1. tilde clotilde matilde
 	FATTO
+
+
+
+
+
+----------------------> FUNNY STUFF <-----------------------
+
+( ! ! ! IGNORE THIS ! ! ! )
+CURSED COMMAND (ZSH):
+	c2r3p6% ls | << prut cat | grep la | > pippo; cat pippo
+	heredoc> lol
+	heredoc> alalready excluded?
+	heredoc> prut
+	playlists
+	alalready excluded?
+playlist: file found by ls, and grep'd
+alalready excluded?: found in heredoc and grep'd

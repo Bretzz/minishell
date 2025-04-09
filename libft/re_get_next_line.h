@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   re_get_next_line.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 21:14:54 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 23:56:25 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/09 20:44:12 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/09 23:25:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef RE_GET_NEXT_LINE_H
+# define RE_GET_NEXT_LINE_H
 
-int	ft_lstsize(t_list *lst)
+# include <unistd.h>
+# include "libft.h"
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
+
+typedef struct s_list_fd
 {
-	size_t	i;
+	int					fd;
+	char				*str;
+	struct s_list_fd	*next;
+}			t_list_fd;
 
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
+t_list_fd	*list_fd_del_fd(int fd, t_list_fd *list);
+t_list_fd	*list_fd_add_back(t_list_fd *list, int fd, char *str);
+void		list_fd_delone(t_list_fd *node);
+
+#endif

@@ -58,8 +58,8 @@ SRC_FILES		= main.c \
 				\
 				vstr_getname.c vstr_getvalue.c \
 				\
-				print_stuff.c free_space.c cleanup.c \
-				ft_readline.c
+				print_stuff.c free_space.c cleanup.c
+#				ft_readline.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 
@@ -118,7 +118,7 @@ $(OBJS_DIR):
 
 #-D DEBUG=1				(dopo $(CFLAGS))
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR) 
-	@$(CC) $(CFLAGS) -D DEBUG=1	$(INK) $(DEFS) -c $< -o $@
+	@$(CC) $(CFLAGS) -D DEBUG=0	$(INK) $(DEFS) -c $< -o $@
 
 $(EXE_DIR):
 	@mkdir -p $(EXE_DIR)

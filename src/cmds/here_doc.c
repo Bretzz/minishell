@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 01:14:16 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 23:43:07 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,9 @@ static int	null_catcher(int fd, int line_count, char *limiter)
 		ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
 delimited by end-of-file (wanted `%s')\n", line_count, limiter);
 	}
-	return (fd);
+	clean_exit(fd);
+	return (safeclose(open_doc(CREATE)),
+		read_doc(open_doc(GETNUM)));
 }
 
 /* returns a line read from the 'fd'.
@@ -137,17 +139,14 @@ int	here_doc(char *limiter, const char ***vars)
 			&& line[ft_strlen(limiter)] == '\n'))
 	{
 		if (DEBUG) {ft_printf("prima cosa dentro il while (%p)\n", line);}
-		if (line != NULL)
+		if (!exp_write(fd, exp_flag, line, vars))
 		{
-			if (!exp_write(fd, exp_flag, line, vars))
-			{
-				free(line);
-				clean_exit(fd);
-				return (safeclose(open_doc(CREATE)),
-					read_doc(open_doc(GETNUM)));
-			}
 			free(line);
+			clean_exit(fd);
+			return (safeclose(open_doc(CREATE)),
+				read_doc(open_doc(GETNUM)));
 		}
+		free(line);
 		write(STDOUT_FILENO, "> ", 2);
 		line = safe_line(STDIN_FILENO);
 		i++;

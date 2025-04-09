@@ -6,29 +6,81 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:39:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 12:06:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:40:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_putchar(int c);
+int			ft_putchar(int c);
 
-char	*get_value(const char *target, const char **mtx);
-int		var_is_valid(const char *var);
-int		var_check(const char *var);
+char		*get_value(const char *target, const char **mtx);
+int			var_is_valid(const char *var);
+int			var_check(const char *var);
 
-char	**setnum(char **mtx, const char *target, int value);
+char		**setnum(char **mtx, const char *target, int value);
 static char	**replace_var(int index, char **mtx, char *var);
-char	**var_append(char **mtx, char *var);
+char		**var_append(char **mtx, char *var);
 
-int		is_there(const char **mtx, const char *target);
-void	**drop_index(void **mtx, int index);
+int			is_there(const char **mtx, const char *target);
+void		**drop_index(void **mtx, int index);
 
-pid_t	wrapper(int *fd, int *oldfd, t_cmd cmd);
-int		miniwrapper(int *fd, int *oldfd, t_cmd cmd);
+pid_t		wrapper(int *fd, int *oldfd, t_cmd cmd);
+int			miniwrapper(int *fd, int *oldfd, t_cmd cmd);
 
-int		syntax_check(char *line);
+int			syntax_check(char *line);
+static int	handle_command(t_cmd cmd, char ***vars);
+
+/* executes the command, setting g_pipe_status to the exit code of the command executed.
+throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */
+int	handle_command(t_cmd cmd, char ***vars)
+{
+	pid_t				pid;
+	int					ret;
+	int					fd[2];
+	static int			oldfd[2];
+	struct sigaction	ignore_sig;
+
+	sig_initializer();
+
+	if (handle_vars(cmd, vars))
+		return (-1);
+	if (is_builtin(cmd.words[0]))
+	{
+		miniwrapper(fd, oldfd, cmd);
+		ret = exec_builtin(fd, cmd, vars);
+		if (ret < 0)
+		{
+			mtx_setdata(0, vars[0]);
+			return (EXIT_SUCCESS);
+		}
+		mtx_setdata(ret, vars[0]);
+		return (-1);
+	}
+	// Imposta SIGINT per essere ignorato nel processo padre
+	sigemptyset(&ignore_sig.sa_mask);
+	ignore_sig.sa_flags = 0;
+	ignore_sig.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &ignore_sig, NULL);
+
+	pid = wrapper(fd, oldfd, cmd);
+	if (pid == 0)
+	{
+		// Nel figlio ripristina il comportamento di default per SIGINT e SIGQUIT
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		ret = ft_execve(fd, cmd, vars[1] + 1);
+		return (ret);
+	}
+	waitpid(pid, &ret, WUNTRACED);
+	// Se il figlio è terminato a causa di SIGINT, manda un newline
+	if (WIFSIGNALED(ret) && WTERMSIG(ret) == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
+	// Riattiva il nostro handler personalizzato
+	sig_initializer();
+	mtx_setdata(((ret) & 0xff00) >> 8, vars[0]);
+	return (-1);
+}
 
 static void	skip_quotes(char *line, size_t *i)
 {

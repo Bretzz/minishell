@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 12:28:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 20:35:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ size_t	ft_varlen(const char *s)
 	i = 0;
 	if (s[i] == '$')
 		s++;
-	if (s[i] && s[i] == '?')
+	if (s[i] && (s[i] == '?' || ft_isdigit(s[i])))
 		return (1);
 	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_'/*  || s[i] == '?' */))
 		i++;

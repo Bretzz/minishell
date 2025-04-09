@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_strichr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/23 21:14:54 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 23:56:25 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/09 23:22:18 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/09 23:22:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstsize(t_list *lst)
+int	ft_strichr(const char *s, int c)
 {
-	size_t	i;
+	unsigned int	i;
 
+	if (!s)
+		return (0);
+	c = (unsigned char)c;
 	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
+	while (s[i] != '\0' && s[i] != c)
 		i++;
-	}
-	return (i);
+	if (s[i] == '\0' && c != '\0')
+		return (0);
+	return (i + 1);
 }

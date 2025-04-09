@@ -6,30 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:37:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 15:19:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:46:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 char	*find_env_path(char *cmd, char **env);
-
-/* strjoin without stlcpy and strlcat
-and frees s1 */
-static char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*twelve;
-	size_t	size;
-
-	size = ft_strlen(s1) + ft_strlen(s2) + 1;
-	twelve = (char *)ft_calloc(size, sizeof(char));
-	if (twelve == NULL)
-		return (NULL);
-	ft_strlcpy(twelve, s1, size);
-	ft_strlcat(twelve, s2, size);
-	free(s1);
-	return (twelve);
-}
 
 /*takes a string 'str', a separetor 'c' and a tail-string 'tail' as parameters 
 Then splits the string based on the separetor,

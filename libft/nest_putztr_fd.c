@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 12:40:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:41:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 23:57:21 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 /* prints a string up to len characters. */
 int	nest_putztr_fd(int fd, char *str, unsigned int len)
 {
-	int	count;
+	int		count;
 	size_t	i;
 
 	count = 0;
 	i = 0;
-	while(str[i] && i < len)
+	while (str[i] && i < len)
 	{
 		count += write(fd, &str[i], 1);
 		i++;

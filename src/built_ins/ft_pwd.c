@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:21:24 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 18:58:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	ft_pwd(int *fd, t_cmd cmd)
 	dir = getcwd(NULL, 0);
 	if (dir == NULL)
 	{
-		//handle errno
-		return (1); //return errno
+		ft_printfd(STDERR_FILENO, "minishell: pwd: %s\n", strerror(errno));
+		return (errno);
 	}
 	ft_printfd(fd[1], "%s\n", dir);
 	free(dir);

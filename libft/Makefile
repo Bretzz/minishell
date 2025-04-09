@@ -41,12 +41,12 @@ SRC_FILES		= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isasc
 				west_putnbr_fd.c \
 				west_putstr_fd.c \
 				\
-				get_next_line.c \
-				get_next_line_utils.c \
+				re_get_next_line.c \
+				re_get_next_line_utils.c \
 				\
 				ft_realloc.c \
 				\
-				ft_strjoin_free.c
+				ft_strjoin_free.c ft_strichr.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 

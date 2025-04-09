@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 21:31:47 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/09 23:36:24 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ void	ft_readline_initializer(void);
 /* UTILS */
 
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+char	*drop_string(char *str, int start, size_t len);
 
 size_t	ft_strlen_space(const char *s); //replace with ft_varlen when measuring vars
 size_t	ft_strlen_nl(const char *s);
