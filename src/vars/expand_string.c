@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/09 23:49:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 01:12:38 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,9 @@ static char *set_exp_val(size_t *i, char *str, const char ***vars)
 		return (NULL);
 	}
 	else if (!ft_strncmp("$?", &str[*i], 2))
-	{
-		if (DEBUG) {ft_printf("I CAN'T BE EXPANDED DURING PARSING!!!\nI NEED TO GET THE EXIT STATUS OF THE LAST FOREGROUND PIPE!!!\n");}
 		return (ft_itoa(*((unsigned int *)vars[0] + 1)));
-	}
+	else if (!ft_strncmp("$$", &str[*i], 2))
+		return (ft_itoa(*((unsigned int *)vars[1] + 1)));
 	else if (str[*i] == '~') 
 	{
 		if (*i != 0 && !ft_isspace(str[*i - 1]))

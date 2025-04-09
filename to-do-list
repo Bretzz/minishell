@@ -210,30 +210,6 @@ NOTES:
 	heading whitespace before '#' and exclude if in quotes (DONE)
 	outside-quote exclusion in word_check()
 
-======================== T O D O =======================
-
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-	/		! ! ! REMOVE FT_FREENTF ! ! !			/
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-
-riorrganizzazione librerie (libft, mtx, readline)
-
-MAX_PATH CONSEQUENCES!!!
-
-----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
-
-------------------> EXCLUSIVE EXEC PROBLEMS <------------------
-
-PIPESTATUS (NOT NECESSARY)
-	An array variable de containing a list of
-	exit status values from the processes in the most-recently-executed foreground
-	pipeline (which may contain only a single command).
-(check for hardcoded errors: command not found, builtin errors, others...)
-
-EXTRA (FAKE NEWS)
-	"cd ..; pwd" changes dir
-	"pwd; cd .." doesn't
-
 pipe da solo non da error (???) (DONE)
 ls | grep out; echo $? (DONE)
 
@@ -271,6 +247,42 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 	NON SERVE
 3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
 	FATTO
+
+======================== T O D O =======================
+
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+	/		! ! ! REMOVE FT_FREENTF ! ! !			/
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+
+riorrganizzazione librerie (libft, mtx, readline)
+
+MAX_PATH CONSEQUENCES!!!
+
+----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
+
+1. tilde clotilde matilde
+	FATTO (VORRESTI)
+BASH:
+	bash-3.2$ unset HOME
+	bash-3.2$ echo ~
+	/Users/totommi
+	bash-3.2$ echo $HOME
+
+	bash-3.2$
+
+ciao$"$ciao"$$'$ciao' (JUST $$ PID HANDLING)
+
+------------------> EXCLUSIVE EXEC PROBLEMS <------------------
+
+PIPESTATUS (NOT NECESSARY)
+	An array variable de containing a list of
+	exit status values from the processes in the most-recently-executed foreground
+	pipeline (which may contain only a single command).
+(check for hardcoded errors: command not found, builtin errors, others...)
+
+EXTRA (FAKE NEWS)
+	"cd ..; pwd" changes dir
+	"pwd; cd .." doesn't
 
 ----------------------> MIXED PROBLEMS <-----------------------
 
@@ -318,18 +330,6 @@ check leaks for hitory
 		check date creation of file appended is VS date di modifica del file dei test.
 		poi famo un diff
 		bellali
-
-1. tilde clotilde matilde
-	FATTO (VORRESTI)
-BASH:
-	bash-3.2$ unset HOME
-	bash-3.2$ echo ~
-	/Users/totommi
-	bash-3.2$ echo $HOME
-
-	bash-3.2$
-
-ciao$"$ciao"$$'$ciao' (JUST $$ PID HANDLING)
 
 
 
