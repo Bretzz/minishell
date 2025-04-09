@@ -240,7 +240,9 @@ EXTRA (FAKE NEWS)
 
 -------------------------> HERE DOC <--------------------------
 
-here_doc(NULL) returns string to add to line for history
+here_doc(NULL) returns string to add to line for history (DONT LIKE)
+
+new add_history that stores a line in a static
 
 -----------------------> FT_READLINE <------------------------
 
@@ -252,10 +254,18 @@ allora:
 	3. ristrutturare il ragionamento base. (DONE)
 
 thngs to fix:
-	1. delete should bring back stuff with him.
-	2. move forward with arrow right.
+	1. delete should bring back stuff with him. (fft_memmove)
+	2. move forward with arrow right. (write the next char)
 	3. deleting line before (if cursor != 0 and end of terminal go top)
+		(if the line whent on a new terminal line (as point 4)
+		and you're about to delete the last char of that line the
+		cursor should go at the beginning of the line before)
 	4. go on newline if reached end of terminal. (ADVANCED)
+
+GENERAL:
+	1. bind the cursor variable to the write() calls.
+	2. difference between 'line' and 'terminal-line'
+	3. how do I get the 'window size'?
 
 check leaks for hitory
 
