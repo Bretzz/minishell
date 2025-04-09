@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:39:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:40:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 00:10:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,35 +251,35 @@ int	syntax_check(char *line)
 writes "pipe heredoc> " to the stdout,
 writes the stdin to the write end of the pipe,
 breaks when the stdin is exactly argv[2] */
-// static void	here_doc(int where, char *limiter, int *pipefd)
-// {
-// 	char	*line;
-// 	char	prompt[15];
+static void	here_doc(int where, char *limiter, int *pipefd)
+{
+	char	*line;
+	char	prompt[15];
 
-// 	ft_bzero(prompt, 15);
-// 	if (where == PIPE)
-// 		ft_strlcpy(prompt, "pipe heredoc> ", 15);
-// 	else
-// 		ft_strlcpy(prompt, "heredoc> ", 10);
-// 	ft_printf("%s", prompt);
-// 	line = get_next_line(STDIN_FILENO);
-// 	while (/* line != NULL &&  */!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
-// 			&& line[ft_strlen(limiter)] == '\n'))
-// 	{
-// 		if (line != NULL)
-// 		{
-// 			write(pipefd[1], line, ft_strlen(line));
-// 			free(line);
-// 		}
-// 		else
-// 			ft_printf("\nminishell: is weak...\n");
-// 		ft_printf("%s", prompt);
-// 		line = get_next_line(STDIN_FILENO);
-// 	}
-// 	//ft_printf("\n");
-// 	free(line);
-// 	close(pipefd[1]);
-// }
+	ft_bzero(prompt, 15);
+	if (where == PIPE)
+		ft_strlcpy(prompt, "pipe heredoc> ", 15);
+	else
+		ft_strlcpy(prompt, "heredoc> ", 10);
+	ft_printf("%s", prompt);
+	line = get_next_line(STDIN_FILENO);
+	while (/* line != NULL &&  */!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
+			&& line[ft_strlen(limiter)] == '\n'))
+	{
+		if (line != NULL)
+		{
+			write(pipefd[1], line, ft_strlen(line));
+			free(line);
+		}
+		else
+			ft_printf("\nminishell: is weak...\n");
+		ft_printf("%s", prompt);
+		line = get_next_line(STDIN_FILENO);
+	}
+	//ft_printf("\n");
+	free(line);
+	close(pipefd[1]);
+}
 
 /* defaults returns STDIN_FILENO,
 if an input file is found, returns it's fd after a successful open(3) call. */
