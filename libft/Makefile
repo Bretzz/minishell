@@ -44,7 +44,9 @@ SRC_FILES		= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isasc
 				get_next_line.c \
 				get_next_line_utils.c \
 				\
-				ft_realloc.c
+				ft_realloc.c \
+				\
+				ft_strjoin_free.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_history.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:25:23 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 01:02:36 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 15:07:49 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 #include "libft.h"
 
-void	ft_add_history(char *line);
+char	**ft_add_history(char *line);
 char	**ft_get_history(void);
 //void	ft_set_history(char **history);
 void	ft_free_history(void);
@@ -22,16 +22,17 @@ void	ft_free_history(void);
 The pointer passed to the function will be treated
 as the first entry of the history.
 Successive calls will add new entries to the history
-up to MAX_HISTORY enries. */
-void	ft_add_history(char *line)
+up to MAX_HISTORY enries.
+IF line is NULL returns the history pointer. */
+char	**ft_add_history(char *line)
 {
-	char			**history;
+	static char		*history[MAX_HISTORY];
 	static int		index;
 	unsigned int	i;
 	
 	if (line == NULL)
 	{
-		return ;	//dunno
+		return (history);	//dunno
 	}
 	if (index == 0)
 	{
@@ -39,7 +40,6 @@ void	ft_add_history(char *line)
 	}
 	if (index < MAX_HISTORY)
 	{
-		history = ft_get_history();
 		i = index - 1;
 		while (i > 0)
 		{
@@ -49,6 +49,7 @@ void	ft_add_history(char *line)
 		history[1] = ft_strdup(line);
 		index++;
 	}
+	return (history);
 }
 
 /* The first call ever is an assignment call.
@@ -76,7 +77,7 @@ void	ft_free_history(void)
 	char	**history;
 	int		i;
 
-	history = ft_get_history();
+	history = ft_add_history(NULL);
 	if (history == NULL)
 		return ;
 	i = 0;

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   readline_main.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:00:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 23:50:27 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/09 13:20:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//cc -Wall -Werror -Wextra remain.c src/utils/readline/* src/utils/cleanup.c libft/libft.a -Ilibft -Isrc/vars/mtxdb -Isrc/utils/readline -I.
+//cc -Wall -Werror -Wextra readline_main.c src/utils/readline/* src/utils/cleanup.c libft/libft.a -Ilibft -Isrc/vars/mtxdb -Isrc/utils/readline -I.
 
 #include "minishell.h"
 #include "ft_readline.h"

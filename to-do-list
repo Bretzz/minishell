@@ -257,10 +257,14 @@ FIX ARROWS: Up: '^[[A', Down: '^[[B', Right: '^[[C', Left: '^[[D'
 
 allora:
 	1. fare che la history sta' direttamente in ft_add_history (DONE)
-	2. spezzettare build_safe_line
-	3. ristrutturare il ragionamento base.
+	2. spezzettare build_safe_line (DONE)
+	3. ristrutturare il ragionamento base. (DONE)
 
-move_key() sfancula tutto.
+thngs to fix:
+	1. delete should bring back stuff with him.
+	2. move forward with arrow right.
+	3. deleting line before (if cursor != 0 and end of terminal go top)
+
 check leaks for hitory
 
 -------------------> THINGS TO DISCUSS <-------------------
