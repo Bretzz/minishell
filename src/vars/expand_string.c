@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 19:25:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 17:57:30 by mapascal         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/04/09 17:46:27 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -138,14 +139,13 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 		return (free(str), new_str);
 	}
 	var_len = ft_varlen(&str[*i]) + 1;
-//	ft_printf("varlen=%d\n", var_len);
 	new_str = (char *)malloc(ft_strlen(str) - var_len + ft_strlen(exp_val) + 1);
 	if (new_str == NULL)
 		return (free(exp_val), NULL);
 	ft_strlcpy(new_str, str, *i + 1);
 	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
 	ft_strlcat(new_str, &str[*i + var_len], ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
-//	ft_printf("skipping %d chars\n", ft_strlen(exp_val));
+	if (DEBUG) {ft_printf("skipping %d chars\n", ft_strlen(exp_val));}
 	(*i) += ft_strlen(exp_val) - 1;
 	return (free(exp_val), free(str), new_str);
 }

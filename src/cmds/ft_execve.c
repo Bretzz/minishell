@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/08 14:07:24 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/08 23:40:02 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 int	is_directory(const char *path)
 {
-	DIR *dir = opendir(path);
+	DIR *dir;
+	
+	dir = opendir(path);
 	if (dir == NULL)
 		return (0);
 	closedir(dir);
@@ -78,13 +80,13 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 	int		exit_status;
 
 	path = NULL;
+	if (!cmd.words[0])
+		return (-1); // this should never happen (right now we just ignore, leaving all things open)
 	if (is_directory(cmd.words[0]) == 1)
 	{
 		ft_printfd(STDERR_FILENO, "%s: Is a directory.\n", cmd.words[0]);
 		return (126);
 	}
-	if (!cmd.words[0])
-		return (-1); // this should never happen (right now we just ignore, leaving all things open)
 	if (access(cmd.words[0], X_OK) == 0)
 		path = ft_strdup(cmd.words[0]);
 	else
@@ -97,13 +99,13 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 	dup2(fd[1], STDOUT_FILENO);
 	safeclose(fd[0]);
 	safeclose(fd[1]);
-	for (int i = 3; i < 260; i++)
-	{
-	if (fcntl(i, F_GETFD) != -1)
-		dprintf(2, ">> open fd: %d\n", i);
-	}
+	// for (int i = 3; i < 260; i++)
+	// {
+	// if (fcntl(i, F_GETFD) != -1)
+	// 	dprintf(2, ">> open fd: %d\n", i);
+	// }
 	execve(path, cmd.words, env);
 //	ft_freentf("2", cmd.words);
 	free(path);
-	return (-1);
+	return (EXIT_FAILURE);
 }

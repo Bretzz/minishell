@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/08 01:20:56 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/08 15:12:16 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 void	idle_initializer(void);
 void    runtime_initializer(void);
 void    input_initializer(void);
+void	ft_readline_initializer(void);
 
 static void idle_handler(int signal)
 {
@@ -83,6 +84,30 @@ static void input_handler(int signal)
 	g_last_sig = signal;
 }
 
+static void ft_readline_handler(int signal)
+{
+    if (signal == SIGINT)
+    {
+        // Stampa un newline (così se sei in un comando come "cat", va a capo)
+        write(STDOUT_FILENO, "\n", 1);    //heheh
+        // Cancella la linea corrente e prepara readline per una nuova linea
+        rl_replace_line("", 0);   //MacOS issues
+        rl_on_new_line();
+        rl_redisplay();
+    }
+    else if (signal == SIGQUIT)
+    {
+	//	write(STDOUT_FILENO, "\n", 1);    //heheh
+	//	rl_replace_line("Pterodattilo!\n", 14);
+		write(STDERR_FILENO, "\b\b  \b\b", 6);    //heheh
+        //ft_printf("Pterodattilo!\n");
+		// rl_replace_line("", 0);   //MacOS issues
+        // //rl_on_new_line();
+        // rl_redisplay();
+    }
+	g_last_sig = signal;
+}
+
 /* Handle signals while waiting for a new command line. */
 void	idle_initializer(void)
 {
@@ -120,6 +145,18 @@ void    input_initializer(void)
 	sigaction(SIGINT, &input_guard, NULL);
 	sigaction(SIGQUIT, &input_guard, NULL);
 	sigaction(SIGTSTP, &input_guard, NULL);
+}
+
+void	ft_readline_initializer(void)
+{
+	struct sigaction	come_and_get_me;
+
+	bzero(&come_and_get_me, sizeof(come_and_get_me));
+	come_and_get_me.sa_handler = ft_readline_handler;
+	come_and_get_me.sa_flags = 0;
+	sigaction(SIGINT, &come_and_get_me, NULL);
+	sigaction(SIGQUIT, &come_and_get_me, NULL);
+	//rl_catch_signals = 0;
 }
 
 // studiare con signal
