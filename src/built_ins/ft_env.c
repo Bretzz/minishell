@@ -19,7 +19,7 @@ int	ft_env(int *fd, const char ***vars)
 	unsigned int	i;
 	char			*value;
 
-	if (vars[1] == NULL)	//should never happen
+	if (vars[1] == NULL)
 	{
 		ft_printfd(STDERR_FILENO, "%p\n", vars[1]);
 		safeclose(fd[1]);
@@ -29,7 +29,6 @@ int	ft_env(int *fd, const char ***vars)
 	while (vars[1][i] != NULL)
 	{
 		value = vstr_getvalue((char *)vars[1][i], NULL, 0);
-		//if (vstr_getvalue((char *)vars[1][i], buff, sizeof(buff)) != NULL)
 		if (value != NULL)
 			ft_printfd(fd[1], "%s\n", vars[1][i]);
 		free(value);

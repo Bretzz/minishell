@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 23:36:24 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:03:56 by march            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int		ft_pwd(int *fd, t_cmd cmd);
 int		ft_export(int *fd, t_cmd cmd, char ***vars);
 int		ft_unset(int *fd, t_cmd cmd, char ***vars);
 int		ft_env(int *fd, const char ***vars);
+static void	rank_up(char *varstr, char ***vars);
+int	exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
 
 /* SIGNALS */
 

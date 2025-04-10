@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:17:12 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:37:44 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:49:10 by march            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	unsigned int	i;
+	int	i;
 
 	c = (unsigned char)c;
 	i = ft_strlen(s);

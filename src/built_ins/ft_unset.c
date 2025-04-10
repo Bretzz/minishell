@@ -19,8 +19,7 @@ static void	mass_drop(char ***vars, char *var)
 	char	name[MAX_NAME];
 	int		index;
 	int		i;
-	
-//	ft_printf("dropping: %s, buff (%p)\n", var, name);
+
 	vstr_getname(var, name, MAX_NAME);
 	i = 1;
 	while (i >= 0)
@@ -46,7 +45,8 @@ int	ft_unset(int *fd, t_cmd cmd, char ***vars)
 	{
 		if (!vstr_name_is_valid(cmd.words[i]))
 		{
-			ft_printfd(STDERR_FILENO, "minishell: unset: `%s': not a valid identifier\n", cmd.words[i]);
+			ft_printfd(STDERR_FILENO, "minishell: unset: `%s': 
+				not a valid identifier\n", cmd.words[i]);
 			exit_status = 1;
 		}
 		else

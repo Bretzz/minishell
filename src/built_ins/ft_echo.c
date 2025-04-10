@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:28:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/05 18:16:24 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/10 17:47:07 by march            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	ft_echo(int *fd, t_cmd cmd);
 
-static void put_echo_words(int fd, char **words)
+static void	put_echo_words(int fd, char **words)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (words[i] != NULL)
 	{
@@ -27,14 +27,12 @@ static void put_echo_words(int fd, char **words)
 		i++;
 	}
 }
+
 //echo     -n     ahahaha
 /* TODO: handle PIPE and tell march that append is the O_FLAG fo read
 (either O_WRITE | O_TRUNCATE or O_WRITE | O_APPEND ) */
 int	ft_echo(int *fd, t_cmd cmd)
 {
-	// if (cmd.words[1] == NULL) //should never happen
-	// 	return (safeclose(fd[1]), 0);
-	
 	if (cmd.words[1] && !ft_strncmp("-n", cmd.words[1], 2))
 	{
 		put_echo_words(fd[1], &cmd.words[2]);

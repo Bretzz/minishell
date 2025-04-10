@@ -39,11 +39,12 @@ SRC_FILES		= main.c \
 				\
 				ft_cd.c ft_echo.c ft_env.c \
 				ft_export.c ft_pwd.c ft_unset.c \
+				rank_up.c \
 				\
 				ft_execve.c pipex_stolen.c builtin_bridge.c\
 				execute_pipeline.c execute_command.c \
 				exe_cute.c exe_really_cute.c exec_one_of_many.c exec_redir.c \
-				here_doc.c here_doc_utils.c \
+				here_doc.c here_doc_utils.c exec_external.c \
 				\
 				parser.c tokenizer.c syntax_tokens.c syntax_line.c \
 				\
@@ -60,6 +61,7 @@ SRC_FILES		= main.c \
 				vstr_getname.c vstr_getvalue.c \
 				\
 				print_stuff.c free_space.c cleanup.c
+				
 #				ft_readline.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))

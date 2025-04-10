@@ -21,16 +21,17 @@ int	ft_pwd(int *fd, t_cmd cmd);
 	EINVAL The size argument is zero and buf is not a null pointer.
 
 	ENAMETOOLONG
-			getwd(): The size of the null-terminated absolute  pathname  string  ex‐
-			ceeds PATH_MAX bytes.
+			getwd(): The size of the null-terminated absolute
+			pathname  string  exceeds PATH_MAX bytes.
 
 	ENOENT The current working directory has been unlinked.
 
 	ENOMEM Out of memory.
 
-	ERANGE The  size  argument  is less than the length of the absolute pathname of
-			the working directory, including the terminating null byte.  You need to
-			allocate a bigger array and try again. 
+	ERANGE The  size  argument  is less than the length of the 
+	absolute pathname of the working directory,
+		including the terminating null byte.  You need to
+		allocate a bigger array and try again. 
 RETURNS: 0 on error, the number of char printed on successful execution. */
 int	ft_pwd(int *fd, t_cmd cmd)
 {
