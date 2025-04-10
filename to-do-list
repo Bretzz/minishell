@@ -111,7 +111,7 @@ also unfollowd pipe, ex: 'cat |', does weird stuff:
 	ciao
 	as if I just wrote: cat | ps
 
-ENV MANAGEMENT: (DONE)
+ENV MANAGEMENT: (DONE) (JUST REALLY BASIC)
 	topiana-@c2r3p6:~/live_projects/github/minishell$ unset PWD
 	topiana-@c2r3p6:~/live_projects/github/minishell$ pwd
 	/nfs/homes/topiana-/live_projects/github/minishell
@@ -199,17 +199,6 @@ cat << EOF + Ctrl-D
 VARS:
 	$12: prints value of $1, then 2: '2'
 
-======================== ONGOING =======================
-
-SYNTAX:
-	1. basics (DONE)
-	2. raccata roba (here_docs)
-	3. check valgrind
-	4. extensive testing
-NOTES:
-	heading whitespace before '#' and exclude if in quotes (DONE)
-	outside-quote exclusion in word_check()
-
 pipe da solo non da error (???) (DONE)
 ls | grep out; echo $? (DONE)
 
@@ -248,17 +237,10 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
 	FATTO
 
-======================== T O D O =======================
+======================== DONE-ish =======================
 
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-	/		! ! ! REMOVE FT_FREENTF ! ! !			/
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-
-riorrganizzazione librerie (libft, mtx, readline)
-
-MAX_PATH CONSEQUENCES!!!
-
-----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
+(DONE)
+ciao$"$ciao"$$'$ciao' (JUST $$ PID HANDLING with getpid())
 
 1. tilde clotilde matilde
 	FATTO (VORRESTI)
@@ -270,7 +252,29 @@ BASH:
 
 	bash-3.2$
 
-ciao$"$ciao"$$'$ciao' (JUST $$ PID HANDLING)
+======================== ONGOING =======================
+
+SYNTAX:
+	1. basics (DONE)
+	2. raccata roba (here_docs)
+	3. check valgrind
+	4. extensive testing
+NOTES:
+	heading whitespace before '#' and exclude if in quotes (DONE)
+	outside-quote exclusion in word_check()
+
+
+======================== T O D O =======================
+
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+	/		! ! ! REMOVE FT_FREENTF ! ! !			/
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+
+riorrganizzazione librerie (libft, mtx, readline)
+
+MAX_PATH CONSEQUENCES!!!
+
+----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 
@@ -319,7 +323,7 @@ GENERAL:
 	2. difference between 'line' and 'terminal-line'
 	3. how do I get the 'window size'?
 
-check leaks for hitory
+check leaks for history
 
 --------------------> THINGS TO DISCUSS <--------------------
 
