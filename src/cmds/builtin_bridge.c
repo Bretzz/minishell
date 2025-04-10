@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_bridge.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 19:04:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 18:59:38 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:44:39 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
 	free_cmd(cmd_arr);
 	mtx_free(vars[0]);
 	mtx_free(vars[1]);
-	//mtx_free(vars[2]);
 	free(line);
 	exit(code);
 }
@@ -33,7 +32,7 @@ RETURNS: 1 if it's a builtin, 0 if it isn't. */
 int	is_builtin(char *cmd)
 {
 	if (!ft_strncmp("echo", cmd, 5))
-		return(1);
+		return (1);
 	else if (!ft_strncmp("cd", cmd, 3))
 		return (1);
 	else if (!ft_strncmp("pwd", cmd, 4))
@@ -53,9 +52,8 @@ int	is_builtin(char *cmd)
 returns the command 'exit code', -1 on dangerous errors. */
 int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 {
-	if (DEBUG) {ft_printf("executing '%s' on [%d,%d]\n", cmd.words[0], fd[0], fd[1]);}
 	if (!ft_strncmp("echo", cmd.words[0], 5))
-		return(ft_echo(fd, cmd));
+		return (ft_echo(fd, cmd));
 	else if (!ft_strncmp("cd", cmd.words[0], 3))
 		return (ft_cd(fd, cmd, vars));
 	else if (!ft_strncmp("pwd", cmd.words[0], 4))
@@ -67,9 +65,10 @@ int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 	else if (!ft_strncmp("env", cmd.words[0], 4))
 		return (ft_env(fd, (const char ***)vars));
 	else if (!ft_strncmp("exit", cmd.words[0], 5))
-		return (multicose(fd), CLEAN_EXIT); //need to free command list
+		return (multicose(fd), CLEAN_EXIT);
 	return (0);
 }
+
 /* run after an is_builtin() call
 exec_builtin() call then exits with the corresponding 'exit_code'.
 NOTE: REMEMBER TO FREE THE LINE OF READLINE BEFORE builtin_and_die CALL. */

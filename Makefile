@@ -42,6 +42,7 @@ SRC_FILES		= main.c \
 				\
 				ft_execve.c pipex_stolen.c builtin_bridge.c\
 				execute_pipeline.c execute_command.c \
+				exe_cute.c exe_really_cute.c exec_one_of_many.c exec_redir.c \
 				here_doc.c here_doc_utils.c \
 				\
 				parser.c tokenizer.c syntax_tokens.c syntax_line.c \

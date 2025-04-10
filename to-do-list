@@ -237,6 +237,9 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 3) implementare F_OK che non gho ben ncapito cosa serva, legato a exec_ve
 	FATTO
 
+(DONE) (CHECK FDS)
+<main.c grep main | cat >out | ls | <main.c cat >out2 | pwd
+
 ======================== DONE-ish =======================
 
 (DONE)
@@ -251,6 +254,13 @@ BASH:
 	bash-3.2$ echo $HOME
 
 	bash-3.2$
+
+(DONE)
+bash-3.2$ chmod 000 aaa
+bash-3.2$ aaa/bbb/file
+bash: aaa/bbb/file: Permission denied
+bash-3.2$ echo $?
+126
 
 ======================== ONGOING =======================
 

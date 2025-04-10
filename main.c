@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:43:32 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:12:25 by totommi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,10 @@ int	main(int argc, char *argv[], char *__environ[])
 		}
 		line = syntax_line(line);
 		if (line == NULL)
+		{
 			mtx_setdata(2, vars[0]);
+			// fill useless docs...
+		}
 		line = history_is_set(line);
 		if (line != NULL && !handle_line(line, vars))
 			return (EXIT_FAILURE);
