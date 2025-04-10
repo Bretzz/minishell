@@ -6,7 +6,7 @@
 /*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/10 18:03:56 by march            ###   ########.fr       */
+/*   Updated: 2025/04/11 00:04:11 by march            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ size_t	ft_mtxlen(const void **mtx);
 int		here_doc(char *limiter, const char ***vars);
 void	close_docs(void);
 char	*safe_line(int fd);
+static void	clean_exit(int fd);
 
 /* FINAL EXECUTION */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/07 00:35:48 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/11 00:11:19 by march            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,26 +119,6 @@ char	*remove_quotes(char *str)
 }
 
 
-// substr() fino a $ poi expand() fino a varlen(alfanum primo alfa, underscore) e fai strjoin(substr + exland)
-// line = ciao $pippo 'sono $topolino'
-
-
-// if line[i] = '$'
-// explodedline = strjoin(explodedline, substr(line fino a i-1)
-// if line[i] = " "
-
-
-// char	*funzionebuffa(const char *line, int *i, char quote, char ***vars)
-// {
-	
-// 	if (quote == '"')
-// 		if (line[i] == '$')
-			
-// 	else if (quote == '\'')
-// 		non esplodere le vairabili 
-// }
-
-
 /* returns a dynamicly allocated mem addres */
 static char	*get_next_word(const char *line, int *i)
 {
@@ -188,7 +168,7 @@ static char	*get_next_word(const char *line, int *i)
 	if (value == NULL)
 		new->value = NULL;
 	else
-		new->value = value/* ft_strdup(value) */;
+		new->value = value
 	new->next = NULL;
 	if (!(*tokens))
 		*tokens = new;
@@ -246,7 +226,6 @@ t_token	*tokenizer(char *line)
 				return (free_tokens(tokens), NULL);
 		}
 	}
-	if (DEBUG) {print_tokens(tokens);}
 	return (tokens);
 }
 
@@ -290,39 +269,3 @@ void	print_tokens(t_token *tokens)
 		tokens = tokens->next;
 	}
 }
-
-/* copies the enviroment passed as parameters and returns
-the newly initialized matrix. */
-// static char	**env_copy(char **his_env)
-// {
-// 	size_t	i;
-// 	char **my_env;
-
-// 	if (his_env == NULL)
-// 		return (NULL);
-// 	my_env = mtx_init();
-// 	if (my_env == NULL)
-// 		return (NULL);
-// 	i = 0;
-// 	while(his_env[i] != NULL)
-// 	{
-// 		my_env = mtx_vstr_copy(his_env[i], my_env);
-// 		i++;
-// 	}
-// 	return (my_env);
-// }
-
-// int	main(int argc, char *argv[])
-// {
-// 	t_token	*tokens;
-// 	char **vars[3];
-// 	vars[2] = env_copy(__environ);
-// 	vars[1] = NULL;
-// 	vars[0] = NULL;
-	
-// 	(void)argc;
-// 	printf("tokenizing: ===%s===\n", argv[1]);
-// 	tokens = tokenizer(argv[1], (const char ***)vars);
-// 	print_tokens(tokens);
-// 	return (0);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 23:43:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/11 00:09:03 by march            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 
 int		here_doc(char *limiter, const char ***vars);
 char	*safe_line(int fd);
-
-static void	clean_exit(int fd)
-{
-	char	path[MAX_PATH];
-
-	safeclose(fd);
-	unlink(get_doc_path(open_doc(GETNUM), path, MAX_PATH));
-	//idle_initializer();
-}
 
 /* Takes a string as parameter,
 if the string is inquotes (ex: 'LIMITER', or "LIMITER")
@@ -62,14 +53,12 @@ static int	exp_write(int fd, char exp_flag, char *line, const char ***vars)
 		else
 		{
 			write(fd, exp_line, ft_strlen(exp_line));
-		//	add_history(exp_line);
 		}
 		free(exp_line);
 	}
 	else
 	{
 		write(fd, line, ft_strlen(line));
-	//	add_history(line);
 	}
 	return (1);
 }
@@ -81,17 +70,13 @@ static int	null_catcher(int fd, int line_count, char *limiter)
 {
 	if (g_last_sig == SIGINT)
 	{
-		if (DEBUG) {ft_printf("(SIGINT)\n");}
 		g_last_sig = 0;
 		clean_exit(fd);
 		return (safeclose(open_doc(CREATE)),
 			read_doc(open_doc(GETNUM)));
 	}
 	else if (g_last_sig == SIGQUIT || g_last_sig == SIGTSTP)
-	{
-		if (DEBUG) {ft_printf("(SIGQUIT)\n");}
 		g_last_sig = 0;
-	}
 	else
 	{
 		ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
@@ -102,43 +87,19 @@ delimited by end-of-file (wanted `%s')\n", line_count, limiter);
 		read_doc(open_doc(GETNUM)));
 }
 
-/* returns a line read from the 'fd'.
-If a SIGQUIT or a SIGTSTP is intercepted tries again. */
-char	*safe_line(int fd)
+/* Reads from STDIN until the limiter is found.
+Writes each line to the given fd, expanding variables if needed.
+Returns -1 on success, or the read-end fd on early exit. */
+int	read_until_limiter(int fd, char *lim, char exp_flag, const char ***vars)
 {
 	char	*line;
-	
-	line = get_next_line(fd);
-	while (!line && (g_last_sig == SIGQUIT || g_last_sig == SIGTSTP))
-	{
-		g_last_sig = 0;
-		line = get_next_line(fd);
-	}
-	return (line);
-}
+	int		i;
 
-/* Takes an string as parameters.
-Fills a pipe with input from STDIN_FILENO until 'limiter' is found.
-After that closes the write-end of the pipe and returns the read-end. */
-int	here_doc(char *limiter, const char ***vars)
-{
-	int			fd;
-	char		*line;
-	char		exp_flag;
-	int			i;
-
-	fd = open_doc(CREATE);
-	if (fd < 0)
-		return (STDIN_FILENO);
-	exp_flag = strip_limiter(limiter);
-	input_initializer();
-	write(STDOUT_FILENO, "> ", 2);
 	line = safe_line(STDIN_FILENO);
 	i = 1;
-	while (line != NULL && !(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
-			&& line[ft_strlen(limiter)] == '\n'))
+	while (line != NULL && !(line && !ft_strncmp(lim, line, ft_strlen(lim))
+			&& line[ft_strlen(lim)] == '\n'))
 	{
-		if (DEBUG) {ft_printf("prima cosa dentro il while (%p)\n", line);}
 		if (!exp_write(fd, exp_flag, line, vars))
 		{
 			free(line);
@@ -152,146 +113,35 @@ int	here_doc(char *limiter, const char ***vars)
 		i++;
 	}
 	if (line == NULL)
-		return (null_catcher(fd, i, limiter));
+		return (null_catcher(fd, i, lim));
+	free(line);
+	return (-1);
+}
+
+/* Takes an string as parameters.
+Fills a pipe with input from STDIN_FILENO until 'limiter' is found.
+After that closes the write-end of the pipe and returns the read-end. */
+int	here_doc(char *lim, const char ***vars)
+{
+	int			fd;
+	char		exp_flag;
+
+	fd = open_doc(CREATE);
+	if (fd < 0)
+		return (STDIN_FILENO);
+	exp_flag = strip_limiter(lim);
+	input_initializer();
+	write(STDOUT_FILENO, "> ", 2);
+	line = safe_line(STDIN_FILENO);
+	i = 1;
+	if (read_until_limiter(fd, lim, exp_flag, vars) != -1)
+		return (fd);
+	if (line == NULL)
+		return (null_catcher(fd, i, lim));
 	free(line);
 	safeclose(fd);
-//	idle_initializer();
 	fd = read_doc(open_doc(GETNUM));
 	if (fd < 0)
 		return (STDIN_FILENO);
 	return (fd);
 }
-
-
-
-
-
-
-
-
-
-// int	here_doc(char *limiter, const char ***vars)
-// {
-// 	int			fd;
-// 	char		*line;
-// 	char		exp_flag;
-// 	int			i;
-
-// 	fd = open_doc(CREATE);
-// 	if (fd < 0)
-// 		return (STDIN_FILENO);
-// 	exp_flag = strip_limiter(limiter);
-// 	doc_initializer();
-// 	line = readline("> ");
-// 	i = 1;
-// 	while (line != NULL && !(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
-// 			&& line[ft_strlen(limiter)] == '\n'))
-// 	{
-// 		ft_printf("prima cosa dentro il while (%p)\n", line);
-// 		if (line != NULL)
-// 		{
-// 			if (!exp_write(fd, exp_flag, line, vars))
-// 			{
-// 				free(line);
-// 				clean_exit(fd);
-// 				return (safeclose(open_doc(CREATE)),
-// 					read_doc(open_doc(GETNUM)));
-// 			}
-// 			free(line);
-// 		}
-// // 		else
-// // 		{
-// // 			if (g_last_sig == SIGINT)
-// // 			{
-// // 				ft_printf("(g_last_sig == SIGINT)\n");
-// // 				g_last_sig = 0;
-// // 				clean_exit(fd);
-// // 				return (safeclose(open_doc(CREATE)),
-// // 					read_doc(open_doc(GETNUM)));
-// // 			}
-// // 			else if (g_last_sig == SIGQUIT)
-// // 			{
-// // 				ft_printf("(g_last_sig == SIGQUIT)\n");
-// // 				g_last_sig = 0;
-// // 			}
-// // 			else
-// // 			{
-// // 				ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
-// // delimited by end-of-file (wanted `%s')\n", i, limiter);
-// // 				break ;
-// // 			}
-// //		}
-// 		line = readline("> ");
-// 		i++;
-// 	}
-// 	if (line == NULL)
-// 		return (null_catcher(fd, i, limiter));
-// 	free(line);
-// 	safeclose(fd);
-// //	idle_initializer();
-// 	fd = read_doc(open_doc(GETNUM));
-// 	if (fd < 0)
-// 		return (STDIN_FILENO);
-// 	return (fd);
-// }
-
-// int	here_doc(char *limiter, const char ***vars)
-// {
-// 	int			fd;
-// 	char		*line;
-// 	char		exp_flag;
-// 	int			i;
-
-// 	fd = open_doc(CREATE);
-// 	if (fd < 0)
-// 		return (STDIN_FILENO);
-// 	exp_flag = strip_limiter(limiter);
-// 	doc_initializer();
-// 	write(STDOUT_FILENO, "> ", 2);
-// 	line = get_next_line(STDIN_FILENO);
-// 	i = 1;
-// 	while (!(line && !ft_strncmp(limiter, line, ft_strlen(limiter))
-// 			&& line[ft_strlen(limiter)] == '\n'))
-// 	{
-// 		if (line != NULL)
-// 		{
-// 			if (!exp_write(fd, exp_flag, line, vars))
-// 			{
-// 				free(line);
-// 				clean_exit(fd);
-// 				return (safeclose(open_doc(CREATE)),
-// 					read_doc(open_doc(GETNUM)));
-// 			}
-// 			free(line);
-// 		}
-// 		else
-// 		{
-// 			if (g_last_sig == SIGINT)
-// 			{
-// 				g_last_sig = 0;
-// 				clean_exit(fd);
-// 				return (safeclose(open_doc(CREATE)),
-// 					read_doc(open_doc(GETNUM)));
-// 			}
-// 			else if (g_last_sig != SIGQUIT)
-// 			{
-// 				ft_printfd(STDERR_FILENO, "minishell: warning: here-document at line %i \
-// delimited by end-of-file (wanted `%s')\n", i, limiter);
-// 				break ;
-// 			}
-// 		}
-// 		if (g_last_sig == SIGQUIT)
-// 			g_last_sig = 0;
-// 		else
-// 			write(STDOUT_FILENO, "> ", 2);
-// 		line = get_next_line(STDIN_FILENO);
-// 		i++;
-// 	}
-// 	free(line);
-// 	safeclose(fd);
-// //	idle_initializer();
-// 	fd = read_doc(open_doc(GETNUM));
-// 	if (fd < 0)
-// 		return (STDIN_FILENO);
-// 	return (fd);
-// }
