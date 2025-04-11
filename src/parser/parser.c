@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/07 13:06:38 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:12:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,8 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	ft_bzero(&current_cmd, sizeof(t_cmd));
 	while (tokens[0])
 	{
+		if (g_last_sig != 0)
+			break ;
 		//ft_printf("looking at '%s'\n", tokens->value);
 		if (tokens[0]->type == TOKEN_WORD)
 		{

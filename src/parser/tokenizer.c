@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/11 00:11:19 by march            ###   ########.fr       */
+/*   Updated: 2025/04/11 14:41:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ static char	*get_next_word(const char *line, int *i)
 	if (value == NULL)
 		new->value = NULL;
 	else
-		new->value = value
+		new->value = value;
 	new->next = NULL;
 	if (!(*tokens))
 		*tokens = new;

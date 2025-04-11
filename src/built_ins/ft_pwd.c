@@ -6,11 +6,12 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:58:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:11:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "built_ins.h"
 
 int	ft_pwd(int *fd, t_cmd cmd);
 

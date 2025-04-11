@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 11:58:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/10 16:01:52 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/11 14:54:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,5 @@ int	execute_pipeline(char *line, t_cmd *cmd, char ***vars)
 		father_closes(cmd, garb, i, len);
 		i++;
 	}
-	return (clean_exit(garb, i, len, PIPE_FATHER));
+	return (clean_exit(garb, --i, len, PIPE_FATHER));
 }

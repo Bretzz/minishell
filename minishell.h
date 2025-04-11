@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 00:04:11 by march            ###   ########.fr       */
+/*   Updated: 2025/04/11 18:10:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,12 @@ size_t	ft_mtxlen(const void **mtx);
 
 int		here_doc(char *limiter, const char ***vars);
 void	close_docs(void);
-char	*safe_line(int fd);
-static void	clean_exit(int fd);
 
 /* FINAL EXECUTION */
 
 int		execute_command(char *line, t_cmd *cmd, char ***vars);
 int		execute_pipeline(char *line, t_cmd *cmd_arr, char ***vars);
+int		exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
 int		ft_wifexited(pid_t pid);
 
 t_cmd	pop_arg(t_cmd cmd, int index);
@@ -100,14 +99,14 @@ int		ft_pwd(int *fd, t_cmd cmd);
 int		ft_export(int *fd, t_cmd cmd, char ***vars);
 int		ft_unset(int *fd, t_cmd cmd, char ***vars);
 int		ft_env(int *fd, const char ***vars);
-static void	rank_up(char *varstr, char ***vars);
-int	exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
+
+//int		exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
 
 /* SIGNALS */
 
 void	idle_initializer(void);
-void    runtime_initializer(void);
-void    input_initializer(void);
+void	runtime_initializer(void);
+void	input_initializer(void);
 void	ft_readline_initializer(void);
 
 /* UTILS */

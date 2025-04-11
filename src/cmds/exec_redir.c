@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:35:27 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/10 16:02:50 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/11 17:34:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	command_redir_output(t_cmd *cmd)
 		}
 		else
 		{
-			cmd->close_me = pipefd[0];
+			safeclose(pipefd[0]);
 			return (pipefd[1]);
 		}
 	}

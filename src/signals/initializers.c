@@ -3,12 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   initializers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 00:18:23 by march             #+#    #+#             */
-/*   Updated: 2025/04/11 00:18:32 by march            ###   ########.fr       */
+/*   Updated: 2025/04/11 15:59:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
+#include "signals.h"
+
+void	idle_initializer(void);
+void	runtime_initializer(void);
+void	input_initializer(void);
+void	ft_readline_initializer(void);
 
 /* Handle signals while waiting for a new command line. */
 void	idle_initializer(void)
@@ -20,6 +28,7 @@ void	idle_initializer(void)
 	waiter.sa_flags = 0;
 	sigaction(SIGINT, &waiter, NULL);
 	sigaction(SIGQUIT, &waiter, NULL);
+	sigaction(SIGTSTP, &waiter, NULL);
 }
 
 /* Handle signals during the execution of other commands. */
@@ -32,6 +41,7 @@ void	runtime_initializer(void)
 	fire_fighter.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &fire_fighter, NULL);
 	sigaction(SIGQUIT, &fire_fighter, NULL);
+	sigaction(SIGTSTP, &fire_fighter, NULL);
 }
 
 /* Handle signals while the user is providing

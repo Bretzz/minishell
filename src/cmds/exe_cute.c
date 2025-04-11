@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_cute.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:46:21 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/10 18:02:18 by march            ###   ########.fr       */
+/*   Updated: 2025/04/11 17:38:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,4 @@ int	ft_wifexited(pid_t pid)
 	else
 		return (128 + (status & 0x7F));
 	return (EXIT_SUCCESS);
-}
-
-static void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code)
-{
-	free_cmd(cmd_arr);
-	mtx_free(vars[0]);
-	mtx_free(vars[1]);
-	free(line);
-	exit(code);
 }

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: march <march@student.42.fr>                +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:28:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/10 17:47:07 by march            ###   ########.fr       */
+/*   Updated: 2025/04/11 14:11:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "built_ins.h"
 
 int	ft_echo(int *fd, t_cmd cmd);
 

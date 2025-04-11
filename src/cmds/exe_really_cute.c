@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_really_cute.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:54:29 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/10 14:59:54 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/11 17:39:36 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,12 @@ void	father_closes(t_cmd *cmd, t_garb *garb, int index, size_t len)
 	{
 		cleanclose(&garb[index].pipefd[1], OUTPUT);
 	}
+	if (index != 0
+		&& cmd[index - 1].redir[0] != FILE
+		&& cmd[index - 1].redir[0] != HERE_DOC)
+	{
+		cleanclose(&garb[index - 1].pipefd[0], INPUT);
+	}
 	if (cmd[index].redir[0] == FILE || cmd[index].redir[0] == HERE_DOC)
 	{
 		safeclose(cmd[index].fd[0]);
@@ -109,7 +115,8 @@ void	child_closes(t_cmd *cmd, t_garb *garb, int index, size_t len)
 
 /* waits all the pids and returns the exit code of the last child.
 NOTE: The father is always listening to his childrens :3
-AWWWWWWW SOOOO CUTEEE :3 */
+AWWWWWWW SOOOO CUTEEE :3
+UPDATE: NVM, THE WORLD CRUEL AND THE FATHER DOESN'T WAIT. */
 int	mass_wait(t_garb *garb, size_t len)
 {
 	unsigned int	i;

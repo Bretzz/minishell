@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/07 21:16:05 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:11:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "built_ins.h"
 
 int	ft_unset(int *fd, t_cmd cmd, char ***vars);
 
@@ -45,8 +46,8 @@ int	ft_unset(int *fd, t_cmd cmd, char ***vars)
 	{
 		if (!vstr_name_is_valid(cmd.words[i]))
 		{
-			ft_printfd(STDERR_FILENO, "minishell: unset: `%s': 
-				not a valid identifier\n", cmd.words[i]);
+			ft_printfd(STDERR_FILENO, "minishell: unset: `%s': \
+not a valid identifier\n", cmd.words[i]);
 			exit_status = 1;
 		}
 		else

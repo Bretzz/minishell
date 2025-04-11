@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/10 16:12:25 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/11 18:04:10 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,13 @@ static int	handle_line(char *line, char ***vars)
 	exit_status = 0;
 	if (line == NULL)
 		return (1);
-	cmd_arr = parse_tokens((char *)line, (const char ***)vars);
+	cmd_arr = parse_tokens((char *)line, vars);
+	if (g_last_sig != 0)
+	{
+		mtx_setdata(128 + g_last_sig, vars[0]);
+		g_last_sig = 0;
+		return (free_cmd(cmd_arr), 1);
+	}
 	len = ft_cmdlen(cmd_arr);
 	
 	if (len == 0)	//both NULL cmd_arr and no actual command to execute
@@ -68,6 +74,7 @@ static int	handle_line(char *line, char ***vars)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
 		mtx_setdata(exit_status, vars[0]);
 	}
+	idle_initializer();
 	free_cmd(cmd_arr);
 	return (1);
 }
@@ -141,6 +148,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	// rl_catch_signals = 0;	//MacOS issues... but what does it do?
 	while (1)
 	{
+		//mtx_setdata(EXIT_SUCCESS, vars[0]);
 		idle_initializer();
 		line = readline("minishell% ");
 		//check g_last_signal
