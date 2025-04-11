@@ -262,6 +262,16 @@ bash: aaa/bbb/file: Permission denied
 bash-3.2$ echo $?
 126
 
+(DONE)
+cat | cat | ls (SIGPIE is OK)
+
+(DONE)
+minishell% < f1
+minishell% < f1 cat
+minishell% echo $?
+1
+minishell% 
+
 ======================== ONGOING =======================
 
 SYNTAX:
@@ -284,14 +294,7 @@ riorrganizzazione librerie (libft, mtx, readline)
 
 MAX_PATH CONSEQUENCES!!!
 
-minishell% < f1
-minishell% < f1 cat
-minishell% echo $?
-1
-minishell% 
-
-cat | cat | ls (SIGPIE is OK)
-
+( ! ! ! LOT'S OF INVALID READS ! ! ! )
 minishell% export ciao1 ciao2= ciao3=ciao1 
 minishell% export
 
@@ -300,8 +303,6 @@ topiana-@c2r1p8:~/live_projects/github/minishell$ export var=ciao"pippo        "
 topiana-@c2r1p8:~/live_projects/github/minishell$ echo $var | cat -e
 topiana-@c2r1p8:~/live_projects/github/minishell$ ciaopippo$
 
-minishell% ls ">"> o
-(should write '>' inside "o")
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 

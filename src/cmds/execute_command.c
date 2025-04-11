@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 17:37:09 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:16:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 
 	execfd[0] = command_redir_input(cmd);
 	execfd[1] = command_redir_output(cmd);
-	if (execfd[0] < 0 || execfd[1] < 0)
-		return (close_all_fds(execfd), EXIT_FAILURE);
 	if (ft_strichr(cmd->words[0], '=') != 0)
 	{
 		if (cmd->words[1] != NULL)
