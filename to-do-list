@@ -133,8 +133,6 @@ also Ctrl-D in heredoc: (DONE)
 
 << X | grep a (DONE)
 
-<< X cat >out | <out grep a (DONE)
-
 "| | |" (DONE)
 bash: syntax error near unexpected token `|'
 
@@ -257,6 +255,19 @@ minishell% echo $?
 1
 minishell% 
 
+(DONE)
+<< X cat >out | <out grep a
+(should throw 'bash: out: No such file or directory')
+
+SYNTAX: (DONE)
+	1. basics (DONE)
+	2. raccata roba (here_docs) (DONE)
+	3. check valgrind
+	4. extensive testing
+NOTES:
+	heading whitespace before '#' and exclude if in quotes (DONE)
+	outside-quote exclusion in word_check()
+
 ======================== DONE-ish =======================
 
 (DONE)
@@ -274,15 +285,6 @@ BASH:
 
 ======================== ONGOING =======================
 
-SYNTAX:
-	1. basics (DONE)
-	2. raccata roba (here_docs)
-	3. check valgrind
-	4. extensive testing
-NOTES:
-	heading whitespace before '#' and exclude if in quotes (DONE)
-	outside-quote exclusion in word_check()
-
 
 ======================== T O D O =======================
 
@@ -294,7 +296,7 @@ riorrganizzazione librerie (libft, mtx, readline)
 
 MAX_PATH CONSEQUENCES!!!
 
-( ! ! ! LOT'S OF INVALID READS ! ! ! )
+( ? ? ? LOT'S OF INVALID READS ? ? ? )
 minishell% export ciao1 ciao2= ciao3=ciao1 
 minishell% export
 
@@ -303,6 +305,8 @@ topiana-@c2r1p8:~/live_projects/github/minishell$ export var=ciao"pippo        "
 topiana-@c2r1p8:~/live_projects/github/minishell$ echo $var | cat -e
 topiana-@c2r1p8:~/live_projects/github/minishell$ ciaopippo$
 
+(FUCKE THEM PT.2)
+here_doc stores the "docs" in readline history
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
@@ -325,10 +329,6 @@ EXTRA (FAKE NEWS)
 isatty!!! disattivare i sigandlers in non tty
 
 -------------------------> HERE DOC <--------------------------
-
-here_doc(NULL) returns string to add to line for history (DONT LIKE)
-
-new add_history that stores a line in a static
 
 -----------------------> FT_READLINE <------------------------
 

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:15:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 18:11:39 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:26:32 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		open_doc(char flag);
 void	close_docs(void);
 int		read_doc(int doc_num);
 char	*get_doc_path(int doc_num, char *buff, size_t size);
-char	*safe_line(int fd);
+char	*safe_line(const char *prompt, char sig_flag);
 int		doc_exp_write(int fd, char exp_flag, char *line, const char ***vars);
 
 //pipex_stolen.c

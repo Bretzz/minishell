@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/07 12:01:52 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 17:14:11 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,14 @@ char 			*get_rekd(t_token_type type);
 
 void			print_tokens(t_token *tokens);
 
-//int				syntax_check(char *line);
+//syntax
+
 int				syntax_tokens(t_token *tokens);
-char			*syntax_line(char *line);
+
+char			pipe_check(t_token *pipe, t_token *prev);
+char			redir_check(t_token *redir);
+char			word_check(t_token *word, t_token *prev);
+char			is_error(char *err_code);
+int				is_white(char *str);
 
 #endif

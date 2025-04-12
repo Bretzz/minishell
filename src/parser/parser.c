@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/12 14:15:24 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 16:42:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,8 @@ static void redir_trunc_open(t_cmd *current_cmd, char *filename)
 	{
 		ft_perror(filename, "permission denied", NULL, 1);
 		current_cmd->fd[1] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
 	}
-	else
-		current_cmd->fd[1] = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
 	current_cmd->redir[1] = FILE;	
 }
@@ -133,9 +132,8 @@ static void redir_append_open(t_cmd *current_cmd, char *filename)
 	{
 		ft_perror(filename, "permission denied", NULL, 1);
 		current_cmd->fd[1] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
 	}
-	else
-		current_cmd->fd[1] = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
 	current_cmd->redir[1] = FILE;	
 }
@@ -150,14 +148,18 @@ static void	redir_input_open(t_cmd *current_cmd, char *filename)
 	{
 		ft_perror(filename, "No such file or directory", NULL, 1);
 		current_cmd->fd[0] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
 	}
 	else if (access(filename, R_OK) != 0)
 	{
 		ft_perror(filename, "Permission denied", NULL, 1);
 		current_cmd->fd[0] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
 	}
 	else
+	{
 		current_cmd->fd[0] = open(filename, O_RDONLY);
+	}
 	current_cmd->redir[0] = FILE;
 }
 
@@ -372,8 +374,7 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	free_tokens(tokens[1]);
 	if (current_cmd.words[0] == NULL)
 		raccattagarbage(current_cmd);
-	else
-		append_cmd(cmd_array, &cmd_index, current_cmd);
+	append_cmd(cmd_array, &cmd_index, current_cmd);
 	if (DEBUG) {print_cmd_array(cmd_array, ft_cmdlen(cmd_array));}
 	return (cmd_array);
 }

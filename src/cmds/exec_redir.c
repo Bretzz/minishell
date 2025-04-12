@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:35:27 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/12 14:50:04 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:27:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ int	pipeline_redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 	if (index == (int)(len - 1))
 	{
 		if (cmd[index].redir[1] == FILE)
+		{
+			cmd[index].fd[1] = open(cmd[index].outfile,
+					cmd[index].append, 0644);
 			return (cmd[index].fd[1]);
+		}
 		return (STDOUT_FILENO);
 	}
 	if (pipe(garb[index].pipefd) < 0)
@@ -60,6 +64,7 @@ int	pipeline_redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 	}
 	if (cmd[index].redir[1] == FILE)
 	{
+		cmd[index].fd[1] = open(cmd[index].outfile, cmd[index].append, 0644);
 		return (cmd[index].fd[1]);
 	}
 	return (garb[index].pipefd[1]);
@@ -86,7 +91,10 @@ int	command_redir_output(t_cmd *cmd)
 	int	pipefd[2];
 
 	if (cmd->redir[1] == FILE)
+	{
+		cmd->fd[1] = open(cmd->outfile, cmd->append, 0644);
 		return (cmd->fd[1]);
+	}
 	if (cmd->redir[1] == PIPE)
 	{
 		pipefd[0] = STDIN_FILENO;

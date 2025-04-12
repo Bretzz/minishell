@@ -6,18 +6,18 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:55:47 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:20:52 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:31:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mtx.h"
 
-char	**mtx_init();
+char	**mtx_init(void);
 char	**mtx_expand(char **mtx);
 
 /* RETURNS: a mtx-pointer with 16 slots allocated and set to zero.
 NULL on malloc(3) failure. */
-char	**mtx_init()
+char	**mtx_init(void)
 {
 	char	**mtx;
 
@@ -36,11 +36,12 @@ char	**mtx_init()
 Then updates the size written in the first slot. */
 char	**mtx_expand(char **mtx)
 {
-	char **new_mtx;
+	char	**new_mtx;
 
 	if (mtx == NULL)
 		return (mtx_init());
-	new_mtx = ft_realloc(mtx, (*(unsigned int *)mtx) * sizeof(char *), (*(unsigned int *)mtx + 16) * sizeof(char *));
+	new_mtx = ft_realloc(mtx, (*(unsigned int *)mtx) * sizeof(char *),
+			(*(unsigned int *)mtx + 16) * sizeof(char *));
 	if (new_mtx == NULL)
 	{
 		write(STDERR_FILENO, "mtx: malloc failure\n", 20);

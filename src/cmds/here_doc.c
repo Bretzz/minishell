@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 18:11:48 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:27:29 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,35 +22,6 @@ static void	clean_exit(int fd)
 	safeclose(fd);
 	unlink(get_doc_path(open_doc(GETNUM), path, sizeof(path)));
 }
-
-// /* takes the exp_flag, line to write and the fd as params.
-// If the flag is set to 0 the line is written as it is then freed, if not
-// the line is expanded. Then line is free'd.
-// RETURNS: 0 on malloc failure, 1 otherwise. */
-// static int	doc_exp_write(int fd, char exp_flag, char *line, char ***vars)
-// {
-// 	char	*exp_line;
-
-// 	if (exp_flag != 0)
-// 	{
-// 		exp_line = just_expand_string(line, (const char ***)vars);
-// 		if (exp_line == NULL)
-// 		{
-// 			write(STDOUT_FILENO, "minishell malloc failure\n", 26);
-// 			return (0);
-// 		}
-// 		else
-// 		{
-// 			write(fd, exp_line, ft_strlen(exp_line));
-// 		}
-// 		free(exp_line);
-// 	}
-// 	else
-// 	{
-// 		write(fd, line, ft_strlen(line));
-// 	}
-// 	return (1);
-// }
 
 /* this function handle eventual signals
 that interrupted the heredoc creation.
@@ -96,8 +67,7 @@ int	read_until_limiter(int fd, char *lim, char exp_flag, const char ***vars)
 	char	*line;
 	int		i;
 
-	write(STDOUT_FILENO, "> ", 2);
-	line = safe_line(STDIN_FILENO);
+	line = safe_line("> ", *((unsigned char *)vars[0] + 6));
 	i = 1;
 	while (line != NULL && !(line && !ft_strncmp(lim, line, ft_strlen(lim))
 			&& line[ft_strlen(lim)] == '\n'))
@@ -110,8 +80,7 @@ int	read_until_limiter(int fd, char *lim, char exp_flag, const char ***vars)
 				read_doc(open_doc(GETNUM)));
 		}
 		free(line);
-		write(STDOUT_FILENO, "> ", 2);
-		line = safe_line(STDIN_FILENO);
+		line = safe_line("> ", *((unsigned char *)vars[0] + 6));
 		i++;
 	}
 	if (line == NULL)
@@ -130,8 +99,10 @@ int	here_doc(char *lim, const char ***vars)
 	char			exp_flag;
 
 	exp_flag = strip_limiter(lim);
-	input_initializer();
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		input_initializer();
 	fd = read_until_limiter(open_doc(CREATE), lim, exp_flag, vars);
-	idle_initializer();
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		idle_initializer();
 	return (fd);
 }

@@ -50,7 +50,9 @@ SRC_FILES		= main.c \
 				here_doc.c here_doc_utils.c exec_external.c \
 				safety_first.c \
 				\
-				parser.c tokenizer.c syntax_tokens.c syntax_line.c \
+				parser.c tokenizer.c \
+				syntax_tokens.c syntax_line.c syntax_checks.c \
+				stray_docs.c \
 				\
 				handle_vars.c expand_string.c \
 				\

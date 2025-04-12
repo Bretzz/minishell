@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 14:20:01 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:19:59 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,23 @@ static int	handle_line(char *line, char ***vars)
 	cmd_arr = parse_tokens((char *)line, (const char ***)vars);
 	if (g_last_sig != 0)
 	{
-		mtx_setdata(128 + g_last_sig, vars[0]);
+		mtx_setdata(128 + g_last_sig, vars[0], 1);
 		g_last_sig = 0;
 		return (free_cmd(cmd_arr), 1);
 	}
 	len = ft_cmdlen(cmd_arr);
 	
 	if (len == 0)	//both NULL cmd_arr and no actual command to execute
-		return (free_cmd(cmd_arr), mtx_setdata(EXIT_FAILURE, vars[0]), 1);
-	runtime_initializer();
+		return (mtx_setdata(cmd_arr->parse_code, vars[0], 1), free_cmd(cmd_arr), 1);
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		runtime_initializer();
 	if (len <= 1)
 	{
 		if (DEBUG) {ft_printf("EXECUTING COMMAND\n");}
 		exit_status = execute_command(line, cmd_arr, vars);
 		if (exit_status < 0)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
-		mtx_setdata(exit_status, vars[0]);
+		mtx_setdata(exit_status, vars[0], 1);
 	}
 	else
 	{
@@ -72,9 +73,10 @@ static int	handle_line(char *line, char ***vars)
 		exit_status = execute_pipeline(line, cmd_arr, vars);
 		if (exit_status < 0)
 			clean_exit(cmd_arr, line, vars, EXIT_SUCCESS);
-		mtx_setdata(exit_status, vars[0]);
+		mtx_setdata(exit_status, vars[0], 1);
 	}
-	idle_initializer();
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		idle_initializer();
 	free_cmd(cmd_arr);
 	return (1);
 }
@@ -126,10 +128,46 @@ static char	*history_is_set(char *line)
 	return (strip_line);
 }
 
+// static void	not_tty_cycle(int argc, char **argv, char **env, char ***vars)
+// {
+// 	char	*line;
+// 	int		exit_code;
+	
+// 	while (1)
+// 	{
+// 		//mtx_setdata(EXIT_SUCCESS, vars[0]);
+// 		line = readline(NULL);
+// 		//check g_last_signal
+// 		// ft_signals (che chiama signal con i vari SIGNORE (Jhonny?) DEF o la tua function)
+// 		if (line == NULL)
+// 		{
+// 			write(STDOUT_FILENO, "exit\n", 5);
+// 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
+// 		}
+// 		exit_code = syntax_line(&line);
+// 		if (exit_code == 2)
+// 		{
+// 			bongou_stray_docs(line, (const char ***)vars);
+// 			mtx_setdata(exit_code, vars[0], 1);
+// 		}
+// 		else if (exit_code == 1)
+// 		{
+// 			clean_exit(NULL, line, vars, EXIT_FAILURE);
+// 		}
+// 		line = history_is_set(line);
+// 		if (line != NULL && exit_code == 0 && !handle_line(line, vars))
+// 			clean_exit(NULL, line, vars, EXIT_FAILURE);
+// 		free(line);
+// 		close_docs();
+// 	}
+// 	return (EXIT_SUCCESS);
+// }
+
 int	main(int argc, char *argv[], char *__environ[])
 {
 	char	*line;
 	char	**vars[2]; //vars[0]: shv, var[1]: env, var[2]: env
+	int		exit_code;
 	//char	stack[1000000000];
 
 	//line = malloc(167772160000000000);
@@ -146,11 +184,26 @@ int	main(int argc, char *argv[], char *__environ[])
 	}
 	//ft_printf("\033[H\033[J"); // ANSI escape sequence to clear screen
 	// rl_catch_signals = 0;	//MacOS issues... but what does it do?
+	if (isatty(STDIN_FILENO))
+	{
+		ft_printf("input from STDIN\n");
+		mtx_setdata(1, vars[0], 2);
+	}
+	else
+	{
+		ft_printf("input from file\n");
+		mtx_setdata(0, vars[0], 2);
+	}
 	while (1)
 	{
 		//mtx_setdata(EXIT_SUCCESS, vars[0]);
-		idle_initializer();
-		line = readline("minishell% ");
+		if (*((unsigned char *)vars[0] + 6) == 1)
+		{
+			idle_initializer();
+			line = readline("minishell% ");
+		}
+		else
+			line = readline("");
 		//check g_last_signal
 		// ft_signals (che chiama signal con i vari SIGNORE (Jhonny?) DEF o la tua function)
 		if (line == NULL)
@@ -158,15 +211,19 @@ int	main(int argc, char *argv[], char *__environ[])
 			write(STDOUT_FILENO, "exit\n", 5);
 			clean_exit(NULL, NULL, vars, EXIT_SUCCESS);
 		}
-		line = syntax_line(line);
-		if (line == NULL)
+		exit_code = syntax_line(&line, (const char ***)vars);
+		if (exit_code == 2)
 		{
-			mtx_setdata(2, vars[0]);
-			// fill useless docs...
+			bongou_stray_docs(line, (const char ***)vars);
+			mtx_setdata(exit_code, vars[0], 1);
+		}
+		else if (exit_code == 1)
+		{
+			clean_exit(NULL, line, vars, EXIT_FAILURE);
 		}
 		line = history_is_set(line);
-		if (line != NULL && !handle_line(line, vars))
-			return (EXIT_FAILURE);
+		if (line != NULL && exit_code == 0 && !handle_line(line, vars))
+			clean_exit(NULL, line, vars, EXIT_FAILURE);
 		free(line);
 		close_docs();
 	}

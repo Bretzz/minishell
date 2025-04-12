@@ -6,27 +6,30 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 00:03:12 by march             #+#    #+#             */
-/*   Updated: 2025/04/11 18:11:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:26:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "cmds.h"
 
-char	*safe_line(int fd);
+char	*safe_line(const char *prompt, char sig_flag);
 int		doc_exp_write(int fd, char exp_flag, char *line, const char ***vars);
 
-/* returns a line read from the 'fd'.
+/* returns a line read from the 'STDIN_FILENO'.
+If sig_flag is set to 1 writes the prompt passed.
 If a SIGQUIT or a SIGTSTP is intercepted tries again. */
-char	*safe_line(int fd)
+char	*safe_line(const char *prompt, char sig_flag)
 {
 	char	*line;
 
-	line = get_next_line(fd);
+	if (sig_flag == 1)
+		write(STDOUT_FILENO, prompt, ft_strlen(prompt));
+	line = get_next_line(STDIN_FILENO);
 	while (!line && (g_last_sig == SIGQUIT || g_last_sig == SIGTSTP))
 	{
 		g_last_sig = 0;
-		line = get_next_line(fd);
+		line = get_next_line(STDIN_FILENO);
 	}
 	return (line);
 }

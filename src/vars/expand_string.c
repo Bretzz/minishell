@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/10 01:12:38 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/12 18:04:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static char *set_exp_val(size_t *i, char *str, const char ***vars)
 		return (NULL);
 	}
 	else if (!ft_strncmp("$?", &str[*i], 2))
-		return (ft_itoa(*((unsigned int *)vars[0] + 1)));
+		return (ft_itoa(*((unsigned char *)vars[0] + 1)));
 	else if (!ft_strncmp("$$", &str[*i], 2))
 		return (ft_itoa(*((unsigned int *)vars[1] + 1)));
 	else if (str[*i] == '~') 

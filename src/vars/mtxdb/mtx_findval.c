@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:22:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 19:44:41 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:30:10 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char	*mtx_findval(char *name, char *buff, size_t size, char **mtx);
 if buff == NULL allocates a new string to return.
 if not just copies the value inside the buffer.
 (up to size -1 chars from the string found in the mtx)
-RETURNS: a pointer to the string containing the wanted value, NULL if malloc fails. */
+RETURNS: a pointer to the string containing the wanted value,
+NULL if malloc fails. */
 char	*mtx_findval(char *name, char *buff, size_t size, char **mtx)
 {
 	int	index;
@@ -29,7 +30,6 @@ char	*mtx_findval(char *name, char *buff, size_t size, char **mtx)
 		return (NULL);
 	if (!vstr_name_is_valid(name))
 	{
-		//throw error? (treated as a cmd (or a path if contains '/'))
 		return (NULL);
 	}
 	index = mtx_getindex(name, mtx);

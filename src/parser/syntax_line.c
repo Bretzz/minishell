@@ -6,14 +6,14 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 23:43:25 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:17:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-char	*syntax_line(char *line);
+int		syntax_line(char **line, const char ***vars);
 char	*drop_comment(char *line);
 char	*drop_string(char *str, int start, size_t len);
 
@@ -85,7 +85,7 @@ char	*drop_comment(char *line)
 			if (tmp == NULL)
 			{
 				write(STDERR_FILENO, "minishell: malloc failure\n", 26);
-				return (NULL);
+				return (free(my_line), NULL);
 			}
 			free(my_line);
 			my_line = tmp;	
@@ -144,19 +144,20 @@ static t_token_type get_last_type(t_token *tokens)
 	return (tokens->type);
 }
 
-static int	is_white(char *str)
-{
-	size_t i;
+// /* checks weather a line is composed of only blank spaces. */
+// static int	is_white(char *str)
+// {
+// 	size_t i;
 
-	if (str == NULL)
-		return (1);
-	i  = 0;
-	while (str[i] && ft_isspace(str[i]))
-		i++;
-	if (str[i] == '\0')
-		return (1);
-	return (0);
-}
+// 	if (str == NULL)
+// 		return (1);
+// 	i  = 0;
+// 	while (str[i] && ft_isspace(str[i]))
+// 		i++;
+// 	if (str[i] == '\0')
+// 		return (1);
+// 	return (0);
+// }
 
 static char *real_line(const char *prompt)
 {
@@ -171,14 +172,20 @@ static char *real_line(const char *prompt)
 	return (real_line);
 }
 
-static char	*append_line(char *line, t_token_type last_type)
+static char	*append_line(char *line, t_token_type last_type, char sig_flag)
 {
 	char	*next_line;
-	
-	input_initializer();
+	char	*prompt;
+
+	prompt = "";
+	if (sig_flag == 1)
+	{
+		prompt = "> ";
+		input_initializer();
+	}
 	if (last_type == TOKEN_PIPE)
 	{
-		next_line = real_line("> ");
+		next_line = real_line(prompt);
 		if (next_line == NULL)
 			return (cleanup(line), NULL);
 		line = ft_strjoin_free_space(line, next_line);
@@ -186,54 +193,60 @@ static char	*append_line(char *line, t_token_type last_type)
 	}
 	else if (last_type == TOKEN_WORD)
 	{
-		next_line = /* ft_ */readline("> ");
+		next_line = /* ft_ */readline(prompt);
 		if (next_line == NULL)
 			return (cleanup(line), NULL);
 		line = ft_strjoin_free_nl(line, next_line);
 		free(next_line);
 	}
-	idle_initializer();
+	if (sig_flag == 1)
+		idle_initializer();
 	return (line);
 }
 
-/* checks weather a line is syntattically correct and expands it if necessary. */
-char	*syntax_line(char *line)
+/* checks weather a line is syntattically correct and expands it if necessary.
+Assign the new allocated space to the pointer pointed by *line.
+RETURNS: the exit_code, 1 on malloc failure, 2 on syntax error, 0 on successful
+execution. */
+int	syntax_line(char **line, const char ***vars)
 {
 	t_token	*tokens;
 	char	*check_this;
+	char	sig_flag;
 	
-	if (is_white(line))
-		return (NULL);
-	check_this = drop_comment(line);
+	sig_flag = *((unsigned char *)vars[0] + 6);
+	if (is_white(*line))
+		return (0);
+	check_this = drop_comment(*line);
 	if (check_this == NULL)
-		return (NULL);
+		return (1);
 	tokens = tokenizer(check_this);
 	if (!syntax_tokens(tokens))
 	{
-		clean_exit(line, check_this, tokens);
-		return (NULL);
+		clean_exit(*line, check_this, tokens);
+		return (2);
 	}
 	free(check_this);
-	while (!is_closed(line))
+	while (!is_closed(*line))
 	{
-		line = append_line(line, get_last_type(tokens));
+		*line = append_line(*line, get_last_type(tokens), sig_flag);
 		free_tokens(tokens);
-		if (line == NULL)
-			return (clean_exit(NULL, NULL, NULL), NULL);
-		check_this = drop_comment(line);
+		if (*line == NULL)
+			return (clean_exit(NULL, NULL, NULL), 1);
+		check_this = drop_comment(*line);
 		if (check_this == NULL)
 		{
-			return (clean_exit(line, check_this, NULL), NULL);
+			return (clean_exit(*line, check_this, NULL), 1);
 			//return (NULL);
 		}
 		tokens = tokenizer(check_this);
 		if (!syntax_tokens(tokens))
 		{
-			return (clean_exit(line, check_this, tokens), NULL);
+			return (clean_exit(*line, check_this, tokens), 2);
 			//return (NULL);
 		}
 		free(check_this);
 	}
 	free_tokens(tokens);
-	return (line);	
+	return (0);	
 }

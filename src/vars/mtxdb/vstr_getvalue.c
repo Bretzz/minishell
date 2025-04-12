@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:30:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:21:45 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:33:33 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 		i++;
 	if (varstr[i] == '\0')
 	{
-		//ft_printfd(STDERR_FILENO, "not a var-string: %s\n", varstr);
 		return (NULL);
 	}
 	if (buff != NULL)
@@ -48,5 +47,5 @@ char	*vstr_getvalue(char *varstr, char *buff, size_t size)
 	value = ft_strdup(&varstr[i + 1]);
 	if (value == NULL)
 		write(STDERR_FILENO, "vstr: malloc failure\n", 21);
-	return(value);
+	return (value);
 }

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 14:12:14 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:10:07 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ typedef struct s_cmd
     char	outfile[MAX_PATH];	// ! ! ! REMOVE ! ! ! File di output, se presente
     int		append;				// ! ! ! REMOVE ! ! ! Flag: O_WRONLY|O_CREAT|O_APPEND per ">>" oppure O_WRONLY|O_CREAT|O_TRUNC per ">"
 	int		redir[2];			// (redir[0]: input, redir[1]: output) Flag: PIPE_OUT: pipe dopo il comando, PIPE_IN: pipe prima del comando, HERE_DOC: heredoc prima del comando, FILE: input or output file, STDL: nessuna redirection.
-	int		close_me;
+	int		parse_code;
 }	t_cmd;
 
 /* PARSING */
 
 t_cmd	*parse_tokens(char *line, const char ***vars);
-char	*syntax_line(char *line);
+int		syntax_line(char **line, const char ***vars);
 char	*drop_comment(char *line);
 
 int		ft_cmdlen(t_cmd *cmd_array);
@@ -81,6 +81,7 @@ size_t	ft_mtxlen(const void **mtx);
 
 int		here_doc(char *limiter, const char ***vars);
 void	close_docs(void);
+void	bongou_stray_docs(char *line, const char ***vars);
 
 /* FINAL EXECUTION */
 

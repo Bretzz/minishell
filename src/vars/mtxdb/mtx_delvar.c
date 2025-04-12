@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:27:01 by topiana-          #+#    #+#             */
-/*   Updated: 2025/03/26 21:53:06 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:29:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	mtx_safedel(int index, char **mtx);
 void	mtx_delvar(int index, char **mtx)
 {
 	free(mtx[index]);
-	mtx[index] = NULL;	
+	mtx[index] = NULL;
 }
 
 /* Delete the index passed and pushes everything up */

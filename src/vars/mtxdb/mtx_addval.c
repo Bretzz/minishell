@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 15:55:21 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:20:21 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:29:42 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 char	**mtx_addval(char *name, char *value, char **mtx);
 
-static char *build_var(char *name, char *value)
+static char	*build_var(char *name, char *value)
 {
 	char	*var;
 	size_t	len;
-	
+
 	if (name == NULL)
 		return (NULL);
 	len = ft_strlen(name) + 1;
@@ -43,7 +43,7 @@ mtx[n] = "name=vaue".
 If there are no more empty spaces the matrix is expanded with mtx_expand,
 and mtx_addval is called again.
 RETURNS: a mtx-pointer to the matrix with the var-string added.
-If there was enough spaces in the previous matrix the pointer will be the same. */
+If there was enough spaces in the previous matrix returns 'mtx'. */
 char	**mtx_addval(char *name, char *value, char **mtx)
 {
 	unsigned int		i;
@@ -53,7 +53,6 @@ char	**mtx_addval(char *name, char *value, char **mtx)
 		i++;
 	if (i == *(unsigned int *)mtx)
 	{
-		//ft_printf("reached mtx limit, proceeding with expansion\n");
 		mtx = mtx_addval(name, value, mtx_expand(mtx));
 		return (mtx);
 	}

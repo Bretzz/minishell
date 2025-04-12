@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:49:04 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/06 16:21:06 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:32:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	mtx_replace(char *name, char *value, char **mtx);
 
-static char *build_var(char *name, char *value)
+static char	*build_var(char *name, char *value)
 {
 	char	*var;
 	size_t	len;
-	
+
 	if (name == NULL)
 		return (NULL);
 	len = ft_strlen(name) + 1;
