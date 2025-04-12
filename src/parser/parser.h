@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/12 17:14:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 20:19:48 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ char			pipe_check(t_token *pipe, t_token *prev);
 char			redir_check(t_token *redir);
 char			word_check(t_token *word, t_token *prev);
 char			is_error(char *err_code);
-int				is_white(char *str);
+
+char			*append_line(char *line, t_token_type last_type, char sig_flag);
+
+//syntax_utils
+
+int				is_closed(char *line);
+
+//token_utils
+
+t_token_type 	get_last_type(t_token *tokens);
 
 #endif

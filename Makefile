@@ -51,8 +51,9 @@ SRC_FILES		= main.c \
 				safety_first.c \
 				\
 				parser.c tokenizer.c \
+				token_utils.c \
 				syntax_tokens.c syntax_line.c syntax_checks.c \
-				stray_docs.c \
+				append_line.c stray_docs.c syntax_utils.c \
 				\
 				handle_vars.c expand_string.c \
 				\
@@ -67,7 +68,7 @@ SRC_FILES		= main.c \
 				\
 				vstr_getname.c vstr_getvalue.c \
 				\
-				print_stuff.c free_space.c cleanup.c
+				print_stuff.c free_space.c cleanup.c cool_stuff.c
 				
 #				ft_readline.c
 

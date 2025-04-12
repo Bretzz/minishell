@@ -268,6 +268,13 @@ NOTES:
 	heading whitespace before '#' and exclude if in quotes (DONE)
 	outside-quote exclusion in word_check()
 
+isatty!!! disattivare i sigandlers in non tty (DONE)
+
+	(DONE)
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+	/		! ! ! REMOVE FT_FREENTF ! ! !			/
+	/ * * * * * * * * * * * * * * * * * * * * * * * /
+
 ======================== DONE-ish =======================
 
 (DONE)
@@ -288,10 +295,6 @@ BASH:
 
 ======================== T O D O =======================
 
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-	/		! ! ! REMOVE FT_FREENTF ! ! !			/
-	/ * * * * * * * * * * * * * * * * * * * * * * * /
-
 riorrganizzazione librerie (libft, mtx, readline)
 
 MAX_PATH CONSEQUENCES!!!
@@ -300,23 +303,9 @@ MAX_PATH CONSEQUENCES!!!
 minishell% export ciao1 ciao2= ciao3=ciao1 
 minishell% export
 
-(FUCK THEM)
-topiana-@c2r1p8:~/live_projects/github/minishell$ export var=ciao"pippo        "
-topiana-@c2r1p8:~/live_projects/github/minishell$ echo $var | cat -e
-topiana-@c2r1p8:~/live_projects/github/minishell$ ciaopippo$
-
-(FUCKE THEM PT.2)
-here_doc stores the "docs" in readline history
-
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
-
-PIPESTATUS (NOT NECESSARY)
-	An array variable de containing a list of
-	exit status values from the processes in the most-recently-executed foreground
-	pipeline (which may contain only a single command).
-(check for hardcoded errors: command not found, builtin errors, others...)
 
 EXTRA (FAKE NEWS)
 	"cd ..; pwd" changes dir
@@ -325,8 +314,6 @@ EXTRA (FAKE NEWS)
 ----------------------> MIXED PROBLEMS <-----------------------
 
 ----------------------> TO INVESTIGATE <-----------------------
-
-isatty!!! disattivare i sigandlers in non tty
 
 -------------------------> HERE DOC <--------------------------
 
@@ -357,6 +344,14 @@ check leaks for history
 
 --------------------> THINGS TO DISCUSS <--------------------
 
+(FUCK THEM)
+topiana-@c2r1p8:~/live_projects/github/minishell$ export var=ciao"pippo        "
+topiana-@c2r1p8:~/live_projects/github/minishell$ echo $var | cat -e
+topiana-@c2r1p8:~/live_projects/github/minishell$ ciaopippo$
+
+(FUCKE THEM PT.2)
+here_doc stores the "docs" in readline history
+
 9. modificare makefile per compilare parser e tokenizer exec
 10. minishell tester. 1 file testo con tutti i test. 
 	runnare in automatico su bash. creare file out dei risultati
@@ -372,6 +367,12 @@ check leaks for history
 
 
 ----------------------> FUNNY STUFF <-----------------------
+
+PIPESTATUS (NOT NECESSARY)
+	An array variable de containing a list of
+	exit status values from the processes in the most-recently-executed foreground
+	pipeline (which may contain only a single command).
+(check for hardcoded errors: command not found, builtin errors, others...)
 
 ( ! ! ! IGNORE THIS ! ! ! )
 CURSED COMMAND (ZSH):
