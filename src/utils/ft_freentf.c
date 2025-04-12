@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 14:49:52 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/01 16:44:52 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:57:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	free_mtx(void **mtx)
 {
 	unsigned int	i;
-	
+
 	if (mtx == NULL)
-	return ;
+		return ;
 	i = 0;
 	while (mtx[i] != NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:39:59 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/10 00:10:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:41:03 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,57 @@ int			miniwrapper(int *fd, int *oldfd, t_cmd cmd);
 
 int			syntax_check(char *line);
 static int	handle_command(t_cmd cmd, char ***vars);
+
+char		*remove_quotes(char *str);
+static char	skip_quotes(char *str, int *i, char quote);
+
+/* ! ! ! UNUSED ! ! ! */
+static char	skip_quotes(char *str, int *i, char quote)
+{
+	if (str[*i] == '"' || str[*i] == '\'')
+	{
+		if (quote == 0)
+		{
+			quote = str[*i];
+			(*i)++;
+			quote = skip_quotes(str, i, quote);
+		}
+		else if (quote == str[*i])
+		{
+			quote = 0;
+			(*i)++;
+			quote = skip_quotes(str, i, quote);
+		}
+	}
+	return (quote);
+}
+
+/* str is a dynamic allocated memory addres, it will be free'd later */
+/* ! ! ! UNUSED ! ! ! */
+char	*remove_quotes(char *str)
+{
+	char	quote;
+	int		j;
+	int		i;
+	char	*newstr;
+
+	j = 0;
+	i = 0;
+	quote = 0;
+	newstr = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (!newstr)
+		return (NULL);
+	while (str[i])
+	{
+		//ft_printf("'%c'...", str[i]);
+		quote = skip_quotes(str, &i, quote);
+		if (str[i] == '\0')
+			break ;
+		newstr[j++] = str[i++];
+	}
+	newstr[j] = '\0';
+	return (newstr);
+}
 
 /* executes the command, setting g_pipe_status to the exit code of the command executed.
 throughout the pipe, the main program keeps returning -1. (also execve if ragnarock occurs). */

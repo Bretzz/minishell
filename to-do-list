@@ -290,6 +290,11 @@ BASH:
 
 	bash-3.2$
 
+(DONE)
+ls |
+> Ctrl+D
+(should exit with Exit Code 2)
+
 ======================== ONGOING =======================
 
 

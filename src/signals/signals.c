@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 18:07:19 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/11 16:00:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:23:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	runtime_handler(int signum)
 	}
 	else if (signum == SIGQUIT)
 	{
-		write(STDOUT_FILENO, "(Quit)Core bumped\n", 19); //fix this
+		write(STDOUT_FILENO, "(Quit)Core bumped\n", 19);
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}

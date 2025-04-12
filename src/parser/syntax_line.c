@@ -6,14 +6,14 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 20:54:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:48:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-int		syntax_line(char **line, const char ***vars);
+int		syntax_line(char **line, char ***vars);
 char	*drop_comment(char *line);
 
 static void	clean_exit(char *line, char *check_this, t_token *tokens)
@@ -46,6 +46,8 @@ char	*drop_comment(char *line)
 	char	quote;
 	char	*my_line;
 
+	if (line == NULL)
+		return (NULL);
 	my_line = ft_strdup(line);
 	if (my_line == NULL)
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
@@ -73,6 +75,8 @@ static int	single_check(char **line, t_token_type *last_type)
 	char	*check_this;
 	t_token	*tokens;
 
+	if (*line == NULL)
+		return (0);
 	check_this = drop_comment(*line);
 	if (check_this == NULL)
 		return (1);
@@ -94,22 +98,23 @@ RETURNS: the exit_code, 1 on malloc failure, 2 on syntax error, 0 on successful
 execution.
 NOTE: if a malloc failure or a syntax error occurs,
 the last instance of 'line' isn't free'd, it's stored in *line. */
-int	syntax_line(char **line, const char ***vars)
+int	syntax_line(char **line, char ***vars)
 {
 	t_token_type	last_type;
 	int				exit_code;
-	char			sig_flag;
 
-	sig_flag = *((unsigned char *)vars[0] + 6);
 	exit_code = single_check(line, &last_type);
 	if (exit_code != 0)
 		return (exit_code);
 	while (!is_closed(*line))
 	{
-		*line = append_line(*line, last_type, sig_flag);
+		*line = append_line(*line, last_type, vars);
 		exit_code = single_check(line, &last_type);
 		if (exit_code != 0)
+		{
+			mtx_setdata(exit_code, vars[0], 1);
 			return (exit_code);
+		}
 	}
 	return (0);
 }

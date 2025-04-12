@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:41:39 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 20:12:30 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:12:41 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	is_white(char *str)
 	return (0);
 }
 
-
 /* Removes 'len' bytes from the string starting from start */
 char	*drop_string(char *str, int start, size_t len)
 {
@@ -42,7 +41,7 @@ char	*drop_string(char *str, int start, size_t len)
 		return (NULL);
 	if ((size_t)start > ft_strlen(str))
 		return (ft_strdup(str));
-	else if (start + len > ft_strlen(str))
+	else if (len + start > ft_strlen(str))
 		len = ft_strlen(str) - start;
 	tar_ptr = &str[start];
 	new_str = (char *)ft_calloc(ft_strlen(str) - len + 1, sizeof(char));
@@ -51,13 +50,10 @@ char	*drop_string(char *str, int start, size_t len)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (&str[i] != tar_ptr)
-		{
-			new_str[i] = str[i];
-			i++;
-		}
-		else
+		if (&str[i] == tar_ptr)
 			str += len;
+		new_str[i] = str[i];
+		i++;
 	}
 	return (new_str);
 }

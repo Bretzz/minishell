@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 18:42:00 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:27:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,43 +39,37 @@
 # define STDL 0		/* Standard Location: STDIN STDOUT execution */
 # define FILE 1		/* redirecting either input, output or both into a file */
 # define PIPE 2		/* reding/writing from/into a pipe */
-# define HERE_DOC 3 /* recieving input from an HERE_DOC */
+# define HERE_DOC 3	/* recieving input from an HERE_DOC */
 
-extern int g_last_sig;
+extern int	g_last_sig;
 
 typedef struct s_cmd
 {
-    char	*words[MAX_ARGS];	// Array di argomenti (comando + parametri)
-    int		fd[2];
-	char	infile[MAX_PATH];	// ! ! ! REMOVE ! ! ! File di input, se presente
-    char	outfile[MAX_PATH];	// ! ! ! REMOVE ! ! ! File di output, se presente
-    int		append;				// ! ! ! REMOVE ! ! ! Flag: O_WRONLY|O_CREAT|O_APPEND per ">>" oppure O_WRONLY|O_CREAT|O_TRUNC per ">"
-	int		redir[2];			// (redir[0]: input, redir[1]: output) Flag: PIPE_OUT: pipe dopo il comando, PIPE_IN: pipe prima del comando, HERE_DOC: heredoc prima del comando, FILE: input or output file, STDL: nessuna redirection.
+	char	*words[MAX_ARGS];	// Array di argomenti (comando + parametri)
+	int		fd[2];
+	char	infile[MAX_PATH];	// File di input, se presente
+	char	outfile[MAX_PATH];	// File di output, se presente
+	int		append;				// Flag: o_flag composete per ">>" o ">"
+	int		redir[2];			// Flag: dove il comando redirecta
 	int		parse_code;
 }	t_cmd;
 
 /* PARSING */
 
 t_cmd	*parse_tokens(char *line, const char ***vars);
-int		syntax_line(char **line, const char ***vars);
+int		syntax_line(char **line, char ***vars);
 char	*drop_comment(char *line);
 
-int		ft_cmdlen(t_cmd *cmd_array);
 void	free_cmd(t_cmd *cmd_arr);
-
-//ft_readline.c
-
-char	*ft_readline (const char *prompt);
 
 /* VARIABLES */
 
 int		handle_vars(t_cmd cmd, char ***vars);
 
-char 	*expand_string(char *str, const char ***vars);
-char 	*just_expand_string(char *str, const char ***vars);
+char	*expand_string(char *str, const char ***vars);
+char	*just_expand_string(char *str, const char ***vars);
 
-size_t	ft_varlen(const char *s);
-size_t	ft_mtxlen(const void **mtx);
+char	*wide_search(char *str, const char ***vars);
 
 //here_doc.c
 
@@ -102,14 +96,11 @@ int		ft_export(int *fd, t_cmd cmd, char ***vars);
 int		ft_unset(int *fd, t_cmd cmd, char ***vars);
 int		ft_env(int *fd, const char ***vars);
 
-//int		exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
-
 /* SIGNALS */
 
 void	idle_initializer(void);
 void	runtime_initializer(void);
 void	input_initializer(void);
-void	ft_readline_initializer(void);
 
 /* UTILS */
 
@@ -117,15 +108,14 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 char	*drop_string(char *str, int start, size_t len);
 int		is_white(char *str);
 
-size_t	ft_strlen_space(const char *s); //replace with ft_varlen when measuring vars
+size_t	ft_varlen(const char *s);
+size_t	ft_mtxlen(const void **mtx);
 size_t	ft_strlen_nl(const char *s);
+size_t	ft_strlen_space(const char *s);
 
-//char	*ft_strjoin_free(char *s1, char *s2);
 char	*ft_strjoin_free_space(char *s1, char *s2);
 char	*ft_strjoin_free_nl(char *s1, char *s2);
 char	*ft_strjoin_free_nl_space(char *s1, char *s2);
-
-void	ft_print_charr(const char **arr);
 
 /* CLEANUP */
 

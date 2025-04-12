@@ -5,101 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/12 18:04:26 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/12 22:18:07 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/12 22:21:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-char *expand_string(char *str, const char ***vars);
-char *just_expand_string(char *str, const char ***vars);
+char	*expand_string(char *str, const char ***vars);
+char	*just_expand_string(char *str, const char ***vars);
 
-// static char	expander_quote_check(char *line)
-// {
-// 	static char	quote;
-// 	size_t	i;
-
-// 	if (line == NULL)	//never happens
-// 		return (quote);
-// 	i = 0;
-// 	while (line[i] != '\0')
-// 	{
-// 		if (quote == 0
-// 			&& (line[i] == '\'' || line[i] == '"'))
-// 		{
-// 			quote = line[i];
-// 			break ;
-// 		}
-// 		else if (line[i] == quote)
-// 		{
-// 			quote = 0;
-// 			break ;
-// 		}
-// 		i++;
-// 	}
-// 	return (quote);
-// }
-
-/* Mallocates a new string with the '$var' found at 'tar_index' cut off. */
-// static char	*cut_string(char *str, int tar_index)
-// {
-// 	char	*new_str;
-// 	char	*tar_ptr;
-// 	int		tar_len;
-// 	int		i;
-
-// 	if (str == NULL)
-// 		return (NULL);
-// 	tar_len = ft_varlen(&str[tar_index]) + 1;
-// 	tar_ptr = &str[tar_index];
-// 	new_str = (char *)malloc(ft_strlen(str) - tar_len + 1);
-// 	if (new_str == NULL)
-// 		return (NULL);
-// 	i = 0;
-// 	while (str[i] != '\0')
-// 	{
-// 		if (&str[i] != tar_ptr)
-// 		{
-// 			new_str[i] = str[i];
-// 			i++;
-// 		}
-// 		else
-// 			str += tar_len;
-// 	}
-// 	new_str[i] = '\0';
-// 	return (new_str);
-// }
-
-/* searches all the vars arrays for the var pointer by str */
-static char	*wide_search(char *str, const char ***vars)
-{
-	char	*value;
-	char	*name;
-	int		i;
-	
-	name = ft_substr(str, 0, ft_varlen(str));
-	if (!name)
-		return (NULL);
-//	ft_printf("searching: '%s'\n", name);
-	i = 1;
-	while (i >= 0)
-	{
-		value = mtx_findval(name, NULL, 0, (char **)(vars[i]));
-		if (value != NULL)
-		{
-//			ft_printf("found: %s\n", value);
-			free(name);
-			return (value);
-		}
-		i--;
-	}
-	free(name);
-	return (NULL);
-}
-
-static char *set_exp_val(size_t *i, char *str, const char ***vars)
+static char	*set_exp_val(size_t *i, char *str, const char ***vars)
 {
 	if (str[*i] == '$' && (str[*i + 1] == '\0' || ft_isspace(str[*i + 1])))
 		return ((*i)++, NULL);
@@ -110,18 +26,19 @@ static char *set_exp_val(size_t *i, char *str, const char ***vars)
 		return (NULL);
 	}
 	else if (!ft_strncmp("$?", &str[*i], 2))
-		return (ft_itoa(*((unsigned char *)vars[0] + 1)));
+		return (ft_itoa(*((unsigned char *)vars[0] + 5)));
 	else if (!ft_strncmp("$$", &str[*i], 2))
 		return (ft_itoa(*((unsigned int *)vars[1] + 1)));
-	else if (str[*i] == '~') 
+	else if (str[*i] == '~')
 	{
 		if (*i != 0 && !ft_isspace(str[*i - 1]))
 			return ((*i)++, NULL);
-		if (str[*i + 1] != '\0' && str[*i + 1] != '/' && !ft_isspace(str[*i + 1]))
+		if (str[*i + 1] != '\0' && str[*i + 1] != '/'
+			&& !ft_isspace(str[*i + 1]))
 			return ((*i)++, NULL);
 		return (mtx_findval("HOME", NULL, MAX_PATH, (char **)vars[1]));
 	}
-	return(wide_search(&str[*i + 1], vars));
+	return (wide_search(&str[*i + 1], vars));
 }
 
 /* takes a string (to be free'd) and the index of the var found.
@@ -146,13 +63,14 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 		return (str);
 	}
 	var_len = ft_varlen(&str[*i]) + 1;
-	new_str = (char *)malloc(ft_strlen(str) - var_len + ft_strlen(exp_val) + 1);
+	new_str = (char *)malloc(ft_strlen(str) - var_len
+			+ ft_strlen(exp_val) + 1);
 	if (new_str == NULL)
 		return (free(exp_val), NULL);
 	ft_strlcpy(new_str, str, *i + 1);
 	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
-	ft_strlcat(new_str, &str[*i + var_len], ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
-	if (DEBUG) {ft_printf("skipping %d chars\n", ft_strlen(exp_val));}
+	ft_strlcat(new_str, &str[*i + var_len],
+		ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
 	(*i) += ft_strlen(exp_val) - 1;
 	return (free(exp_val), free(str), new_str);
 }
@@ -188,11 +106,11 @@ static char	skip_quotes(char *str, size_t i, char quote)
 returns a mallocated string with the variables preceded by '$' expanded.
 (quotes are also handled properly)
 RETURNS: the expanded string, NULL on malloc error. */
-char *expand_string(char *str, const char ***vars)
+char	*expand_string(char *str, const char ***vars)
 {
-	char	*my_str;
+	char		*my_str;
 	static char	quote;
-	size_t	i;
+	size_t		i;
 
 	(void)vars;
 	my_str = ft_strdup(str);
@@ -211,7 +129,7 @@ char *expand_string(char *str, const char ***vars)
 }
 
 /* expands every variable found */
-char *just_expand_string(char *str, const char ***vars)
+char	*just_expand_string(char *str, const char ***vars)
 {
 	char	*my_str;
 	size_t	i;
@@ -230,4 +148,3 @@ char *just_expand_string(char *str, const char ***vars)
 	}
 	return (my_str);
 }
-
