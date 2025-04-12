@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 14:54:29 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/11 17:39:36 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:49:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,11 @@ Namely: the current write-end pipefd (used by the child we just forked),
 The input file (FILE or HERE_DOC) and the output file (if existing). */
 void	father_closes(t_cmd *cmd, t_garb *garb, int index, size_t len)
 {
-	if (index != (int)(len - 1) && cmd[index].redir[1] != FILE)
+	if (index != (int)(len - 1))
 	{
 		cleanclose(&garb[index].pipefd[1], OUTPUT);
 	}
-	if (index != 0
-		&& cmd[index - 1].redir[0] != FILE
-		&& cmd[index - 1].redir[0] != HERE_DOC)
+	if (index != 0)
 	{
 		cleanclose(&garb[index - 1].pipefd[0], INPUT);
 	}
@@ -98,18 +96,17 @@ All of this after a carpet_close() call. */
 void	child_closes(t_cmd *cmd, t_garb *garb, int index, size_t len)
 {
 	carpet_close(cmd, garb, index, len);
-	if (index != (int)(len - 1) && cmd[index].redir[1] != FILE)
+	if (index != (int)(len - 1))
 	{
 		safeclose(garb[index].pipefd[0]);
 	}
-	if (index > 0 && cmd[index - 1].redir[1] != FILE)
+	if (index != (int)(len - 1) && cmd[index].redir[1] == FILE)
 	{
-		safeclose(garb[index - 1].pipefd[1]);
+		safeclose(garb[index].pipefd[1]);
 	}
 	if (index > 0 && cmd[index].redir[0] == FILE)
 	{
-		if (cmd[index - 1].redir[0] != FILE)
-			safeclose(garb[index - 1].pipefd[0]);
+		safeclose(garb[index - 1].pipefd[0]);
 	}
 }
 

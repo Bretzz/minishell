@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/11 18:12:04 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:15:24 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,61 @@ static int process_word(t_token *token, t_cmd *current_cmd)
 	return (1);
 }
 
+static void redir_trunc_open(t_cmd *current_cmd, char *filename)
+{
+	if (current_cmd->fd[1] < 0)
+		return ;
+	safeclose(current_cmd->fd[1]);
+	ft_strlcpy(current_cmd->outfile, filename, 1024);
+	if (access(filename, F_OK) - access(filename, W_OK) > 0)
+	{
+		ft_perror(filename, "permission denied", NULL, 1);
+		current_cmd->fd[1] = -1;
+	}
+	else
+		current_cmd->fd[1] = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
+	current_cmd->redir[1] = FILE;	
+}
+
+static void redir_append_open(t_cmd *current_cmd, char *filename)
+{
+	if (current_cmd->fd[1] < 0)
+		return ;
+	safeclose(current_cmd->fd[1]);
+	ft_strlcpy(current_cmd->outfile, filename, 1024);
+	if (access(filename, F_OK) - access(filename, W_OK) > 0)
+	{
+		ft_perror(filename, "permission denied", NULL, 1);
+		current_cmd->fd[1] = -1;
+	}
+	else
+		current_cmd->fd[1] = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
+	current_cmd->redir[1] = FILE;	
+}
+
+static void	redir_input_open(t_cmd *current_cmd, char *filename)
+{
+	if (current_cmd->fd[0] < 0)
+		return ;
+	safeclose(current_cmd->fd[0]);
+	ft_strlcpy(current_cmd->infile, filename, 1024);
+	if (access(filename, F_OK) != 0)
+	{
+		ft_perror(filename, "No such file or directory", NULL, 1);
+		current_cmd->fd[0] = -1;
+	}
+	else if (access(filename, R_OK) != 0)
+	{
+		ft_perror(filename, "Permission denied", NULL, 1);
+		current_cmd->fd[0] = -1;
+	}
+	else
+		current_cmd->fd[0] = open(filename, O_RDONLY);
+	current_cmd->redir[0] = FILE;
+}
+
 static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char ***vars)
 {
 	t_token_type redirType;
@@ -117,10 +172,11 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 		redirType = (*tokens)->type;
 		if (redirType == TOKEN_RED_INPUT)
 		{
-			safeclose(current_cmd->fd[0]);
-			ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
-			current_cmd->fd[0] = open((*tokens)->next->value, O_RDONLY);
-			current_cmd->redir[0] = FILE;
+			redir_input_open(current_cmd, (*tokens)->next->value);
+			// safeclose(current_cmd->fd[0]);
+			// ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
+			// current_cmd->fd[0] = open((*tokens)->next->value, O_RDONLY);
+			// current_cmd->redir[0] = FILE;
 		}
 		else if (redirType == TOKEN_HERE_DOC)
 		{
@@ -131,19 +187,21 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 		}
 		else if (redirType == TOKEN_RED_OUTPUT)
 		{
-			safeclose(current_cmd->fd[1]);
-			ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
-			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
-			current_cmd->redir[1] = FILE;
+			redir_trunc_open(current_cmd, (*tokens)->next->value);
+			// safeclose(current_cmd->fd[1]);
+			// ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			// current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			// current_cmd->append = O_WRONLY | O_CREAT | O_TRUNC;
+			// current_cmd->redir[1] = FILE;
 		}
 		else if (redirType == TOKEN_APPEND)
 		{
-			safeclose(current_cmd->fd[1]);
-			ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
-			current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
-			current_cmd->redir[1] = FILE;
+			redir_append_open(current_cmd, (*tokens)->next->value);
+			// safeclose(current_cmd->fd[1]);
+			// ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
+			// current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			// current_cmd->append = O_WRONLY | O_CREAT | O_APPEND;
+			// current_cmd->redir[1] = FILE;
 		}
 	}
 	/* Avanza tokens di due posizioni: l'operatore e il nome del file */

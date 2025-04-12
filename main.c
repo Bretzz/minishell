@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 18:04:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:20:01 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	handle_line(char *line, char ***vars)
 	exit_status = 0;
 	if (line == NULL)
 		return (1);
-	cmd_arr = parse_tokens((char *)line, vars);
+	cmd_arr = parse_tokens((char *)line, (const char ***)vars);
 	if (g_last_sig != 0)
 	{
 		mtx_setdata(128 + g_last_sig, vars[0]);
@@ -56,9 +56,9 @@ static int	handle_line(char *line, char ***vars)
 	len = ft_cmdlen(cmd_arr);
 	
 	if (len == 0)	//both NULL cmd_arr and no actual command to execute
-		return (free_cmd(cmd_arr), 1);
+		return (free_cmd(cmd_arr), mtx_setdata(EXIT_FAILURE, vars[0]), 1);
 	runtime_initializer();
-	if (len == 1)
+	if (len <= 1)
 	{
 		if (DEBUG) {ft_printf("EXECUTING COMMAND\n");}
 		exit_status = execute_command(line, cmd_arr, vars);

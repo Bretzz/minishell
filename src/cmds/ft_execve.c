@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 18:16:48 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:50:07 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	clean_exit(char *str, int *fd)
 		close(fd[1]);
 }
 
-static void	ft_perror(char *cmd, char *strerr, int *exit_code, int code)
+void	ft_perror(char *cmd, char *strerr, int *exit_code, int code)
 {
 	if (!strncmp("Is a directory", strerr, 15)
 		|| !strncmp("command not found", strerr, 18))
@@ -33,32 +33,13 @@ static void	ft_perror(char *cmd, char *strerr, int *exit_code, int code)
 		*exit_code = code;
 }
 
-/* returns the error code of the problem */
-static int	error_check(t_cmd cmd, char *path)
+/* checks if some redirections went wrong */
+static int	redir_error_check(t_cmd cmd)
 {
-	if (cmd.redir[1] == FILE
-		&& access(cmd.outfile, F_OK) - access(cmd.outfile, W_OK) > 0)
-		return (ft_perror(cmd.outfile, "permission denied", NULL, 1), 1);
-	if (cmd.redir[0] == FILE
-		&& access(cmd.infile, F_OK) != 0)
-	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: No such file or directory\n",
-			cmd.infile);
+	if (cmd.redir[1] == FILE && cmd.fd[1] < 0)
 		return (1);
-	}
-	if (cmd.redir[0] == FILE
-		&& access(cmd.infile, R_OK) != 0)
-	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: permission denied\n",
-			cmd.infile);
+	if (cmd.redir[0] == FILE && cmd.fd[0] < 0)
 		return (1);
-	}
-	if (path == NULL)
-	{
-		ft_printfd(STDERR_FILENO, "minishell: %s: command not found\n",
-			cmd.words[0]);
-		return (127);
-	}
 	return (0);
 }
 
@@ -109,10 +90,10 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 
 	path = NULL;
 	exit_code = 0;
-	path = set_exec_path(cmd, env, &exit_code);
+	exit_code = redir_error_check(cmd);
 	if (exit_code != 0)
 		return (clean_exit(path, fd), exit_code);
-	exit_code = error_check(cmd, path);
+	path = set_exec_path(cmd, env, &exit_code);
 	if (exit_code != 0)
 		return (clean_exit(path, fd), exit_code);
 	dup2(fd[0], STDIN_FILENO);

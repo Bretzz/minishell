@@ -240,6 +240,23 @@ prima fa il parsing del path. capire se dobbbiamo fare il parsing prima di chiam
 (DONE) (CHECK FDS)
 <main.c grep main | cat >out | ls | <main.c cat >out2 | pwd
 
+(DONE)
+bash-3.2$ chmod 000 aaa
+bash-3.2$ aaa/bbb/file
+bash: aaa/bbb/file: Permission denied
+bash-3.2$ echo $?
+126
+
+(DONE)
+cat | cat | ls (SIGPIE is OK)
+
+minishell% < f1
+minishell% < f1 cat (DONE)
+minishell: f1: No such file or directory
+minishell% echo $?
+1
+minishell% 
+
 ======================== DONE-ish =======================
 
 (DONE)
@@ -254,23 +271,6 @@ BASH:
 	bash-3.2$ echo $HOME
 
 	bash-3.2$
-
-(DONE)
-bash-3.2$ chmod 000 aaa
-bash-3.2$ aaa/bbb/file
-bash: aaa/bbb/file: Permission denied
-bash-3.2$ echo $?
-126
-
-(DONE)
-cat | cat | ls (SIGPIE is OK)
-
-(DONE)
-minishell% < f1
-minishell% < f1 cat
-minishell% echo $?
-1
-minishell% 
 
 ======================== ONGOING =======================
 

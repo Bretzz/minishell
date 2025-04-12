@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:35:27 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/11 17:34:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:50:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,13 @@ int	pipeline_redir_input(t_cmd *cmd, t_garb *garb, int index, size_t len)
 {
 	(void)len;
 	if (cmd[index].redir[0] == FILE || cmd[index].redir[0] == HERE_DOC)
+	{
 		return (cmd[index].fd[0]);
+	}
 	if (index == 0)
 	{
-		if (cmd[index].redir[0] == PIPE)
-			return (dummy_in_pipe());
 		return (STDIN_FILENO);
 	}
-	if (index > 0 && cmd[index - 1].redir[1] == FILE)
-		return (STDIN_FILENO);
 	return (garb[index - 1].pipefd[0]);
 }
 
@@ -48,18 +46,21 @@ is specified, returns STDOUT_FILENO.
 NOTE: with 'preferred fd' we are refering to tho the fd in the t_cmd struct */
 int	pipeline_redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 {
-	if (cmd[index].redir[1] == FILE)
-	{
-		return (cmd[index].fd[1]);
-	}
 	if (index == (int)(len - 1))
+	{
+		if (cmd[index].redir[1] == FILE)
+			return (cmd[index].fd[1]);
 		return (STDOUT_FILENO);
+	}
 	if (pipe(garb[index].pipefd) < 0)
 	{
 		garb[index].pipefd[0] = STDIN_FILENO;
 		garb[index].pipefd[1] = STDOUT_FILENO;
 		write(STDERR_FILENO, "minishell: pipe failure\n", 24);
-		return (STDOUT_FILENO);
+	}
+	if (cmd[index].redir[1] == FILE)
+	{
+		return (cmd[index].fd[1]);
 	}
 	return (garb[index].pipefd[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 18:10:52 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/12 14:12:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int		execute_command(char *line, t_cmd *cmd, char ***vars);
 int		execute_pipeline(char *line, t_cmd *cmd_arr, char ***vars);
 int		exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
 int		ft_wifexited(pid_t pid);
+void	ft_perror(char *cmd, char *strerr, int *exit_code, int code);
 
 t_cmd	pop_arg(t_cmd cmd, int index);
 
