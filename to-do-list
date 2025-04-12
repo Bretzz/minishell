@@ -297,6 +297,17 @@ ls |
 
 ======================== ONGOING =======================
 
+======================= NORMINETTE ======================
+
+built_ins/	(DONE)
+cmds/		(DONE)
+parser/
+	parser.c
+signals/	(DONE)
+utils/		(DONE)
+	readline/ (excluded)
+vars/		(DONE)
+main.c
 
 ======================== T O D O =======================
 
