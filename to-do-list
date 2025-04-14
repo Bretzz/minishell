@@ -324,6 +324,7 @@ riorrganizzazione librerie (libft, mtx, readline)
 
 MAX_PATH CONSEQUENCES!!!
 
+input from file should print only the commands print and the errors (just check bash)
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
