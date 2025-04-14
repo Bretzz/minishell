@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/14 12:14:05 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/14 16:58:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,8 +324,8 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	tokens[1] = tokens[0];
 	if (/* !syntax_tokens(tokens[0]) ||  */!expand_tokens(tokens[0], vars))
 		return (NULL);
-	print_tokens(tokens[0]);
-	printf("\n\n");
+	// print_tokens(tokens[0]);
+	// printf("\n\n");
 	cmd_array = ft_calloc(sizeof(t_cmd), cmds_count(tokens[0]));
 	if (!cmd_array)
 	{

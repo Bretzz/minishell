@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 18:16:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:06:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include "cmds.h"
 
 int		execute_command(char *line, t_cmd *cmd, char ***vars);
-
-static void	close_all_fds(int *execfd)
-{
-	safeclose(execfd[0]);
-	safeclose(execfd[1]);
-}
 
 /* execute the first command and returns the exit code.
 returns the EXIT_STATUS of the command.
@@ -40,13 +34,15 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 		else
 		{
 			handle_vars(cmd[0], vars);
-			return (close_all_fds(execfd), EXIT_SUCCESS);
+			return (multicose(execfd), EXIT_SUCCESS);
 		}
 	}
 	if (is_builtin(cmd->words[0]))
 	{
 		exit_code = exec_builtin(execfd, cmd[0], vars);
-		return (close_all_fds(execfd), exit_code);
+		if (!ft_strncmp("exit", cmd->words[0], 5))
+			return (multicose(execfd), -1 * (exit_code + 1));
+		return (multicose(execfd), exit_code);
 	}
 	exit_code = exec_external(execfd, line, cmd, vars);
 	return (exit_code);

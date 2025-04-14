@@ -3,17 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   cool_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:41:39 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 11:14:59 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:07:07 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int		is_white(char *str);
+int		is_number(char *str);
 char	*drop_string(char *str, int start, size_t len);
+char	*trim_back_nl(char *str);
+
+/* removes the trailing \n if present */
+char	*trim_back_nl(char *str)
+{
+	size_t	i;
+	
+	if (str == NULL)
+		return (str);
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	if (str[i - 1] == '\n')
+		str[i - 1] = '\0';
+	return (str);
+}
+
+/* checks weather a line is composed of only digits. */
+int	is_number(char *str)
+{
+	size_t	i;
+
+	if (str == NULL)
+		return (1);
+	i = 0;
+	while (str[i] && ft_isdigit(str[i]))
+		i++;
+	if (str[i] == '\0')
+		return (1);
+	return (0);
+}
 
 /* checks weather a line is composed of only blank spaces. */
 int	is_white(char *str)

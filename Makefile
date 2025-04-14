@@ -43,6 +43,7 @@ SRC_FILES		= main.c \
 				ft_export.c print_export.c \
 				ft_pwd.c \
 				ft_unset.c \
+				ft_exit.c \
 				\
 				ft_execve.c pipex_stolen.c builtin_bridge.c \
 				execute_pipeline.c execute_command.c \

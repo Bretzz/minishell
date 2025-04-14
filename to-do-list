@@ -280,6 +280,15 @@ ls > out | <out cat (DONE)
 ambiguous redirect (DONE)
 
 
+MAX_PATH CONSEQUENCES!!! (DONE)
+
+(DONE)
+input from file should print only the commands print and the errors (just check bash)
+
+(DONE)
+exit 1a:
+	exit with Exit Code 2
+
 ======================== DONE-ish =======================
 
 ( ? ? ? LOT'S OF INVALID READS ? ? ? )
@@ -302,9 +311,7 @@ BASH:
 (DONE)
 ls |
 > Ctrl+D
-(should exit with Exit Code 2)
-
-MAX_PATH CONSEQUENCES!!! (DONE)
+(BUT should exit with Exit Code 2)
 
 ======================== ONGOING =======================
 
@@ -324,8 +331,6 @@ main.c
 
 riorrganizzazione librerie (libft, mtx, readline)
 
-input from file should print only the commands print and the errors (just check bash)
-
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
@@ -335,6 +340,17 @@ EXTRA (FAKE NEWS)
 	"pwd; cd .." doesn't
 
 ----------------------> MIXED PROBLEMS <-----------------------
+
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out cat >catout | ls >out
+topiana-@c2r1p10:~/live_projects/github/minishell$ cat catout 
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <f1 <catout cat
+bash: f1: No such file or directory
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >f1 >catout
+topiana-@c2r1p10:~/live_projects/github/minishell$ rm f1
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >w_block >catout
+bash: w_block: Permission denied
+
+MAX_PATH per il ft_strlcpy dell'infile (o quando si apre il file nel parsing insomma)
 
 ----------------------> TO INVESTIGATE <-----------------------
 

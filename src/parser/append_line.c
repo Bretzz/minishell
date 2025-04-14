@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:19:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 21:32:45 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:21:09 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,14 @@ static char	*real_line(const char *prompt)
 	return (real_line);
 }
 
-static char	*pipe_join(char *line, char quote, char *prompt, char ***vars)
+static char	*pipe_join(char *line, char quote, char ***vars)
 {
 	char	*next_line;
 
-	next_line = real_line(prompt);
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		next_line = real_line("> ");
+	else
+		next_line = trim_back_nl(get_next_line(STDIN_FILENO));
 	if (next_line == NULL)
 		return (cleanup(line, quote, vars), NULL);
 	line = ft_strjoin_free_space(line, next_line);
@@ -59,11 +62,14 @@ static char	*pipe_join(char *line, char quote, char *prompt, char ***vars)
 	return (line);
 }
 
-static char	*word_join(char *line, char quote, char *prompt, char ***vars)
+static char	*word_join(char *line, char quote, char ***vars)
 {
 	char	*next_line;
 
-	next_line = readline(prompt);
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		next_line = readline("> ");
+	else
+		next_line = trim_back_nl(get_next_line(STDIN_FILENO));
 	if (next_line == NULL)
 		return (cleanup(line, quote, vars), NULL);
 	line = ft_strjoin_free_nl(line, next_line);
@@ -73,18 +79,12 @@ static char	*word_join(char *line, char quote, char *prompt, char ***vars)
 
 char	*append_line(char *line, t_token_type last_type, char ***vars)
 {
-	char	*prompt;
-
-	prompt = "";
 	if (*((unsigned char *)vars[0] + 6) == 1)
-	{
-		prompt = "> ";
 		input_initializer();
-	}
 	if (last_type == TOKEN_PIPE)
-		line = pipe_join(line, '\0', prompt, vars);
+		line = pipe_join(line, '\0', vars);
 	else if (last_type == TOKEN_WORD)
-		line = word_join(line, get_last_quote(line), prompt, vars);
+		line = word_join(line, get_last_quote(line), vars);
 	if (*((unsigned char *)vars[0] + 6) == 1)
 		idle_initializer();
 	return (line);

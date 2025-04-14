@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 14:55:27 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:18:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int		ft_pwd(int *fd, t_cmd cmd);
 int		ft_export(int *fd, t_cmd cmd, char ***vars);
 int		ft_unset(int *fd, t_cmd cmd, char ***vars);
 int		ft_env(int *fd, const char ***vars);
+int		ft_exit(int *fd, t_cmd cmd, char ***vars);
 
 /* SIGNALS */
 
@@ -108,6 +109,8 @@ void	input_initializer(void);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 char	*drop_string(char *str, int start, size_t len);
 int		is_white(char *str);
+int		is_number(char *str);
+char	*trim_back_nl(char *str);
 
 size_t	ft_varlen(const char *s);
 size_t	ft_mtxlen(const void **mtx);
