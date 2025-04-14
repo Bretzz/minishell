@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 14:11:22 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:41:34 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,44 @@ static void	update_pwd(char *oldpwd, char *pwd, char ***vars)
 			return ;
 	}
 	if (oldpwd != NULL)
+		mtx_setval("OLDPWD", oldpwd, vars[1]);
+}
+
+static int	env_is_valid(char *varenv, char ***vars)
+{
+	char	temp_var[MAX_PATH + 10];
+	char	*really_temp_var;
+
+	really_temp_var = NULL;
+	if (!mtx_findval(varenv, temp_var, sizeof(temp_var), vars[1]))
 	{
-		index = mtx_getindex("OLDPWD", vars[1]);
-		if (index >= 0)
-		{
-			mtx_setval("OLDPWD", oldpwd, vars[1]);
-		}
+		write(STDERR_FILENO, "minishell: cd: OLDPWD not set\n", 30);
+		return (0);
 	}
+	if (ft_strlen(temp_var) > MAX_PATH)
+	{
+		really_temp_var = mtx_findval(varenv, NULL, 0, vars[1]);
+		if (really_temp_var == NULL)
+			ft_perror(varenv, "File name too long", NULL, 0);
+		else
+			ft_perror(really_temp_var, "File name too long", NULL, 0);
+		return (free(really_temp_var), 0);
+	}
+	return (1);
+}
+
+static int	arg_path_is_valid(char *arg)
+{
+	if (ft_strlen(arg) > MAX_PATH)
+	{
+		ft_perror(arg, "File name too long", NULL, 0);
+		return (0);
+	}
+	return (1);
 }
 
 // helper function
-int	get_tar_dir(char *tar_dir, t_cmd cmd, char ***vars)
+static int	get_tar_dir(char *tar_dir, t_cmd cmd, char ***vars)
 {
 	if (cmd.words[2] != NULL)
 	{
@@ -47,14 +74,23 @@ int	get_tar_dir(char *tar_dir, t_cmd cmd, char ***vars)
 	}
 	if (cmd.words[1] == NULL)
 	{
-		if (!mtx_findval("HOME", tar_dir, MAX_PATH, vars[1]))
-		{
-			write(STDERR_FILENO, "minishell: cd: HOME not set\n", 28);
+		if (!env_is_valid("HOME", vars))
 			return (EXIT_FAILURE);
-		}
+		mtx_findval("HOME", tar_dir, MAX_PATH + 1, vars[1]);
+	}
+	else if (!ft_strncmp(cmd.words[1], "-", 2))
+	{
+		if (!env_is_valid("OLDPWD", vars))
+			return (EXIT_FAILURE);
+		mtx_findval("OLDPWD", tar_dir, MAX_PATH + 1, vars[1]);
+		ft_printfd(STDOUT_FILENO, "%s\n", tar_dir);
 	}
 	else
-		ft_strlcpy(tar_dir, cmd.words[1], MAX_PATH);
+	{
+		if (!arg_path_is_valid(cmd.words[1]))
+			return (EXIT_FAILURE);
+		ft_strlcpy(tar_dir, cmd.words[1], MAX_PATH + 1);
+	}
 	return (EXIT_SUCCESS);
 }
 /*	EACCES Search permission is denied for any component of the pathname.
@@ -94,9 +130,10 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 {
 	char	*oldpwd;
 	char	*pwd;
-	char	tar_dir[MAX_PATH];
+	char	tar_dir[MAX_PATH + 1];
 
 	safeclose(fd[1]);
+	ft_memset(tar_dir, 0, MAX_PATH + 1);
 	if (get_tar_dir(tar_dir, cmd, vars) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	oldpwd = getcwd(NULL, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_string.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 22:18:07 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 11:01:07 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:40:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*set_exp_val(size_t *i, char *str, const char ***vars)
 		if (str[*i + 1] != '\0' && str[*i + 1] != '/'
 			&& !ft_isspace(str[*i + 1]))
 			return ((*i)++, NULL);
-		return (mtx_findval("HOME", NULL, MAX_PATH, (char **)vars[1]));
+		return (mtx_findval("HOME", NULL, 0, (char **)vars[1]));
 	}
 	return (wide_search(&str[*i + 1], vars));
 }

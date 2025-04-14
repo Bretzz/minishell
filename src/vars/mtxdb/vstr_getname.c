@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:41:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 18:33:20 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:54:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,30 @@ int		vstr_name_is_valid(char *varstr);
 	no spaces (neither leading nor trailing)
 	only alphabetical chars (upper or lower)
 	only separator allowed: '_'
-RETURNS: 1 if the var is valid, 0 if it isn't.
+RETURNS: 1 if the var is valid, 0 if it isn't, -1 on malloc failure.
 NOTE: you should throw a 'not a valid identifier' error (Exit Code: 1). */
 int	vstr_name_is_valid(char *varstr)
 {
 	size_t	i;
-	char	name[MAX_NAME];
+	char	*name;
 
 	if (varstr == NULL)
 		return (0);
-	vstr_getname(varstr, name, MAX_NAME);
+	name = vstr_getname(varstr, NULL, 0);
+	if (name == NULL)
+		return (-1);
 	i = 0;
 	while (name[i] != '\0')
 	{
 		if (i == 0 && !(ft_isalpha(name[i]) || name[i] == '_'))
-			return (0);
+			return (free(name), 0);
 		else if (!(ft_isalpha(name[i])
 				|| ft_isdigit(name[i])
 				|| name[i] == '_'))
-			return (0);
+			return (free(name), 0);
 		i++;
 	}
+	free(name);
 	return (1);
 }
 

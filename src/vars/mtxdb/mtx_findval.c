@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:22:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 18:30:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:30:35 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*mtx_findval(char *name, char *buff, size_t size, char **mtx)
 		ft_memset(buff, 0, size);
 	if (name == NULL || mtx == NULL)
 		return (NULL);
-	if (!vstr_name_is_valid(name))
+	if (vstr_name_is_valid(name) <= 0)
 	{
 		return (NULL);
 	}

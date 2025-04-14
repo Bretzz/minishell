@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 10:57:21 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:55:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define CLEAN_EXIT -1 /* Return value to close the program */
 
 # define MAX_ARGS 100	/* Max number of arguments to a command */
-# define MAX_PATH 4097	/* Max number of cahrs that can compose a path. */
+# define MAX_PATH 4096	/* Max number of cahrs that can compose a path. */
 
 /* I/O REDIRECTION FLAGS */
 # define STDL 0		/* Standard Location: STDIN STDOUT execution */
@@ -45,12 +45,12 @@ extern int	g_last_sig;
 
 typedef struct s_cmd
 {
-	char	*words[MAX_ARGS];	// Array di argomenti (comando + parametri)
+	char	*words[MAX_ARGS];		// Array di argomenti (comando + parametri)
 	int		fd[2];
-	char	infile[MAX_PATH];	// File di input, se presente
-	char	outfile[MAX_PATH];	// File di output, se presente
-	int		append;				// Flag: o_flag composete per ">>" o ">"
-	int		redir[2];			// Flag: dove il comando redirecta
+	char	infile[MAX_PATH + 1];	// File di input, se presente
+	char	outfile[MAX_PATH + 1];	// File di output, se presente
+	int		append;					// Flag: o_flag composete per ">>" o ">"
+	int		redir[2];				// Flag: dove il comando redirecta
 	int		parse_code;
 }	t_cmd;
 

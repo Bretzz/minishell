@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/11 17:37:35 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:30:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,20 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars);
 Then removes it from shv. */
 static void	overwrite(char *varstr, char ***vars)
 {
-	char	name[MAX_NAME];
+	char	*name;
 	int		index;
 
 	vars[1] = mtx_vstr_copy(varstr, vars[1]);
-	vstr_getname(varstr, name, MAX_NAME);
+	name = vstr_getname(varstr, NULL, 0);
+	if (name == NULL)
+	{
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
+		return ;
+	}
 	index = mtx_getindex(name, vars[0]);
 	if (index >= 0)
 		mtx_safedel(index, vars[0]);
+	free(name);
 }
 
 /* Checks if the variable is present in exp, if it is does nothing.
@@ -34,13 +40,21 @@ Otherwise checks if it's in shv, in that case adds it to exp and env
 and removes it from shv. */
 static void	rank_up(char *varstr, char ***vars)
 {
-	char	name[MAX_NAME];
+	char	*name;
 	int		index;
 
-	vstr_getname(varstr, name, MAX_NAME);
+	name = vstr_getname(varstr, NULL, 0);
+	if (name == NULL)
+	{
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
+		return ;
+	}
 	index = mtx_getindex(name, vars[1]);
 	if (index >= 0)
+	{
+		free(name);
 		return ;
+	}
 	index = mtx_getindex(name, vars[0]);
 	if (index >= 0)
 	{
@@ -49,6 +63,7 @@ static void	rank_up(char *varstr, char ***vars)
 	}
 	else
 		vars[1] = mtx_setval(name, NULL, vars[1]);
+	free(name);
 }
 
 //env no, shv no
@@ -68,7 +83,7 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
-		if (!vstr_name_is_valid(cmd.words[i]))
+		if (vstr_name_is_valid(cmd.words[i]) <= 0)
 		{
 			ft_printfd(STDERR_FILENO, "minishell: export: `%s': not a \
 valid identifier\n", cmd.words[i]);

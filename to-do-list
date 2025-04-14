@@ -304,6 +304,8 @@ ls |
 > Ctrl+D
 (should exit with Exit Code 2)
 
+MAX_PATH CONSEQUENCES!!! (DONE)
+
 ======================== ONGOING =======================
 
 ======================= NORMINETTE ======================
@@ -321,8 +323,6 @@ main.c
 ======================== T O D O =======================
 
 riorrganizzazione librerie (libft, mtx, readline)
-
-MAX_PATH CONSEQUENCES!!!
 
 input from file should print only the commands print and the errors (just check bash)
 

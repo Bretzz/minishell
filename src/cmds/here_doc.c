@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 18:27:29 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:52:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ int		here_doc(char *limiter, const char ***vars);
 
 static void	clean_exit(int fd)
 {
-	char	path[MAX_PATH];
+	char	path[MAX_PATH + 1];
 
 	safeclose(fd);
-	unlink(get_doc_path(open_doc(GETNUM), path, sizeof(path)));
+	if (!get_doc_path(open_doc(GETNUM), NULL, 0))
+		return ;
+	unlink(path);
 }
 
 /* this function handle eventual signals

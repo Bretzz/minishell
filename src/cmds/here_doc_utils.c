@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: totommi <totommi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 17:35:08 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/10 16:05:40 by totommi          ###   ########.fr       */
+/*   Updated: 2025/04/14 15:01:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,24 @@ static char	*copy_path(char *cur_dir, char *itoa, char *buff, size_t size)
 	path/to/minishell/here_docs/here_doc_<doc_num> */
 char	*get_doc_path(int doc_num, char *buff, size_t size)
 {
-	char	cur_dir[MAX_PATH];
+	char	cur_dir[MAX_PATH + 1];
 	char	*itoa;
 
-	getcwd(cur_dir, sizeof(cur_dir));
+	if (!getcwd(cur_dir, sizeof(cur_dir)) && errno == ENAMETOOLONG)
+	{
+		ft_perror("curdir", "File name too long", NULL, 0);
+		return (NULL);
+	}
 	itoa = ft_itoa(doc_num);
 	if (itoa == NULL)
 	{
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (NULL);
+	}
+	if (ft_strlen(cur_dir) + ft_strlen(itoa) + 19 > MAX_PATH)
+	{
+		ft_perror("curdir", "File name too long", NULL, 0);
+		return (free(itoa), NULL);
 	}
 	copy_path(cur_dir, itoa, buff, size);
 	return (free(itoa), buff);
@@ -57,7 +66,7 @@ char	*get_doc_path(int doc_num, char *buff, size_t size)
 /* unlink() call on all the previously opened heredocs */
 void	close_docs(void)
 {
-	char			path[MAX_PATH];
+	char			path[MAX_PATH + 1];
 	unsigned int	i;
 	unsigned int	doc_num;
 
@@ -67,7 +76,9 @@ void	close_docs(void)
 	i = 1;
 	while (i <= doc_num)
 	{
-		unlink(get_doc_path(i, path, MAX_PATH));
+		if (!get_doc_path(i, path, sizeof(path)))
+			return ;
+		unlink(path);
 		i++;
 	}
 	open_doc(RESET);
@@ -76,12 +87,13 @@ void	close_docs(void)
 /* returns a O_RDONLY fd of the 'doc_num' heredoc. */
 int	read_doc(int doc_num)
 {
-	char	path[MAX_PATH];
+	char	path[MAX_PATH + 1];
 	int		fd;
 
 	if (doc_num == 0)
 		return (-1);
-	get_doc_path(doc_num, path, MAX_PATH);
+	if (!get_doc_path(doc_num, path, sizeof(path)))
+		return (-1);
 	fd = open(path, O_RDONLY, 0644);
 	if (fd < 0)
 	{
@@ -100,7 +112,7 @@ int	open_doc(char flag)
 {
 	static unsigned int	doc_num;
 	int					fd;
-	char				path[MAX_PATH];
+	char				path[MAX_PATH + 1];
 
 	if (flag == GETNUM)
 		return (doc_num);
@@ -110,7 +122,8 @@ int	open_doc(char flag)
 		return (doc_num);
 	}
 	doc_num++;
-	get_doc_path(doc_num, path, MAX_PATH);
+	if (!get_doc_path(doc_num, path, sizeof(path)))
+		return (-1);
 	fd = open(path, O_WRONLY | O_CREAT, 0644);
 	if (fd < 0)
 	{
