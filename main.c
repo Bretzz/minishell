@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 12:37:25 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/14 16:42:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,3 +179,4 @@ int	main(int argc, char *argv[], char *__environ[])
 	}
 	return (EXIT_SUCCESS);
 }
+
