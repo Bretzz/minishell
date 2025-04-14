@@ -46,7 +46,8 @@ CURSED COMMAND (BASH): (DONE)
 	prut
 	lalalala (output di 'cat pippo')
 
-<main.c grep main | cat >out | ls | <main.c cat >out2 | pwd (DONE)
+<main.c grep main | cat >out | ls | <main.c cat >out2 | pwd 
+(DONE)
 
 (DONE)
 "mkdir a | grep c": creates the dir and closes the pipe

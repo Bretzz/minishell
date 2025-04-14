@@ -51,7 +51,8 @@ SRC_FILES		= main.c \
 				safety_first.c \
 				\
 				parser.c tokenizer.c \
-				token_utils.c \
+				parser_tiny.c parser_redirectors.c \
+				token_utils.c print_tokens.c \
 				syntax_tokens.c syntax_line.c syntax_checks.c \
 				append_line.c stray_docs.c syntax_utils.c \
 				\

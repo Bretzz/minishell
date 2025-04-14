@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 23:29:52 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/14 12:17:41 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:02:12 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ static void	error_print(char *err_code, t_token *tokens)
 		if (tokens->next && err_code[0] == 1)
 			ft_printfd(STDERR_FILENO, "minishell: \
 syntax error near unexpected token `%s'\n", tokens->next->value);
-// 		else if (err_code[0] == 2)
-// 				ft_printfd(STDERR_FILENO, "minishell: \
-// %s: ambiguous redirect\n",tokens->next->value);
 		else
 			ft_printfd(STDERR_FILENO, "minishell: \
 syntax error near unexpected token `newline'\n");
