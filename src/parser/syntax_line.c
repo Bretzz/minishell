@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 21:48:25 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:20:34 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ int	syntax_line(char **line, char ***vars)
 
 	exit_code = single_check(line, &last_type);
 	if (exit_code != 0)
+	{
+		mtx_setdata(exit_code, vars[0], 1);
 		return (exit_code);
+	}
 	while (!is_closed(*line))
 	{
 		*line = append_line(*line, last_type, vars);

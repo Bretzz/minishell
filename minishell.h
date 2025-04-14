@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 22:27:04 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:57:21 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		syntax_line(char **line, char ***vars);
 char	*drop_comment(char *line);
 
 void	free_cmd(t_cmd *cmd_arr);
+int		ft_cmdlen(t_cmd *cmd_array);
 
 /* VARIABLES */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 22:28:46 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:37:25 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,12 @@ int	main(int argc, char *argv[], char *__environ[])
 	// rl_catch_signals = 0;	//MacOS issues... but what does it do?
 	if (isatty(STDIN_FILENO))
 	{
-		ft_printf("input from STDIN\n");
+		ft_printf("input from STDIN\n"); // delete
 		mtx_setdata(1, vars[0], 2);
 	}
 	else
 	{
-		ft_printf("input from file\n");
+		ft_printf("input from file\n"); // delete
 		mtx_setdata(0, vars[0], 2);
 	}
 	while (1)

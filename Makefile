@@ -55,7 +55,7 @@ SRC_FILES		= main.c \
 				syntax_tokens.c syntax_line.c syntax_checks.c \
 				append_line.c stray_docs.c syntax_utils.c \
 				\
-				handle_vars.c expand_string.c \
+				handle_vars.c expand_string.c wide_search.c \
 				\
 				signals.c initializers.c \
 				\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cool_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:41:39 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 22:12:41 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:14:59 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ char	*drop_string(char *str, int start, size_t len)
 	while (str[i] != '\0')
 	{
 		if (&str[i] == tar_ptr)
-			str += len;
+			str += len/*  - 1 */;
 		new_str[i] = str[i];
+		if (str[i] == '\0')
+			break ;
 		i++;
 	}
 	return (new_str);

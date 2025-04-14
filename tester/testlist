@@ -14,5 +14,6 @@ echo "ciao dov'eri ieri sera $a?" - "non sono fatti tuoi"; echo $?
 ls | grep out; echo $?
 ciao$"$ciao"$$'$ciao
 ci$ao$"$ciao"$'$ciao'
+ls > out | <out cat; rm -f out
 
 echo DONE

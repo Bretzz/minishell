@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/12 16:42:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:14:05 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,17 @@ static int process_word(t_token *token, t_cmd *current_cmd)
 	return (1);
 }
 
-static void redir_trunc_open(t_cmd *current_cmd, char *filename)
+static void redir_trunc_open(t_cmd *current_cmd, char *filename, char *not_expanded)
 {
 	if (current_cmd->fd[1] < 0)
 		return ;
 	safeclose(current_cmd->fd[1]);
+	if (filename[0] == '\0')
+	{
+		ft_perror(not_expanded, "ambiguous redirect", NULL, 1);
+		current_cmd->fd[1] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
+	}
 	ft_strlcpy(current_cmd->outfile, filename, 1024);
 	if (access(filename, F_OK) - access(filename, W_OK) > 0)
 	{
@@ -122,11 +128,17 @@ static void redir_trunc_open(t_cmd *current_cmd, char *filename)
 	current_cmd->redir[1] = FILE;	
 }
 
-static void redir_append_open(t_cmd *current_cmd, char *filename)
+static void redir_append_open(t_cmd *current_cmd, char *filename, char *not_expanded)
 {
 	if (current_cmd->fd[1] < 0)
 		return ;
 	safeclose(current_cmd->fd[1]);
+	if (filename[0] == '\0')
+	{
+		ft_perror(not_expanded, "ambiguous redirect", NULL, 1);
+		current_cmd->fd[1] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
+	}
 	ft_strlcpy(current_cmd->outfile, filename, 1024);
 	if (access(filename, F_OK) - access(filename, W_OK) > 0)
 	{
@@ -138,11 +150,17 @@ static void redir_append_open(t_cmd *current_cmd, char *filename)
 	current_cmd->redir[1] = FILE;	
 }
 
-static void	redir_input_open(t_cmd *current_cmd, char *filename)
+static void	redir_input_open(t_cmd *current_cmd, char *filename, char *not_expanded)
 {
 	if (current_cmd->fd[0] < 0)
 		return ;
 	safeclose(current_cmd->fd[0]);
+	if (filename[0] == '\0')
+	{
+		ft_perror(not_expanded, "ambiguous redirect", NULL, 1);
+		current_cmd->fd[0] = -1;
+		current_cmd->parse_code = EXIT_FAILURE;
+	}
 	ft_strlcpy(current_cmd->infile, filename, 1024);
 	if (access(filename, F_OK) != 0)
 	{
@@ -174,7 +192,7 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 		redirType = (*tokens)->type;
 		if (redirType == TOKEN_RED_INPUT)
 		{
-			redir_input_open(current_cmd, (*tokens)->next->value);
+			redir_input_open(current_cmd, (*tokens)->next->value, (*tokens)->next->not_expanded);
 			// safeclose(current_cmd->fd[0]);
 			// ft_strlcpy(current_cmd->infile, (*tokens)->next->value, 1024);
 			// current_cmd->fd[0] = open((*tokens)->next->value, O_RDONLY);
@@ -189,7 +207,7 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 		}
 		else if (redirType == TOKEN_RED_OUTPUT)
 		{
-			redir_trunc_open(current_cmd, (*tokens)->next->value);
+			redir_trunc_open(current_cmd, (*tokens)->next->value, (*tokens)->next->not_expanded);
 			// safeclose(current_cmd->fd[1]);
 			// ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
 			// current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -198,7 +216,7 @@ static void process_redirection(t_token **tokens, t_cmd *current_cmd, const char
 		}
 		else if (redirType == TOKEN_APPEND)
 		{
-			redir_append_open(current_cmd, (*tokens)->next->value);
+			redir_append_open(current_cmd, (*tokens)->next->value, (*tokens)->next->not_expanded);
 			// safeclose(current_cmd->fd[1]);
 			// ft_strlcpy(current_cmd->outfile, (*tokens)->next->value, 1024);
 			// current_cmd->fd[1] = open((*tokens)->next->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -284,7 +302,7 @@ static int	expand_tokens(t_token *tokens, const char ***vars)
 				write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 				return (0);
 			}
-			free(tokens->value);
+			tokens->not_expanded = tokens->value;
 			tokens->value = exp_value;
 			if (DEBUG) {ft_printf("...expanded: [%s]\n", tokens->value);}
 		}
@@ -306,8 +324,8 @@ t_cmd *parse_tokens(char *line, const char ***vars)
 	tokens[1] = tokens[0];
 	if (/* !syntax_tokens(tokens[0]) ||  */!expand_tokens(tokens[0], vars))
 		return (NULL);
-	/* print_tokens(tokens);
-	printf("\n\n"); */
+	print_tokens(tokens[0]);
+	printf("\n\n");
 	cmd_array = ft_calloc(sizeof(t_cmd), cmds_count(tokens[0]));
 	if (!cmd_array)
 	{

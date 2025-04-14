@@ -275,7 +275,16 @@ isatty!!! disattivare i sigandlers in non tty (DONE)
 	/		! ! ! REMOVE FT_FREENTF ! ! !			/
 	/ * * * * * * * * * * * * * * * * * * * * * * * /
 
+ls > out | <out cat (DONE)
+
+ambiguous redirect (DONE)
+
+
 ======================== DONE-ish =======================
+
+( ? ? ? LOT'S OF INVALID READS ? ? ? )
+minishell% export ciao1 ciao2= ciao3=ciao1 
+minishell% export (testato sembra ok)
 
 (DONE)
 ciao$"$ciao"$$'$ciao' (JUST $$ PID HANDLING with getpid())
@@ -315,9 +324,6 @@ riorrganizzazione librerie (libft, mtx, readline)
 
 MAX_PATH CONSEQUENCES!!!
 
-( ? ? ? LOT'S OF INVALID READS ? ? ? )
-minishell% export ciao1 ciao2= ciao3=ciao1 
-minishell% export
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 

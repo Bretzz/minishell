@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/12 21:54:29 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:16:32 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_token
 {
 	t_token_type	type;	// uno dei valori dell'enum
 	char			*value;	// stringa associata (es: "ls", ">>", "file", ...)
+	char			*not_expanded;
 	struct s_token	*next;
 }	t_token;
 
@@ -65,5 +66,7 @@ t_token_type	get_last_type(t_token *tokens);
 t_token_type	get_next_operator(const char *line, int *i);
 int				is_operator(const char *line, int i);
 void			skip_spaces(const char *line, int *i);
+
+void			print_tokens(t_token *tokens);
 
 #endif
