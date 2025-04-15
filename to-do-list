@@ -366,6 +366,10 @@ riorrganizzazione librerie (libft, mtx, readline)
 
 -------------------------> HERE DOC <--------------------------
 
+---------------------------> BONUS <----------------------------
+
+norminetted everything, the leak is indeed on childs that don't die in execve, so single commands not found or builtins inside pipes
+
 -----------------------> FT_READLINE <------------------------
 
 FIX ARROWS: Up: '^[[A', Down: '^[[B', Right: '^[[C', Left: '^[[D'
