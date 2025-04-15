@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:06:24 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 22:15:45 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:54:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	handle_line_bonus(char **line, char ***vars)
 			write(STDOUT_FILENO, "exit\n", 5);
 		clean_exit(NULL, NULL, vars, *((unsigned char *)vars[0] + 5));
 	}
-	ft_printf("got '%s'\n", *line);
 	if (is_white(*line))
 		return ;
 	exit_code = syntax_line_bonus(line, vars);
@@ -48,9 +47,7 @@ void	handle_line_bonus(char **line, char ***vars)
 		bongou_stray_docs_bonus(*line, (const char ***)vars);
 	else if (exit_code == 1)
 		clean_exit(NULL, *line, vars, EXIT_FAILURE);
-	ft_printf("became '%s'\n", *line);
 	*line = history_is_set(*line);
-	ft_printf("then '%s'\n", *line);
 	if (*line != NULL && exit_code == 0 && !unbox_the_line_bonus(*line, vars))
 		clean_exit(NULL, *line, vars, EXIT_FAILURE);
 }

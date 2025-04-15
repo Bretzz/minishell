@@ -6,21 +6,26 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:20:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:32:15 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:54:02 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 #include "parser_bonus.h"
 
-static void	error_fill(int *err_code,
+/* somehow this function set's tokens' content tu NULL */
+static t_token	*error_fill(void *err_code2,
 	t_token *tokens, t_token *prev,
 	int brakets)
 {
+	int	*err_code;
+
+	err_code = (int *)err_code2;
 	err_code[0] = redir_check(tokens);
 	err_code[1] = colon_pipe_check(tokens, prev);
 	err_code[2] = braket_check(tokens, prev, brakets);
 	err_code[3] = word_check(tokens, prev);
+	return (tokens);
 }
 
 static unsigned int	token_break_point(t_token *tokens)
@@ -40,7 +45,7 @@ static unsigned int	token_break_point(t_token *tokens)
 	{
 		if (tokens->type == TOKEN_OPEN_BR)
 			brakets++;
-		error_fill((int *)err_code, tokens, prev, brakets);
+		tokens = error_fill((int *)err_code, tokens, prev, brakets);
 		if (is_error_bonus(err_code))
 			break ;
 		if (tokens->type == TOKEN_CLOSE_BR && brakets)
