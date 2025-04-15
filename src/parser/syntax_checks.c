@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checks.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:50:57 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 12:16:13 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:28:20 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-char	pipe_check(t_token *pipe, t_token *prev);
+char	colon_pipe_check(t_token *colonipe, t_token *prev);
 char	redir_check(t_token *redir);
 char	word_check(t_token *word, t_token *prev);
 char	is_error(char *err_code);
@@ -32,16 +32,23 @@ char	is_error(char *err_code)
 	return (0);
 }
 
-char	pipe_check(t_token *pipe, t_token *prev)
+char	colon_pipe_check(t_token *colonipe, t_token *prev)
 {
-	if (pipe == NULL)
+	if (colonipe == NULL)
 		return (1);
-	if (pipe->type != TOKEN_PIPE)
+	if (colonipe->type != TOKEN_PIPE
+		&& colonipe->type != TOKEN_SEMICOL
+		&& colonipe->type != TOKEN_AND_OP
+		&& colonipe->type != TOKEN_OR_OP)
 		return (0);
 	if (prev == NULL)
-		return ('|');
-	if (pipe->next && pipe->next->type == TOKEN_PIPE)
-		return ('|');
+		return (*colonipe->value);
+	if (colonipe->next
+		&& (colonipe->next->type == TOKEN_PIPE
+			|| colonipe->next->type == TOKEN_SEMICOL
+			|| colonipe->next->type == TOKEN_AND_OP
+			|| colonipe->next->type == TOKEN_OR_OP))
+		return (*colonipe->value);
 	return (0);
 }
 

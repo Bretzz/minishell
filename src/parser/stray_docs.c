@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stray_docs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:44:33 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 12:17:15 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:27:30 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static unsigned int	token_break_point(t_token *tokens)
 	while (tokens)
 	{
 		err_code[0] = redir_check(tokens);
-		err_code[1] = pipe_check(tokens, prev);
+		err_code[1] = colon_pipe_check(tokens, prev);
 		err_code[2] = word_check(tokens, prev);
 		if (is_error(err_code))
 			break ;

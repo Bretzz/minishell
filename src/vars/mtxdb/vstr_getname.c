@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:41:31 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 14:54:25 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:40:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	vstr_name_is_valid(char *varstr)
 	name = vstr_getname(varstr, NULL, 0);
 	if (name == NULL)
 		return (-1);
+	if (name[0] == '\0')
+		return (free(name), 0);
 	i = 0;
 	while (name[i] != '\0')
 	{

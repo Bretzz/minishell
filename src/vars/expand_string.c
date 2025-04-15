@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 22:18:07 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 14:40:45 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:45:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ char	*just_expand_string(char *str, const char ***vars);
 
 static char	*set_exp_val(size_t *i, char *str, const char ***vars)
 {
-	if (str[*i] == '$' && (str[*i + 1] == '\0' || ft_isspace(str[*i + 1])))
+	if (str[*i] == '$' && (str[*i + 1] == '\0'
+			|| ft_isspace(str[*i + 1]) || str[*i + 1] == '='))
 		return ((*i)++, NULL);
 	else if (str[*i] == '$' && ft_isdigit(str[*i + 1]))
 	{

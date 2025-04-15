@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 18:57:25 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 19:06:54 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:47:36 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,8 @@ int	execute_command(char *line, t_cmd *cmd, char ***vars)
 	{
 		if (cmd->words[1] != NULL)
 			cmd[0] = pop_arg(cmd[0], 0);
-		else
-		{
-			handle_vars(cmd[0], vars);
+		else if (handle_vars(cmd[0], vars))
 			return (multicose(execfd), EXIT_SUCCESS);
-		}
 	}
 	if (is_builtin(cmd->words[0]))
 	{

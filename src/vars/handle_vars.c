@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:08:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 15:30:28 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:47:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	handle_vars(t_cmd cmd, char ***vars)
 	if (name == NULL)
 	{
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
-		return (0);
+		return (1);
 	}
 	index = mtx_getindex(name, vars[1]);
 	if (index >= 0)

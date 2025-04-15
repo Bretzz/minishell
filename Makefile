@@ -37,7 +37,7 @@ endif
 SRCS_DIR		=
 SRC_FILES		= main.c \
 				\
-				clean_exit.c handle_line.c init.c \
+				clean_exit.c handle_line.c unbox_the_line.c init.c \
 				\
 				ft_cd.c \
 				ft_echo.c \

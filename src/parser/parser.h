@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/14 21:34:19 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:28:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ typedef enum e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,			// |
+	TOKEN_SEMICOL,		// ;
+	TOKEN_AND_OP,		// &&
+	TOKEN_OR_OP,		// ||
 	TOKEN_RED_INPUT,	// <
 	TOKEN_RED_OUTPUT,	// >
 	TOKEN_HERE_DOC,		// <<
 	TOKEN_APPEND,		// >>
-	TOKEN_SEMICOL,		// ;
 	TOKEN_S_QUOTE,		// '
 	TOKEN_D_QUOTE,		// "
 	// ...eventuali altri tipi
@@ -46,7 +48,7 @@ void			free_tokens(t_token *tokens);
 
 int				syntax_tokens(t_token *tokens);
 
-char			pipe_check(t_token *pipe, t_token *prev);
+char			colon_pipe_check(t_token *colonipe, t_token *prev);
 char			redir_check(t_token *redir);
 char			word_check(t_token *word, t_token *prev);
 char			is_error(char *err_code);

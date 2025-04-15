@@ -6,14 +6,12 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 12:36:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:27:58 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-
-void	print_cmd_array(t_cmd *cmd_array, size_t num_cmds);
 
 #define MAX_CMDS 100
 

@@ -318,6 +318,27 @@ ls |
 > Ctrl+D
 (BUT should exit with Exit Code 2)
 
+semicolon (;) is easy (DONE)
+
+(DONE)
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out cat >catout | ls >out
+topiana-@c2r1p10:~/live_projects/github/minishell$ cat catout 
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <f1 <catout cat
+bash: f1: No such file or directory
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >w_block >catout
+bash: w_block: Permission denied
+
+(DONE)
+MAX_PATH per il ft_strlcpy dell'infile (o quando si apre il file nel parsing insomma)
+
+(DONE)
+topiana-@c2r5p6:~/live_projects/github/minishell$ echo $=
+$=
+
+(DONE)
+"=ciao"=PIPPO_IS_ANGRY
+=ciao=PIPPO_IS_ANGRY: command not found
+
 ======================== ONGOING =======================
 
 ======================= NORMINETTE ======================
@@ -333,27 +354,13 @@ main.c		(DONE)
 
 ======================== T O D O =======================
 
-
 riorrganizzazione librerie (libft, mtx, readline)
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
 
-EXTRA (FAKE NEWS)
-	"cd ..; pwd" changes dir
-	"pwd; cd .." doesn't
-
 ----------------------> MIXED PROBLEMS <-----------------------
-
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out cat >catout | ls >out
-topiana-@c2r1p10:~/live_projects/github/minishell$ cat catout 
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out <f1 <catout cat
-bash: f1: No such file or directory
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >w_block >catout
-bash: w_block: Permission denied
-
-MAX_PATH per il ft_strlcpy dell'infile (o quando si apre il file nel parsing insomma)
 
 ----------------------> TO INVESTIGATE <-----------------------
 
