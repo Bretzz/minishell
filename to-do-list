@@ -290,6 +290,10 @@ input from file should print only the commands print and the errors (just check 
 exit 1a:
 	exit with Exit Code 2
 
+<out cat >catout | ls >out {DONE}
+	prima dell'esecuzione out contiene qualcosa e catout on esiste
+	dopo l'esecuzione out contiene ls e catout esiste ma vuoto
+
 ======================== DONE-ish =======================
 
 ( ? ? ? LOT'S OF INVALID READS ? ? ? )
@@ -320,19 +324,14 @@ ls |
 
 built_ins/	(DONE)
 cmds/		(DONE)
-parser/
-	parser.c
+parser/		(DONE)
 signals/	(DONE)
 utils/		(DONE)
 	readline/ (excluded)
 vars/		(DONE)
-main.c
+main.c		(DONE)
 
 ======================== T O D O =======================
-
-<out cat >catout | ls >out {DONE}
-	prima dell'esecuzione out contiene qualcosa e catout on esiste
-	dopo l'esecuzione out contiene ls e catout esiste ma vuoto
 
 
 riorrganizzazione librerie (libft, mtx, readline)
