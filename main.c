@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:45:00 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:17:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	ft_strlcat(prompt, "$ ", sizeof(prompt));
 	while (1)
 	{
+		g_last_sig = 0;
 		line = get_my_line_pls(prompt, *((unsigned char *)vars[0] + 6));
 		handle_line(&line, vars);
 		free(line);

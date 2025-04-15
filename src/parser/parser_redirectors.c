@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redirectors.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 21:27:20 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 17:44:06 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:21:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static int	error_check(char *filename, char *not_expanded, char second_flag)
 		ft_perror(filename, "No such file or directory", NULL, 1);
 		return (1);
 	}
-	else if (access(filename, second_flag) != 0)
+	else if ((second_flag == R_OK && access(filename, second_flag) != 0)
+		|| (second_flag == W_OK && (access(filename, F_OK) == 0
+			&& access(filename, second_flag) != 0)))
 	{
 		ft_perror(filename, "Permission denied", NULL, 1);
 		return (1);

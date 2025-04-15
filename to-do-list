@@ -294,6 +294,57 @@ exit 1a:
 	prima dell'esecuzione out contiene qualcosa e catout on esiste
 	dopo l'esecuzione out contiene ls e catout esiste ma vuoto
 
+semicolon (;) is easy (DONE)
+
+(DONE)
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out cat >catout | ls >out
+topiana-@c2r1p10:~/live_projects/github/minishell$ cat catout 
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <f1 <catout cat
+bash: f1: No such file or directory
+topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >w_block >catout
+bash: w_block: Permission denied
+
+(DONE)
+MAX_PATH per il ft_strlcpy dell'infile (o quando si apre il file nel parsing insomma)
+
+(DONE)
+topiana-@c2r5p6:~/live_projects/github/minishell$ echo $=
+$=
+
+(DONE)
+"=ciao"=PIPPO_IS_ANGRY
+=ciao=PIPPO_IS_ANGRY: command not found
+
+(DONE)
+cat | << here (FDS APERTI)
+
+(DONE)
+cat | cat | cat | ls
+
+(DONE)
+sleep 2 | sleep 4 | sleep 6
+
+(DONE)
+ogni tanto esce a caso (segnali, readline appeso?)
+	(control C sig appeso)
+
+(DONE)
+cat
+^C
+echo $?
+
+(DONE)
+export b=ho (did not do it once (g_last_sig not resetted))
+
+(DONE)
+ls >> file (permission denied sempre)
+
+(DONE)
+HERE_DOC: Ctrl+Z conditional jumps (double layer valgrind)
+
+(DONE)
+echo -nnnnn -n
+
 ======================== DONE-ish =======================
 
 ( ? ? ? LOT'S OF INVALID READS ? ? ? )
@@ -318,27 +369,6 @@ ls |
 > Ctrl+D
 (BUT should exit with Exit Code 2)
 
-semicolon (;) is easy (DONE)
-
-(DONE)
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out cat >catout | ls >out
-topiana-@c2r1p10:~/live_projects/github/minishell$ cat catout 
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out <f1 <catout cat
-bash: f1: No such file or directory
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >w_block >catout
-bash: w_block: Permission denied
-
-(DONE)
-MAX_PATH per il ft_strlcpy dell'infile (o quando si apre il file nel parsing insomma)
-
-(DONE)
-topiana-@c2r5p6:~/live_projects/github/minishell$ echo $=
-$=
-
-(DONE)
-"=ciao"=PIPPO_IS_ANGRY
-=ciao=PIPPO_IS_ANGRY: command not found
-
 ======================== ONGOING =======================
 
 ======================= NORMINETTE ======================
@@ -353,6 +383,7 @@ vars/		(DONE)
 main.c		(DONE)
 
 ======================== T O D O =======================
+
 
 riorrganizzazione librerie (libft, mtx, readline)
 
@@ -392,6 +423,9 @@ GENERAL:
 check leaks for history
 
 --------------------> THINGS TO DISCUSS <--------------------
+
+( ? EXTRA ? )
+export a+=
 
 (FUCK THEM)
 topiana-@c2r1p8:~/live_projects/github/minishell$ export var=ciao"pippo        "

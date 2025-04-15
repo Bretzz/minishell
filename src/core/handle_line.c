@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:06:24 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:33:28 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:13:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	handle_line(char **line, char ***vars)
 			write(STDOUT_FILENO, "exit\n", 5);
 		clean_exit(NULL, NULL, vars, *((unsigned char *)vars[0] + 5));
 	}
+	if (is_white(*line))
+		return ;
 	exit_code = syntax_line(line, vars);
 	if (exit_code == 2)
 		bongou_stray_docs(*line, (const char ***)vars);

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:30:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:35:00 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:28:04 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ static int	king_richard_the_third(char *line, char *exec_line, char ***vars)
 	if (g_last_sig != 0)
 	{
 		mtx_setdata(128 + g_last_sig, vars[0], 1);
-		g_last_sig = 0;
 		return (free_cmd(cmd_arr), 1);
 	}
 	len = ft_cmdlen(cmd_arr);
@@ -107,6 +106,7 @@ int	unbox_the_line(char *line, char ***vars)
 	i = 0;
 	while (colon_count >= 0)
 	{
+		g_last_sig = 0;
 		if (line[i] == '\0')
 			null_skip = 0;
 		if (line[i] != '\0' && !null_skip)

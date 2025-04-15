@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/15 17:28:31 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:54:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void			process_redirection(t_token **tokens,
 
 void			free_cmd(t_cmd *cmd_arr);
 int				cmds_count(const t_token *tokens);
-void			raccattagarbage(t_cmd garbage);
+void			raccattagarbage(t_cmd *cmd_arr);
 int				ft_cmdlen(t_cmd *cmd_array);
 
 #endif

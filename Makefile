@@ -72,7 +72,8 @@ SRC_FILES		= main.c \
 				\
 				vstr_getname.c vstr_getvalue.c \
 				\
-				free_space.c cleanup.c cool_stuff.c weird_strlen.c 
+				free_space.c cleanup.c cool_stuff.c weird_strlen.c \
+				get_safe_line.c 
 				
 #				ft_readline.c
 

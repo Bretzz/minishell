@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 17:27:58 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 19:53:43 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ t_cmd	*parse_tokens(char *line, const char ***vars)
 {
 	t_token	*tokens;
 	t_cmd	*cmd_array;
-	t_cmd	current_cmd;
 	int		cmd_index;
 
 	tokens = tokenizer(line);
@@ -134,7 +133,6 @@ t_cmd	*parse_tokens(char *line, const char ***vars)
 		return (NULL);
 	cmd_array = NULL;
 	cmd_index = 0;
-	ft_bzero(&current_cmd, sizeof(t_cmd));
 	cmd_array = commander(tokens, &cmd_index, vars);
 	if (cmd_array == NULL)
 	{
@@ -142,8 +140,7 @@ t_cmd	*parse_tokens(char *line, const char ***vars)
 		return (NULL);
 	}
 	free_tokens(tokens);
-	if (current_cmd.words[0] == NULL)
-		raccattagarbage(current_cmd);
+	raccattagarbage(cmd_array);
 	cmd_index++;
 	return (cmd_array);
 }
