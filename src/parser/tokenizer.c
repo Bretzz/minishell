@@ -6,7 +6,11 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/14 20:29:23 by topiana-         ###   ########.fr       */
+=======
+/*   Updated: 2025/04/14 13:59:53 by mapascal         ###   ########.fr       */
+>>>>>>> origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,31 +134,3 @@ void	free_tokens(t_token *tokens)
 		free(tmp);
 	}
 }
-
-// void	print_tokens(t_token *tokens)
-// {
-// 	while (tokens)
-// 	{
-// 		ft_printf("Token: ");
-// 		if (tokens->type == TOKEN_WORD)
-// 			ft_printf("WORD (%s)", tokens->value);
-// 		else if (tokens->type == TOKEN_PIPE)
-// 			ft_printf("PIPE (|)");
-// 		else if (tokens->type == TOKEN_RED_INPUT)
-// 			ft_printf("REDIRECT_IN (<)");
-// 		else if (tokens->type == TOKEN_RED_OUTPUT)
-// 			ft_printf("REDIRECT_OUT (>)");
-// 		else if (tokens->type == TOKEN_HERE_DOC)
-// 			ft_printf("HERE_DOC (<<)");
-// 		else if (tokens->type == TOKEN_APPEND)
-// 			ft_printf("APPEND (>>)");
-// 		else if (tokens->type == TOKEN_SEMICOL)
-// 			ft_printf("SEMICOLON (;)");
-// 		else if (tokens->type == TOKEN_S_QUOTE)
-// 			ft_printf("SINGLE QUOTE (')");
-// 		else if (tokens->type == TOKEN_D_QUOTE)
-// 			ft_printf("DOUBLE QUOTE (\")");
-// 		ft_printf("\n");
-// 		tokens = tokens->next;
-// 	}
-// }

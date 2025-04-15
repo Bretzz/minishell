@@ -46,7 +46,8 @@ CURSED COMMAND (BASH): (DONE)
 	prut
 	lalalala (output di 'cat pippo')
 
-<main.c grep main | cat >out | ls | <main.c cat >out2 | pwd (DONE)
+<main.c grep main | cat >out | ls | <main.c cat >out2 | pwd 
+(DONE)
 
 (DONE)
 "mkdir a | grep c": creates the dir and closes the pipe
@@ -328,6 +329,11 @@ vars/		(DONE)
 main.c
 
 ======================== T O D O =======================
+
+<out cat >catout | ls >out {DONE}
+	prima dell'esecuzione out contiene qualcosa e catout on esiste
+	dopo l'esecuzione out contiene ls e catout esiste ma vuoto
+
 
 riorrganizzazione librerie (libft, mtx, readline)
 
