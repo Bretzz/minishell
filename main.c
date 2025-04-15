@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 20:33:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:45:00 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	if (mtx_findval("USER", prompt, sizeof(prompt), vars[1]) == NULL
 		&& mtx_findval("LOGNAME", prompt, sizeof(prompt), vars[1]) == NULL)
 		ft_strlcpy(prompt, "pterodactylus_antiquus", sizeof(prompt));
-	ft_strlcat(prompt, /* "@minishell */"$ ", sizeof(prompt));
+	ft_strlcat(prompt, "$ ", sizeof(prompt));
 	while (1)
 	{
 		line = get_my_line_pls(prompt, *((unsigned char *)vars[0] + 6));
