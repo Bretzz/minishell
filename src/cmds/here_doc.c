@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 14:52:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:50:03 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	clean_exit(int fd)
 	char	path[MAX_PATH + 1];
 
 	safeclose(fd);
-	if (!get_doc_path(open_doc(GETNUM), NULL, 0))
+	if (!get_doc_path(open_doc(GETNUM), path, sizeof(path)))
 		return ;
 	unlink(path);
 }
