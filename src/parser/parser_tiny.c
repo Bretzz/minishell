@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 21:28:24 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 19:56:46 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:49:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	raccattagarbage(t_cmd *cmd_arr)
 		}
 		i++;
 	}
-
 }
 
 int	ft_cmdlen(t_cmd *cmd_array)

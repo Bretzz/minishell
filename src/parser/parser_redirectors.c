@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 21:27:20 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 20:21:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:49:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	error_check(char *filename, char *not_expanded, char second_flag)
 	}
 	else if ((second_flag == R_OK && access(filename, second_flag) != 0)
 		|| (second_flag == W_OK && (access(filename, F_OK) == 0
-			&& access(filename, second_flag) != 0)))
+				&& access(filename, second_flag) != 0)))
 	{
 		ft_perror(filename, "Permission denied", NULL, 1);
 		return (1);
