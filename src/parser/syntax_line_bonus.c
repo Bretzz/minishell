@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_line.c                                      :+:      :+:    :+:   */
+/*   syntax_line_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 11:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:32:30 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/15 21:14:36 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/15 22:39:43 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
+#include "minishell_bonus.h"
+#include "parser_bonus.h"
 
-int		syntax_line(char **line, char ***vars);
-char	*drop_comment(char *line);
+int		syntax_line_bonus(char **line, char ***vars);
+char	*drop_comment(char *line); //??
 
 static void	clean_exit(char *line, char *check_this, t_token *tokens)
 {
@@ -80,8 +80,8 @@ static int	single_check(char **line, t_token_type *last_type)
 	check_this = drop_comment(*line);
 	if (check_this == NULL)
 		return (1);
-	tokens = tokenizer(check_this);
-	if (!syntax_tokens(tokens))
+	tokens = tokenizer_bonus(check_this);
+	if (!syntax_tokens_bonus(tokens))
 	{
 		clean_exit(*line, check_this, tokens);
 		return (2);
@@ -98,7 +98,7 @@ RETURNS: the exit_code, 1 on malloc failure, 2 on syntax error, 0 on successful
 execution.
 NOTE: if a malloc failure or a syntax error occurs,
 the last instance of 'line' isn't free'd, it's stored in *line. */
-int	syntax_line(char **line, char ***vars)
+int	syntax_line_bonus(char **line, char ***vars)
 {
 	t_token_type	last_type;
 	int				exit_code;

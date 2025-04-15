@@ -1,36 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stray_docs.c                                       :+:      :+:    :+:   */
+/*   stray_docs_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 16:44:33 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:27:30 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/15 21:20:11 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/15 23:32:15 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
+#include "minishell_bonus.h"
+#include "parser_bonus.h"
+
+static void	error_fill(int *err_code,
+	t_token *tokens, t_token *prev,
+	int brakets)
+{
+	err_code[0] = redir_check(tokens);
+	err_code[1] = colon_pipe_check(tokens, prev);
+	err_code[2] = braket_check(tokens, prev, brakets);
+	err_code[3] = word_check(tokens, prev);
+}
 
 static unsigned int	token_break_point(t_token *tokens)
 {
 	unsigned int	break_point;
 	t_token			*prev;
-	char			err_code[3];
+	char			err_code[4];
+	int				brakets;
 
 	if (tokens == NULL)
 		return (0);
 	break_point = 0;
-	ft_memset(err_code, 0, 3 * sizeof(char));
+	brakets = 0;
+	ft_memset(err_code, 0, 4 * sizeof(char));
 	prev = NULL;
 	while (tokens)
 	{
-		err_code[0] = redir_check(tokens);
-		err_code[1] = colon_pipe_check(tokens, prev);
-		err_code[2] = word_check(tokens, prev);
-		if (is_error(err_code))
+		if (tokens->type == TOKEN_OPEN_BR)
+			brakets++;
+		error_fill((int *)err_code, tokens, prev, brakets);
+		if (is_error_bonus(err_code))
 			break ;
+		if (tokens->type == TOKEN_CLOSE_BR && brakets)
+			brakets--;
 		prev = tokens;
 		tokens = tokens->next;
 		break_point++;
@@ -43,7 +57,7 @@ static unsigned int	find_break_point(char *line)
 	unsigned int	break_point;
 	t_token			*tokens;
 
-	tokens = tokenizer(line);
+	tokens = tokenizer_bonus(line);
 	if (tokens == NULL)
 		return (0);
 	break_point = token_break_point(tokens);
@@ -74,7 +88,7 @@ static void	open_close_doc(t_token *tokens,
 }
 
 /* this funciton should let the user fill the docs even after a syntax error */
-void	bongou_stray_docs(char *line, const char ***vars)
+void	bongou_stray_docs_bonus(char *line, const char ***vars)
 {
 	unsigned int	break_point;
 	char			*check_this;
@@ -86,7 +100,7 @@ void	bongou_stray_docs(char *line, const char ***vars)
 	if (check_this == NULL)
 		return ;
 	break_point = find_break_point(check_this);
-	tokens = tokenizer(check_this);
+	tokens = tokenizer_bonus(check_this);
 	free(check_this);
 	if (tokens == NULL)
 		return ;

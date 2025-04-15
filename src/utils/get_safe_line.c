@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   core.h                                             :+:      :+:    :+:   */
+/*   get_safe_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 20:03:03 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:33:16 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/15 19:42:07 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/15 19:46:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CORE_H
-# define CORE_H
+#include "minishell.h"
 
-/* CLEAN EXIT */
+/* get_next_line that will resume if a
+SIGQUIT or SIGTSPT is sent.
+REMEMBER: to use the signale initializer
+before calling get_safe_line(). */
+char	*get_safe_line(int fd)
+{
+	char	*line;
 
-void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code);
-int		unbox_the_line(char *line, char ***vars);
-
-#endif
+	line = get_next_line(fd);
+	while (!line && (g_last_sig == SIGQUIT || g_last_sig == SIGTSTP))
+		line = get_next_line(fd);
+	return (line);
+}

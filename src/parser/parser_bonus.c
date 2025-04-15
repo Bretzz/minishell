@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 21:44:47 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/15 21:16:38 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/15 23:24:45 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
+#include "minishell_bonus.h"
+#include "parser_bonus.h"
+
+t_cmd	*parse_tokens_bonus(char *line, const char ***vars);
 
 #define MAX_CMDS 100
 
@@ -122,13 +124,13 @@ static void	*commander(t_token *tokens, int	*cmd_index, const char ***vars)
 	return (cmd_array);
 }
 
-t_cmd	*parse_tokens(char *line, const char ***vars)
+t_cmd	*parse_tokens_bonus(char *line, const char ***vars)
 {
 	t_token	*tokens;
 	t_cmd	*cmd_array;
 	int		cmd_index;
 
-	tokens = tokenizer(line);
+	tokens = tokenizer_bonus(line);
 	if (!expand_tokens(tokens, vars))
 		return (NULL);
 	cmd_array = NULL;
@@ -141,6 +143,5 @@ t_cmd	*parse_tokens(char *line, const char ***vars)
 	}
 	free_tokens(tokens);
 	raccattagarbage(cmd_array);
-	cmd_index++;
 	return (cmd_array);
 }

@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   core.h                                             :+:      :+:    :+:   */
+/*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 20:03:03 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:33:16 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/15 21:10:16 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/15 21:22:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CORE_H
-# define CORE_H
+#ifndef MINISHELL_BONUS_H
+# define MINISHELL_BONUS_H
 
-/* CLEAN EXIT */
+#include "minishell.h"
 
-void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code);
-int		unbox_the_line(char *line, char ***vars);
+void	handle_line_bonus(char **line, char ***vars);
+int		syntax_line_bonus(char **line, char ***vars);
+t_cmd	*parse_tokens_bonus(char *line, const char ***vars);
+void	bongou_stray_docs_bonus(char *line, const char ***vars);
 
 #endif

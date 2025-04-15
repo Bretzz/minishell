@@ -38,7 +38,7 @@ SRCS_DIR		=
 SRC_FILES		= main.c \
 				\
 				clean_exit.c handle_line.c init.c \
-				bush_is_real.c \
+				unbox_the_line.c \
 				\
 				ft_cd.c \
 				ft_echo.c \
@@ -59,8 +59,7 @@ SRC_FILES		= main.c \
 				token_utils.c print_tokens.c \
 				syntax_tokens.c syntax_line.c syntax_checks.c \
 				append_line.c stray_docs.c syntax_utils.c \
-				\
-				tokenizer_bonus.c token_utils_bonus.c \
+				free_struct.c token_tiny.c \
 				\
 				handle_vars.c expand_string.c wide_search.c \
 				\
@@ -75,11 +74,29 @@ SRC_FILES		= main.c \
 				\
 				vstr_getname.c vstr_getvalue.c \
 				\
-				free_space.c cleanup.c cool_stuff.c weird_strlen.c 
+				free_space.c cleanup.c cool_stuff.c weird_strlen.c get_safe_line.c
 				
 #				ft_readline.c
 
 SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
+
+B_SRC_FILES		= main_bonus.c \
+				\
+				bush_is_real.c bush_manage.c bush_pioneers.c \
+				handle_line_bonus.c unbox_the_line_bonus.c \
+				\
+				parser_bonus.c stray_docs_bonus.c \
+				syntax_tokens_bonus.c syntax_line_bonus.c \
+				tokenizer_bonus.c token_utils_bonus.c 
+
+# Get the corresponding non-bonus version of bonus files (e.g., parser_bonus.c -> parser.c)
+B_REPLACED		= $(patsubst %_bonus.c,%.c,$(filter %_bonus.c,$(B_SRC_FILES)))
+
+# Final bonus source list: SRC_FILES minus the ones replaced, plus the bonus files
+BONUS_FILES		= $(filter-out $(B_REPLACED), $(SRC_FILES)) $(B_SRC_FILES)
+
+# If you want full paths using SRCS_DIR:
+B_SRCS			= $(addprefix $(SRCS_DIR), $(BONUS_FILES))				
 
 HERE_DOCS_DIR	= here_docs
 EXE_DIR			= exec/
@@ -98,8 +115,15 @@ VPATH			= src \
 
 # Objects
 OBJS_DIR		= obj/
+
+#Mandatory objects
 OBJ_FILES		= $(SRCS:.c=.o)
 OBJS			= $(addprefix $(OBJS_DIR), $(OBJ_FILES))
+
+#Bonus objects
+B_OBJ_FILES		= $(B_SRCS:.c=.o)
+B_OBJS			= $(addprefix $(OBJS_DIR), $(B_OBJ_FILES))
+
 GIDEF			=	"""$\
 					\#default rules\n$\
 					**/.gitignore\n$\
@@ -129,6 +153,9 @@ loading:
 		i=$$((i + 1)); \
 	done
 
+show_bonus:
+	@printf "BOBJS		: $(B_OBJS)\n"
+
 $(HERE_DOCS_DIR):
 	@mkdir -p $(HERE_DOCS_DIR)
 
@@ -153,6 +180,11 @@ $(NAME): $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
 	@sl -le
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
+	&& echo "${LIGHT_GREEN}DONE${RESET}"
+
+bonus: clean $(LIBFT) $(B_OBJS) $(HERE_DOCS_DIR)
+	@echo "${BOLD}compiling $(NAME)_bonus...${RESET}"
+	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME)_bonus \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
 
 notrainnopainnogain: $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
@@ -185,15 +217,16 @@ show:
 	@printf "CFLAGS		: $(CFLAGS)\n"
 	@printf "LINKS		: $(LINKS)\n"
 	@printf "INCLUDES	: $(INK)\n"
-	@printf "SRCS		: $(SRCS)\n"
-	@printf "OBJS		: $(OBJS)\n"
+#	@printf "SRCS		: $(SRCS)\n"
+#	@printf "OBJS		: $(OBJS)\n"
+	@printf "BOBJS		: $(B_OBJS)\n"
 
 clean:
 	@rm -rf $(OBJS_DIR) $(NAME).tar
 	@echo "${BOLD}removed:${RESET}\vobjects (.o) and archives (.tar)"
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -rf $(NAME) $(NAME)_bonus
 	@$(MAKE) fclean -C $(LIBFT_DIR) --quiet
 	@echo "\texecutable ($(NAME))"
 

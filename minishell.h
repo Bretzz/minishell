@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 20:08:48 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:08:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,9 @@ char	*drop_string(char *str, int start, size_t len);
 int		is_white(char *str);
 int		is_number(char *str);
 char	*trim_back_nl(char *str);
+int		chrnum(char *str, int c);
+
+char	*get_safe_line(int fd);
 
 size_t	ft_varlen(const char *s);
 size_t	ft_mtxlen(const void **mtx);

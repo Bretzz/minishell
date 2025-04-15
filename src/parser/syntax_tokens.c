@@ -6,14 +6,15 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 23:29:52 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/15 17:16:39 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 22:33:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-int	syntax_tokens(t_token *tokens);
+int		syntax_tokens(t_token *tokens);
+char	is_error(char *err_code);
 
 static void	error_print(char *err_code, t_token *tokens)
 {
@@ -37,6 +38,20 @@ syntax error near unexpected token `%c'\n", err_code[0]);
 	return ;
 }
 
+char	is_error(char *err_code)
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (err_code[i] != 0)
+			return (err_code[i]);
+		i++;
+	}
+	return (0);
+}
+
 /* minishell syntax errors: *&` */
 int	syntax_tokens(t_token *tokens)
 {
@@ -50,7 +65,7 @@ int	syntax_tokens(t_token *tokens)
 	while (tokens)
 	{
 		err_code[0] = redir_check(tokens);
-		err_code[1] = operator_colon_pipe_check(tokens, prev);
+		err_code[1] = colon_pipe_check(tokens, prev);
 		err_code[2] = word_check(tokens, prev);
 		if (is_error(err_code))
 			break ;

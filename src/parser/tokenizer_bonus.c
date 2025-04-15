@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   tokenizer_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 23:34:54 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:34:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
+#include "minishell_bonus.h"
+#include "parser_bonus.h"
 
 /* returns a dynamicly allocated mem addres */
-static char	*get_next_word(const char *line, int *i)
+static char	*get_next_word_bonus(const char *line, int *i)
 {
 	int		start;
 	char	quote;
@@ -23,7 +23,8 @@ static char	*get_next_word(const char *line, int *i)
 	start = *i;
 	quote = 0;
 	word = NULL;
-	while (line[*i] && (quote || (line[*i] != ' ' && !is_operator(line, *i))))
+	while (line[*i] && (quote || (line[*i] != ' '
+				&& !is_operator_bonus(line, *i))))
 	{
 		if (line[*i] == '"' || line[*i] == '\'')
 		{
@@ -36,10 +37,7 @@ static char	*get_next_word(const char *line, int *i)
 	}
 	word = ft_substr(line, start, *i - start);
 	if (word == NULL)
-	{
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
-		return (NULL);
-	}
 	return (word);
 }
 
@@ -72,12 +70,16 @@ static int	add_token(t_token **tokens, t_token_type type, char *value)
 	return (1);
 }
 
-static char	*get_rekd(t_token_type type)
+static char	*get_rekd_bonus(t_token_type type)
 {
 	if (type == TOKEN_PIPE)
 		return (ft_strdup("|"));
 	else if (type == TOKEN_SEMICOL)
 		return (ft_strdup(";"));
+	else if (type == TOKEN_AND_OP)
+		return (ft_strdup("&&"));
+	else if (type == TOKEN_OR_OP)
+		return (ft_strdup("||"));
 	else if (type == TOKEN_RED_INPUT)
 		return (ft_strdup("<"));
 	else if (type == TOKEN_RED_OUTPUT)
@@ -86,10 +88,14 @@ static char	*get_rekd(t_token_type type)
 		return (ft_strdup(">>"));
 	else if (type == TOKEN_HERE_DOC)
 		return (ft_strdup("<<"));
+	else if (type == TOKEN_OPEN_BR)
+		return (ft_strdup("("));
+	else if (type == TOKEN_CLOSE_BR)
+		return (ft_strdup(")"));
 	return (NULL);
 }
 
-t_token	*tokenizer(char *line)
+t_token	*tokenizer_bonus(char *line)
 {
 	t_token			*tokens;
 	t_token_type	type;
@@ -102,15 +108,15 @@ t_token	*tokenizer(char *line)
 		skip_spaces(line, &i);
 		if (line[i] == '\0')
 			break ;
-		if (is_operator(line, i))
+		if (is_operator_bonus(line, i))
 		{
-			type = get_next_operator(line, &i);
-			if (!add_token(&tokens, type, get_rekd(type)))
+			type = get_next_operator_bonus(line, &i);
+			if (!add_token(&tokens, type, get_rekd_bonus(type)))
 				return (free_tokens(tokens), NULL);
 		}
 		else
 		{
-			if (!add_token(&tokens, TOKEN_WORD, get_next_word(line, &i)))
+			if (!add_token(&tokens, TOKEN_WORD, get_next_word_bonus(line, &i)))
 				return (free_tokens(tokens), NULL);
 		}
 	}

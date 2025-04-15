@@ -6,33 +6,18 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:50:57 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 18:09:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 22:32:27 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-char	operator_colon_pipe_check(t_token *colonipe, t_token *prev);
+char	colon_pipe_check(t_token *colonipe, t_token *prev);
 char	redir_check(t_token *redir);
 char	word_check(t_token *word, t_token *prev);
-char	is_error(char *err_code);
 
-char	is_error(char *err_code)
-{
-	int	i;
-
-	i = 0;
-	while (i < 3)
-	{
-		if (err_code[i] != 0)
-			return (err_code[i]);
-		i++;
-	}
-	return (0);
-}
-
-char	operator_colon_pipe_check(t_token *colonipe, t_token *prev)
+char	colon_pipe_check(t_token *colonipe, t_token *prev)
 {
 	if (colonipe == NULL)
 		return (1);
@@ -98,7 +83,7 @@ static char	who_is_sus_here(t_token *word, t_token *prev,
 
 char	word_check(t_token *word, t_token *prev)
 {
-	const char	command[] = "`%^&*[]{}\\:";
+	const char	command[] = "`%^&*()[]{}\\:";
 	const char	file[] = "`&*()\\";
 	const char	redir[] = "<|>";
 	const char	*blacklist[3];

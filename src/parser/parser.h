@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/15 17:16:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 21:27:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef enum e_token_type
 	TOKEN_APPEND,		// >>
 	TOKEN_S_QUOTE,		// '
 	TOKEN_D_QUOTE,		// "
+	TOKEN_OPEN_BR,
+	TOKEN_CLOSE_BR
 	// ...eventuali altri tipi
 }	t_token_type;
 
@@ -48,7 +50,7 @@ void			free_tokens(t_token *tokens);
 
 int				syntax_tokens(t_token *tokens);
 
-char			operator_colon_pipe_check(t_token *colonipe, t_token *prev);
+char			colon_pipe_check(t_token *colonipe, t_token *prev);
 char			redir_check(t_token *redir);
 char			word_check(t_token *word, t_token *prev);
 char			is_error(char *err_code);
@@ -75,7 +77,7 @@ void			process_redirection(t_token **tokens,
 
 void			free_cmd(t_cmd *cmd_arr);
 int				cmds_count(const t_token *tokens);
-void			raccattagarbage(t_cmd garbage);
+void			raccattagarbage(t_cmd *cmd_arr);
 int				ft_cmdlen(t_cmd *cmd_array);
 
 #endif

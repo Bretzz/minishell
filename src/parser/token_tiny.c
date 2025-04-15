@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   core.h                                             :+:      :+:    :+:   */
+/*   token_tiny.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 20:03:03 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:33:16 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/15 22:08:59 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/15 22:09:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CORE_H
-# define CORE_H
+#include "minishell.h"
+#include "parser.h"
 
-/* CLEAN EXIT */
+t_token_type	get_last_type(t_token *tokens);
+void			skip_spaces(const char *line, int *i);
 
-void	clean_exit(t_cmd *cmd_arr, char *line, char ***vars, int code);
-int		unbox_the_line(char *line, char ***vars);
+t_token_type	get_last_type(t_token *tokens)
+{
+	if (tokens == NULL)
+		return (TOKEN_WORD);
+	while (tokens->next)
+		tokens = tokens->next;
+	return (tokens->type);
+}
 
-#endif
+void	skip_spaces(const char *line, int *i)
+{
+	while (line[*i] == ' ' || line[*i] == '\t')
+		(*i)++;
+}

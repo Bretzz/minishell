@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:41:39 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 20:29:11 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:07:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,24 @@ int		is_white(char *str);
 int		is_number(char *str);
 char	*drop_string(char *str, int start, size_t len);
 char	*trim_back_nl(char *str);
+int		chrnum(char *str, int c);
+
+/* Counts how many instances of 'c' are in 'str' */
+int	chrnum(char *str, int c)
+{
+	unsigned int	n;
+	size_t			i;
+
+	i = 0;
+	n = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+			n++;
+		i++;
+	}
+	return (n);
+}
 
 /* removes the trailing \n if present */
 char	*trim_back_nl(char *str)
