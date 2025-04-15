@@ -321,6 +321,11 @@ main.c
 
 ======================== T O D O =======================
 
+<out cat >catout | ls >out {DONE}
+	prima dell'esecuzione out contiene qualcosa e catout on esiste
+	dopo l'esecuzione out contiene ls e catout esiste ma vuoto
+
+
 riorrganizzazione librerie (libft, mtx, readline)
 
 MAX_PATH CONSEQUENCES!!!

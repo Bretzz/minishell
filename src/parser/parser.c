@@ -6,7 +6,7 @@
 /*   By: mapascal <mapascal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/14 21:34:50 by mapascal         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:11:52 by mapascal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,5 @@ t_cmd	*parse_tokens(char *line, const char ***vars)
 	if (current_cmd.words[0] == NULL)
 		raccattagarbage(current_cmd);
 	cmd_index++;
-	print_cmd_array(cmd_array, cmd_index);
 	return (cmd_array);
 }
