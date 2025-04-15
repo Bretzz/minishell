@@ -6,12 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:44:33 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 17:27:30 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:20:14 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
+#include "parser_bonus.h"
 
 static unsigned int	token_break_point(t_token *tokens)
 {
@@ -27,7 +28,7 @@ static unsigned int	token_break_point(t_token *tokens)
 	while (tokens)
 	{
 		err_code[0] = redir_check(tokens);
-		err_code[1] = colon_pipe_check(tokens, prev);
+		err_code[1] = operator_colon_pipe_check(tokens, prev);
 		err_code[2] = word_check(tokens, prev);
 		if (is_error(err_code))
 			break ;
@@ -43,7 +44,7 @@ static unsigned int	find_break_point(char *line)
 	unsigned int	break_point;
 	t_token			*tokens;
 
-	tokens = tokenizer(line);
+	tokens = tokenizer_bonus(line);
 	if (tokens == NULL)
 		return (0);
 	break_point = token_break_point(tokens);
@@ -86,7 +87,7 @@ void	bongou_stray_docs(char *line, const char ***vars)
 	if (check_this == NULL)
 		return ;
 	break_point = find_break_point(check_this);
-	tokens = tokenizer(check_this);
+	tokens = tokenizer_bonus(check_this);
 	free(check_this);
 	if (tokens == NULL)
 		return ;

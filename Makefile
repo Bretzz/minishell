@@ -37,7 +37,8 @@ endif
 SRCS_DIR		=
 SRC_FILES		= main.c \
 				\
-				clean_exit.c handle_line.c unbox_the_line.c init.c \
+				clean_exit.c handle_line.c init.c \
+				bush_is_real.c \
 				\
 				ft_cd.c \
 				ft_echo.c \
@@ -59,6 +60,8 @@ SRC_FILES		= main.c \
 				syntax_tokens.c syntax_line.c syntax_checks.c \
 				append_line.c stray_docs.c syntax_utils.c \
 				\
+				tokenizer_bonus.c token_utils_bonus.c \
+				\
 				handle_vars.c expand_string.c wide_search.c \
 				\
 				signals.c initializers.c \
@@ -72,8 +75,7 @@ SRC_FILES		= main.c \
 				\
 				vstr_getname.c vstr_getvalue.c \
 				\
-				free_space.c cleanup.c cool_stuff.c weird_strlen.c \
-				get_safe_line.c 
+				free_space.c cleanup.c cool_stuff.c weird_strlen.c 
 				
 #				ft_readline.c
 

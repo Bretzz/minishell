@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 21:27:20 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 20:21:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:35:43 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,22 @@ static int	error_check(char *filename, char *not_expanded, char second_flag)
 	if (filename[0] == '\0')
 	{
 		ft_perror(not_expanded, "ambiguous redirect", NULL, 1);
-		return (1);
+		return(1);
 	}
 	else if (ft_strlen(filename) > MAX_PATH)
 	{
 		ft_perror(filename, "File name too long", NULL, 1);
-		return (1);
+		return(1);
 	}
 	else if (access(filename, F_OK) != 0 && second_flag == R_OK)
 	{
 		ft_perror(filename, "No such file or directory", NULL, 1);
-		return (1);
+		return(1);
 	}
-	else if ((second_flag == R_OK && access(filename, second_flag) != 0)
-		|| (second_flag == W_OK && (access(filename, F_OK) == 0
-			&& access(filename, second_flag) != 0)))
+	else if (access(filename, second_flag) != 0)
 	{
 		ft_perror(filename, "Permission denied", NULL, 1);
-		return (1);
+		return(1);
 	}
 	return (0);
 }

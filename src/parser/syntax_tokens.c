@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 23:29:52 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/15 17:27:40 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:16:39 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	syntax_tokens(t_token *tokens)
 	while (tokens)
 	{
 		err_code[0] = redir_check(tokens);
-		err_code[1] = colon_pipe_check(tokens, prev);
+		err_code[1] = operator_colon_pipe_check(tokens, prev);
 		err_code[2] = word_check(tokens, prev);
 		if (is_error(err_code))
 			break ;

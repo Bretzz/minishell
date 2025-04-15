@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:19:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 19:46:16 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:21:09 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	cleanup(char *line, char quote, char ***vars)
 	free(line);
 	if (g_last_sig == SIGINT)
 	{
-		mtx_setdata(128 + g_last_sig, vars[0], 1);
 		g_last_sig = 0;
 		return ;
 	}
@@ -35,26 +34,27 @@ syntax error near unexpected EOF\n");
 	return ;
 }
 
-static char	*get_black_line(int fd)
+static char	*real_line(const char *prompt)
 {
-	char	*line;
+	char	*real_line;
 
-	write(STDOUT_FILENO, "> ", 2);
-	line = trim_back_nl(get_safe_line(fd));
-	while (line && is_white(line))
+	real_line = readline(prompt);
+	while (real_line && is_white(real_line))
 	{
-		free(line);
-		write(STDOUT_FILENO, "> ", 2);
-		line = trim_back_nl(get_safe_line(fd));
+		free(real_line);
+		real_line = readline(prompt);
 	}
-	return (line);
+	return (real_line);
 }
 
 static char	*pipe_join(char *line, char quote, char ***vars)
 {
 	char	*next_line;
 
-	next_line = get_black_line(STDIN_FILENO);
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		next_line = real_line("> ");
+	else
+		next_line = trim_back_nl(get_next_line(STDIN_FILENO));
 	if (next_line == NULL)
 		return (cleanup(line, quote, vars), NULL);
 	line = ft_strjoin_free_space(line, next_line);
@@ -66,8 +66,10 @@ static char	*word_join(char *line, char quote, char ***vars)
 {
 	char	*next_line;
 
-	write(STDOUT_FILENO, "> ", 2);
-	next_line = get_safe_line(STDIN_FILENO);
+	if (*((unsigned char *)vars[0] + 6) == 1)
+		next_line = readline("> ");
+	else
+		next_line = trim_back_nl(get_next_line(STDIN_FILENO));
 	if (next_line == NULL)
 		return (cleanup(line, quote, vars), NULL);
 	line = ft_strjoin_free_nl(line, next_line);

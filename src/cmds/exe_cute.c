@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 13:46:21 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/15 20:22:21 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:38:31 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	ft_wifexited(pid_t pid)
 {
 	int	status;
 
-	status = 0;
 	waitpid(pid, &status, WUNTRACED);
 	if ((status & 0xFF) == 0)
 		return ((status >> 8) & 0xFF);

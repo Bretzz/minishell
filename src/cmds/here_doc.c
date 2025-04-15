@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:44:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 19:48:32 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:50:03 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	read_until_limiter(int fd, char *lim, char exp_flag, const char ***vars)
 	char	*line;
 	int		i;
 
-	line = prompt_safe_line("> ", *((unsigned char *)vars[0] + 6));
+	line = safe_line("> ", *((unsigned char *)vars[0] + 6));
 	i = 1;
 	while (line != NULL && !(line && !ft_strncmp(lim, line, ft_strlen(lim))
 			&& line[ft_strlen(lim)] == '\n'))
@@ -82,7 +82,7 @@ int	read_until_limiter(int fd, char *lim, char exp_flag, const char ***vars)
 				read_doc(open_doc(GETNUM)));
 		}
 		free(line);
-		line = prompt_safe_line("> ", *((unsigned char *)vars[0] + 6));
+		line = safe_line("> ", *((unsigned char *)vars[0] + 6));
 		i++;
 	}
 	if (line == NULL)
