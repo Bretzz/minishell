@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 18:18:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:08:48 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ typedef struct s_cmd
 	int		redir[2];				// Flag: dove il comando redirecta
 	int		parse_code;
 }	t_cmd;
+
+/* INIT */
+
+char	**env_init(char **his_env);
+void	stdin_init(int argc, char **argv, char ***vars);
+void	sigflag_init(char ***vars);
+void	vars_init(char **__environ, char ***vars);
+
+/* HANDLE LINE */
+
+void	handle_line(char **line, char ***vars);
 
 /* PARSING */
 

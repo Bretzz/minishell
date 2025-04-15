@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:41:39 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 19:07:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:29:11 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*trim_back_nl(char *str);
 char	*trim_back_nl(char *str)
 {
 	size_t	i;
-	
+
 	if (str == NULL)
 		return (str);
 	i = 0;
@@ -83,7 +83,7 @@ char	*drop_string(char *str, int start, size_t len)
 	while (str[i] != '\0')
 	{
 		if (&str[i] == tar_ptr)
-			str += len/*  - 1 */;
+			str += len;
 		new_str[i] = str[i];
 		if (str[i] == '\0')
 			break ;

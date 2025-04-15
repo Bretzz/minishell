@@ -37,6 +37,8 @@ endif
 SRCS_DIR		=
 SRC_FILES		= main.c \
 				\
+				clean_exit.c handle_line.c init.c \
+				\
 				ft_cd.c \
 				ft_echo.c \
 				ft_env.c \
@@ -83,6 +85,7 @@ EXE_BUILT		=
 VPATH			= src \
 				  src/built_ins \
 				  src/cmds \
+				  src/core \
 				  src/parser \
 				  src/signals \
 				  src/utils \

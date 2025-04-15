@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 19:04:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 19:46:12 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:29:53 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,5 @@ void	builtin_and_die(int *fd, int index, t_cmd *cmd_arr, char ***vars)
 		clean_exit(cmd_arr, NULL, vars, EXIT_FAILURE);
 	safeclose(fd[0]);
 	exit_code = exec_builtin(fd, cmd_arr[index], vars);
-// 	if (exit_code < 0)
-// 	{
-// 		exit_code = *((unsigned char *)vars[0] + 5);
-// 		if (cmd_arr[index].words[1] != NULL)
-// 		{
-// 			if (!is_number(cmd_arr[index].words[1]))
-// 			{
-// 				ft_printfd(STDERR_FILENO, "minishell: \
-// exit: %s: numeric argument required\n");
-// 				exit_code = 2;
-// 			}
-// 			else
-// 				exit_code = ft_atoi(cmd_arr[index].words[1]);	
-// 		}
-// 	}
-// 	else
-// 		safeclose(fd[0]);
 	clean_exit(cmd_arr, NULL, vars, exit_code);
 }

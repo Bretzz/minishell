@@ -345,8 +345,6 @@ topiana-@c2r1p10:~/live_projects/github/minishell$ <out cat >catout | ls >out
 topiana-@c2r1p10:~/live_projects/github/minishell$ cat catout 
 topiana-@c2r1p10:~/live_projects/github/minishell$ <out <f1 <catout cat
 bash: f1: No such file or directory
-topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >f1 >catout
-topiana-@c2r1p10:~/live_projects/github/minishell$ rm f1
 topiana-@c2r1p10:~/live_projects/github/minishell$ <out <catout cat >w_block >catout
 bash: w_block: Permission denied
 
