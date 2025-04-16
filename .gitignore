@@ -19,3 +19,4 @@ tester/mini_output
 tester/traces.diff
 **/*.h.gch
 safe_cd/
+backupremain.c
