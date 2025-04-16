@@ -416,6 +416,10 @@ ls |
 > asdasda
 leaks after command not found
 
+echo "ciao main* siete dei bei file"
+(INVALID READS e stuck in read(3) call)
+(con la virgola (main*,) it get stuck)
+
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 
 ------------------> EXCLUSIVE EXEC PROBLEMS <------------------
