@@ -408,13 +408,23 @@ main.c		(DONE)
 
 ======================== T O D O =======================
 
-riorrganizzazione librerie (libft, mtx, readline)
 
 update $_
 
 ls |
 > asdasda
 leaks after command not found
+
+echo hi";"hihi (still treats ';' as a special char)
+
+unset HOME
+cd: OLDPWD not set ( ...=_=... )
+
+ls +100 arguments ( ! ! ! CRAHS ! ! ! )
+
+exit -10 (should loop)
+
+riorrganizzazione librerie (libft, mtx, readline)
 
 echo "ciao main* siete dei bei file"
 (INVALID READS e stuck in read(3) call)
