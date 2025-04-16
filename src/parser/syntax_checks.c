@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:50:57 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 22:32:27 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:32:49 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	who_is_sus_here(t_token *word, t_token *prev,
 		if (ret[0] != NULL)
 			return (*ret[0]);
 		if (ret[1] != NULL)
-			return (*ret[0]);
+			return (*ret[1]);
 		i++;
 	}
 	return ('\0');
