@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:15:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 19:48:47 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:31:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ char	*find_env_path(char *cmd, char **env);
 int		dummy_in_pipe(void);
 t_cmd	pop_arg(t_cmd cmd, int index);
 int		ft_wifexited(pid_t pid);
-int		exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
 int		is_directory(const char *path);
 
 /* EXE_REALLY_CUTE (pipelint helpers) */

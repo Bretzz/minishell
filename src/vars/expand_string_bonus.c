@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_string.c                                    :+:      :+:    :+:   */
+/*   expand_string_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 22:18:07 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 12:32:42 by topiana-         ###   ########.fr       */
+/*   Created: 2025/04/16 12:19:02 by topiana-          #+#    #+#             */
+/*   Updated: 2025/04/16 15:16:29 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
-char	*expand_string(char *str, const char ***vars);
-char	*just_expand_string(char *str, const char ***vars);
+char	*expand_string_bonus(char *str, const char ***vars);
 
 static char	*set_exp_val(size_t *i, char *str, const char ***vars)
 {
+	if (str[*i] == '*')
+		return (get_wild_value(*i, str));
 	if (str[*i] == '$' && (str[*i + 1] == '\0'
 			|| ft_isspace(str[*i + 1]) || str[*i + 1] == '='))
 		return ((*i)++, NULL);
@@ -63,15 +64,22 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 		}
 		return (str);
 	}
-	var_len = ft_varlen(&str[*i]) + 1;
+	if (str[*i] == '*')
+		var_len = ft_strlen_space(&str[*i]) + 5;
+	else
+		var_len = ft_varlen(&str[*i]) + 1;
 	new_str = (char *)ft_calloc(ft_strlen(str) - var_len
 			+ ft_strlen(exp_val) + 1, sizeof(char));
 	if (new_str == NULL)
 		return (free(exp_val), NULL);
 	ft_strlcpy(new_str, str, *i + 1);
+	ft_printf("new_str: '%s'\n\n", new_str);
+	ft_printf("exp_val: '%s'\n\n", exp_val);
 	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
+	ft_printf("new_str: '%s'\n\n", new_str);
 	ft_strlcat(new_str, &str[*i + var_len],
-		ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
+	ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
+	ft_printf("new_str: '%s'\n\n", new_str);
 	(*i) += ft_strlen(exp_val) - 1;
 	return (free(exp_val), free(str), new_str);
 }
@@ -107,7 +115,7 @@ static char	skip_quotes(char *str, size_t i, char quote)
 returns a mallocated string with the variables preceded by '$' expanded.
 (quotes are also handled properly)
 RETURNS: the expanded string, NULL on malloc error. */
-char	*expand_string(char *str, const char ***vars)
+char	*expand_string_bonus(char *str, const char ***vars)
 {
 	char		*my_str;
 	static char	quote;
@@ -121,7 +129,8 @@ char	*expand_string(char *str, const char ***vars)
 	while (my_str && my_str[i] != '\0')
 	{
 		quote = skip_quotes(my_str, i, quote);
-		if ((my_str[i] == '$' || my_str[i] == '~') && quote != '\'')
+		if ((my_str[i] == '$' || my_str[i] == '~' || my_str[i] == '*')
+			&& quote != '\'')
 			my_str = single_expand(&i, my_str, vars);
 		else
 			i++;

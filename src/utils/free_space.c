@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:53:40 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 22:16:36 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:10:36 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,19 @@ char	*ft_strjoin_free_space(char *s1, char *s2)
 	char	*twelve;
 	size_t	size;
 
-	if (s1 == NULL)
-	{
-		s1 = (char *)malloc(1 * sizeof(char));
-		if (!s1)
-			return (NULL);
-		s1[0] = '\0';
-	}
 	if (s2 == NULL)
 		return (s1);
 	size = ft_strlen(s1) + ft_strlen(s2) + 2;
 	twelve = (char *)ft_calloc(size, sizeof(char));
 	if (twelve == NULL)
 		return (free(s1), NULL);
-	ft_strlcpy(twelve, s1, size);
-	ft_strlcat(twelve, " ", size);
-	ft_strlcat(twelve, s2, size);
+	if (s1 != NULL)
+	{
+		ft_strlcpy(twelve, s1, size);
+		ft_strlcat(twelve, " ", size);
+	}
+	if (s2 != NULL)
+		ft_strlcat(twelve, s2, size);
 	return (free(s1), twelve);
 }
 
@@ -45,21 +42,19 @@ char	*ft_strjoin_free_nl(char *s1, char *s2)
 	char	*twelve;
 	size_t	size;
 
-	if (s1 == NULL)
-	{
-		s1 = (char *)ft_calloc(1, sizeof(char));
-		if (s1 == NULL)
-			return (NULL);
-	}
 	if (s2 == NULL)
 		return (s1);
 	size = ft_strlen(s1) + ft_strlen(s2) + 2;
 	twelve = (char *)ft_calloc(size, sizeof(char));
 	if (twelve == NULL)
 		return (free(s1), NULL);
-	ft_strlcpy(twelve, s1, size);
-	ft_strlcat(twelve, "\n", size);
-	ft_strlcat(twelve, s2, size);
+	if (s1 != NULL)
+	{
+		ft_strlcpy(twelve, s1, size);
+		ft_strlcat(twelve, "\n", size);
+	}
+	if (s2 != NULL)
+		ft_strlcat(twelve, s2, size);
 	return (free(s1), twelve);
 }
 

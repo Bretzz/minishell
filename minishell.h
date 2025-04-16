@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:08:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:36:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	bongou_stray_docs(char *line, const char ***vars);
 
 int		execute_command(char *line, t_cmd *cmd, char ***vars);
 int		execute_pipeline(char *line, t_cmd *cmd_arr, char ***vars);
-int		exec_external(int *execfd, char *line, t_cmd *cmd, char ***vars);
 int		ft_wifexited(pid_t pid);
 void	ft_perror(char *cmd, char *strerr, int *exit_code, int code);
 
@@ -117,6 +116,7 @@ void	input_initializer(void);
 
 /* UTILS */
 
+//cool stuff
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 char	*drop_string(char *str, int start, size_t len);
 int		is_white(char *str);
@@ -126,11 +126,18 @@ int		chrnum(char *str, int c);
 
 char	*get_safe_line(int fd);
 
+//more cool stuff
+int		ft_strbcmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp_nocase(const char *s1, const char *s2);
+void	swap_ptr(void **ptr1, void **ptr2);
+
+//strange strlen
 size_t	ft_varlen(const char *s);
 size_t	ft_mtxlen(const void **mtx);
 size_t	ft_strlen_nl(const char *s);
 size_t	ft_strlen_space(const char *s);
 
+//strjoin
 char	*ft_strjoin_free_space(char *s1, char *s2);
 char	*ft_strjoin_free_nl(char *s1, char *s2);
 char	*ft_strjoin_free_nl_space(char *s1, char *s2);

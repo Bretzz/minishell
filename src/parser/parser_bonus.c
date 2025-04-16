@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:16:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:24:45 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:43:05 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	expand_tokens(t_token *tokens, const char ***vars)
 		if (tokens->type == TOKEN_WORD
 			&& (!prev || prev->type != TOKEN_HERE_DOC))
 		{
-			exp_value = expand_string(tokens->value, vars);
+			exp_value = expand_string_bonus(tokens->value, vars);
 			if (exp_value == NULL)
 			{
 				write(STDERR_FILENO, "minishell: malloc failure\n", 26);

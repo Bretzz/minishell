@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:16:05 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:35:02 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:43:13 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	is_operator_bonus(const char *line, int i)
 
 static t_token_type	brakets_or_die(const char *line, int *i)
 {
-	ft_printf("in brakets or die '%s'\n", line);
 	if (line[*i] == '&' && line[*i + 1] == '&')
 	{
 		(*i) += 2;
@@ -52,7 +51,6 @@ static t_token_type	brakets_or_die(const char *line, int *i)
 
 static t_token_type	pipe_or_die(const char *line, int *i)
 {
-	ft_printf("in pipe_or_die '%s'\n", line);
 	if (line[*i] == ';')
 	{
 		(*i)++;

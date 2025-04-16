@@ -51,7 +51,7 @@ SRC_FILES		= main.c \
 				ft_execve.c pipex_stolen.c builtin_bridge.c \
 				execute_pipeline.c execute_command.c \
 				exe_cute.c exe_really_cute.c exec_one_of_many.c exec_redir.c \
-				here_doc.c here_doc_utils.c exec_external.c \
+				here_doc.c here_doc_utils.c \
 				safety_first.c \
 				\
 				parser.c tokenizer.c \
@@ -74,7 +74,7 @@ SRC_FILES		= main.c \
 				\
 				vstr_getname.c vstr_getvalue.c \
 				\
-				free_space.c cleanup.c cool_stuff.c weird_strlen.c get_safe_line.c
+				free_space.c cleanup.c cool_stuff.c more_cool_stuff.c weird_strlen.c get_safe_line.c
 				
 #				ft_readline.c
 
@@ -87,7 +87,11 @@ B_SRC_FILES		= main_bonus.c \
 				\
 				parser_bonus.c stray_docs_bonus.c \
 				syntax_tokens_bonus.c syntax_line_bonus.c \
-				tokenizer_bonus.c token_utils_bonus.c 
+				tokenizer_bonus.c token_utils_bonus.c \
+				\
+				execute_command_bonus.c execute_pipeline_bonus.c \
+				\
+				expand_string_bonus.c get_wild_bonus.c
 
 # Get the corresponding non-bonus version of bonus files (e.g., parser_bonus.c -> parser.c)
 B_REPLACED		= $(patsubst %_bonus.c,%.c,$(filter %_bonus.c,$(B_SRC_FILES)))
@@ -99,8 +103,6 @@ BONUS_FILES		= $(filter-out $(B_REPLACED), $(SRC_FILES)) $(B_SRC_FILES)
 B_SRCS			= $(addprefix $(SRCS_DIR), $(BONUS_FILES))				
 
 HERE_DOCS_DIR	= here_docs
-EXE_DIR			= exec/
-EXE_BUILT		= 
 
 #folders containing source files [*.c]
 VPATH			= src \
@@ -141,7 +143,7 @@ GIDEF			=	"""$\
 					$(NAME).tar$\
 					"""
 
-all: loading $(NAME)
+all: $(NAME)
 loading:
 	@clear
 	@i=1; while [ $$i -le 50 ]; do \
@@ -154,7 +156,9 @@ loading:
 	done
 
 show_bonus:
-	@printf "BOBJS		: $(B_OBJS)\n"
+#	@printf "BOBJS		: $(B_OBJS)\n"
+	@printf "B_REPLACED		  : $(B_REPLACED:.c=.o)\n"
+	@printf "MANDATORY REMOVE : $(addprefix $(OBJS_DIR), $(B_SRC_FILES:.c=.o))\n"
 
 $(HERE_DOCS_DIR):
 	@mkdir -p $(HERE_DOCS_DIR)
@@ -166,23 +170,19 @@ $(OBJS_DIR):
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR) 
 	@$(CC) $(CFLAGS) -D DEBUG=0	$(INK) $(DEFS) -c $< -o $@
 
-$(EXE_DIR):
-	@mkdir -p $(EXE_DIR)
-
-$(EXE_DIR)%: $(EXE_BUILT)%.c | $(EXE_DIR) $(LIBFT)
-	@$(CC) $(CFLAGS) $< $(LIBFT) $(INK) $(DEFS) -o $@
-
 $(LIBFT):
 	@echo "${BOLD}creating libft...${RESET}"
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
 $(NAME): $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
 	@sl -le
+	@rm -rf $(addprefix $(OBJS_DIR), $(B_SRC_FILES:.c=.o));
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
 
-bonus: clean $(LIBFT) $(B_OBJS) $(HERE_DOCS_DIR)
+bonus: $(LIBFT) $(B_OBJS) $(HERE_DOCS_DIR)
+	@rm -rf $(addprefix $(OBJS_DIR), $(B_REPLACED:.c=.o));
 	@echo "${BOLD}compiling $(NAME)_bonus...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME)_bonus \
 	&& echo "${LIGHT_GREEN}DONE${RESET}"
@@ -194,6 +194,9 @@ notrainnopainnogain: $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
 
 val: notrainnopainnogain
 	clear && valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=$(CURDIR)/valgrind.supp ./$(NAME)
+
+bval: bonus
+	clear && valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=$(CURDIR)/valgrind.supp ./$(NAME)_bonus
 
 minival: notrainnopainnogain
 	clear && valgrind --track-fds=yes --trace-children=yes --suppressions=$(CURDIR)/valgrind.supp ./$(NAME)
@@ -228,10 +231,10 @@ clean:
 fclean: clean
 	@rm -rf $(NAME) $(NAME)_bonus
 	@$(MAKE) fclean -C $(LIBFT_DIR) --quiet
-	@echo "\texecutable ($(NAME))"
+	@echo "\texecutable(s) ($(NAME), $(NAME)_bonus)"
 
 lre: clean all
 
 re: fclean all
 
-.PHONY: os all clean fclean re lre nyaa tar .gitignore show
+.PHONY: os all clean fclean re lre bonus nyaa tar .gitignore show

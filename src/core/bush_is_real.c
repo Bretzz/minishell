@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:05:11 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:29:25 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:27:52 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ t_bush	*line_to_bush(char *line)
 	brakets = 0;
 	ft_memset(bush, 0, 2 * sizeof(void *));
 	bush[0] = fill_bush(line);
+	bush[0]->line = line;
 	if (bush[0] == NULL)
 		return (NULL);
 	bush[1] = bush[0];

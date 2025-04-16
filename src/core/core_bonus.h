@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:06:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:16:20 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:37:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,6 @@
 # define CORE_BONUS_H
 
 # include "core.h"
-
-typedef enum e_logig
-{
-	LOGIC_AND_OP,
-	LOGIC_OR_OP
-}			t_logic;
-
-typedef struct s_bush
-{
-	char			*sub_line;
-	t_logic			logic;
-	struct s_bush	*true;
-	struct s_bush	*false;
-	struct s_bush	*next;
-}				t_bush;
 
 t_bush	*line_to_bush(char *line);
 void	free_bush(t_bush *bush);

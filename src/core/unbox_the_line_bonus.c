@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:30:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 00:02:28 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:45:03 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,26 @@ If the 'exit' command is run as single command an exit(3) call
 is performed with the exit code of the last foreground pipeline. */
 static void	badass_executioner(char *line,
 	t_cmd *cmd_arr,
-	size_t len,
+	t_bush *bush,
 	char ***vars)
 {
-	int	exit_code;
+	int		exit_code;
+	size_t	len;
 
+	len = ft_cmdlen(cmd_arr);
 	exit_code = 0;
 	if (*((unsigned char *)vars[0] + 6) == 1)
 		runtime_initializer();
 	if (len <= 1)
 	{
-		exit_code = execute_command(line, cmd_arr, vars);
+		exit_code = execute_command_bonus(line, bush, cmd_arr, vars);
 		if (exit_code < 0)
 			clean_exit(cmd_arr, line, vars, -1 * (exit_code + 1));
 		mtx_setdata(exit_code, vars[0], 1);
 	}
 	else
 	{
-		exit_code = execute_pipeline(line, cmd_arr, vars);
+		exit_code = execute_pipeline_bonus(line, bush, cmd_arr, vars);
 		if (exit_code < 0)
 			clean_exit(cmd_arr, line, vars, -1 * (exit_code + 1));
 		mtx_setdata(exit_code, vars[0], 1);
@@ -48,12 +50,12 @@ static void	badass_executioner(char *line,
 
 /* execs the 'exec_line' passed, if exit(3) calls are made the whole
 'line' ptr is free(3)d. */
-static int	king_richard_the_third(char *line, char *exec_line, char ***vars)
+static int	king_richard_the_third(char *line, char *exec_line,
+	t_bush *bush, char ***vars)
 {
 	t_cmd	*cmd_arr;
 	size_t	len;
 
-	ft_printf("executing '%s'\n", exec_line);
 	cmd_arr = NULL;
 	if (line == NULL)
 		return (1);
@@ -69,7 +71,7 @@ static int	king_richard_the_third(char *line, char *exec_line, char ***vars)
 		mtx_setdata(cmd_arr->parse_code, vars[0], 1);
 		return (free_cmd(cmd_arr), 1);
 	}
-	badass_executioner(line, cmd_arr, len, vars);
+	badass_executioner(line, cmd_arr, bush, vars);
 	free_cmd(cmd_arr);
 	return (1);
 }
@@ -88,7 +90,7 @@ static int	sir_bis(char *line, int skips, char ***vars)
 	bush[1] = bush[0];
 	while (bush[1])
 	{
-		king_richard_the_third(line, bush[1]->sub_line, vars);
+		king_richard_the_third(line, bush[1]->sub_line, bush[0], vars);
 		if (*((unsigned char *)vars[0] + 5) != 0)
 			bush[1] = bush[1]->false;
 		else
