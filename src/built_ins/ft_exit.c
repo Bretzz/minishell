@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 18:15:13 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 20:30:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:04:40 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ exit: %s: numeric argument required\n", cmd.words[1]);
 			exit_code = 2;
 		}
 		else
-			exit_code = ft_atoi(cmd.words[1]);
+			exit_code = (unsigned char)ft_atoi(cmd.words[1]);
 	}
 	return (exit_code);
 }

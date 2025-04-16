@@ -90,6 +90,7 @@ B_SRC_FILES		= main_bonus.c \
 				tokenizer_bonus.c token_utils_bonus.c \
 				\
 				execute_command_bonus.c execute_pipeline_bonus.c \
+				clean_exit_bonus.c \
 				\
 				expand_string_bonus.c get_wild_bonus.c
 

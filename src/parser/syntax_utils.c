@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:13:57 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 21:28:35 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:42:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	is_closed(char *line)
 			quote = 0;
 		i++;
 	}
-	if (last == '|' || quote != 0)
+	if (last == '|' || last == ';' || quote != 0)
 		return (0);
 	return (1);
 }

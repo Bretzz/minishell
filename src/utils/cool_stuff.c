@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:41:39 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:07:50 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:01:08 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	is_number(char *str)
 	if (str == NULL)
 		return (1);
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i] && ft_isdigit(str[i]))
 		i++;
 	if (str[i] == '\0')

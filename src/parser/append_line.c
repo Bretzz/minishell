@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:19:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 19:46:16 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:43:46 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*append_line(char *line, t_token_type last_type, char ***vars)
 {
 	if (*((unsigned char *)vars[0] + 6) == 1)
 		input_initializer();
-	if (last_type == TOKEN_PIPE)
+	if (last_type == TOKEN_PIPE || last_type == TOKEN_SEMICOL)
 		line = pipe_join(line, '\0', vars);
 	else if (last_type == TOKEN_WORD)
 		line = word_join(line, get_last_quote(line), vars);

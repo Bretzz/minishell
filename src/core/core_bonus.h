@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:06:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 11:37:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:26:22 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define CORE_BONUS_H
 
 # include "core.h"
+
+void	clean_exit_bonus(t_cmd *cmd_arr, t_bush *bush, char ***vars, int code);
 
 t_bush	*line_to_bush(char *line);
 void	free_bush(t_bush *bush);

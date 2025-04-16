@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 15:41:34 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 21:59:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	env_is_valid(char *varenv, char ***vars)
 	really_temp_var = NULL;
 	if (!mtx_findval(varenv, temp_var, sizeof(temp_var), vars[1]))
 	{
-		write(STDERR_FILENO, "minishell: cd: OLDPWD not set\n", 30);
+		ft_printfd(STDERR_FILENO, "minishell: cd: %s not set\n", varenv);
 		return (0);
 	}
 	if (ft_strlen(temp_var) > MAX_PATH)

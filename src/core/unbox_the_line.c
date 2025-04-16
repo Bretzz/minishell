@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:30:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:13:09 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:13:01 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ static int	king_richard_the_third(char *line, char *exec_line, char ***vars)
 	if (line == NULL)
 		return (1);
 	cmd_arr = parse_tokens((char *)exec_line, (const char ***)vars);
+	if (cmd_arr == NULL)
+	{
+		mtx_setdata(1, vars[0], 1);
+		return (1);
+	}
 	if (g_last_sig != 0)
 	{
 		mtx_setdata(128 + g_last_sig, vars[0], 1);
@@ -78,12 +83,18 @@ static int	get_colon_count(char *line)
 {
 	size_t	i;
 	int		colon_count;
+	char	quotes;
 
 	colon_count = 0;
 	i = 0;
+	quotes = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] == ';')
+		if (quotes == 0 && (line[i] == '"' || line[i] == '\''))
+			quotes = line[i];
+		else if (line[i] == quotes)
+			quotes = 0;
+		if (!quotes && line[i] == ';')
 		{
 			line[i] = '\0';
 			colon_count++;

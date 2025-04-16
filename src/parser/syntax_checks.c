@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:50:57 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 17:32:49 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 21:53:55 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static char	who_is_sus_here(t_token *word, t_token *prev,
 
 char	word_check(t_token *word, t_token *prev)
 {
-	const char	command[] = "`%^&*()[]{}\\:";
+	const char	command[] = "`%^&|*()[]{}\\:";
 	const char	file[] = "`&*()\\";
 	const char	redir[] = "<|>";
 	const char	*blacklist[3];

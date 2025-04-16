@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/16 16:09:30 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:10:26 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,13 @@ static int	process_word(t_token *token, t_cmd *current_cmd)
 	if (token->value == NULL)
 		return (1);
 	i = 0;
-	while (current_cmd->words[i] != NULL)
+	while (current_cmd->words[i] != NULL && i < MAX_ARGS)
 		i++;
+	if (i == MAX_ARGS)
+	{
+		ft_perror(current_cmd->words[0], "Too many arguments", NULL, 1);
+		return (0);
+	}
 	current_cmd->words[i] = ft_strdup(token->value);
 	if (!current_cmd->words[i])
 	{
@@ -115,8 +120,10 @@ static void	*commander(t_token *tokens, int	*cmd_index, const char ***vars)
 		return (write(STDERR_FILENO, "minishell: malloc failure\n", 26), NULL);
 	while (tokens)
 	{
-		if (g_last_sig != 0 || !(kepler(&tokens, cmd_index, cmd_array, vars)))
-			break ;
+		if (g_last_sig != 0)
+			break;
+		if (!kepler(&tokens, cmd_index, cmd_array, vars))
+			return (NULL);
 		tokens = tokens->next;
 	}
 	return (cmd_array);

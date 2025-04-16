@@ -351,6 +351,38 @@ echo -nm pippo
 export ciao ciao2= ciao3="" ciao4=aaa
 echo $ciao $ciao2 $ciao3 $ciao4
 
+(DONE)
+echo hi";"hihi (still treats ';' as a special char)
+
+(DONE)
+echo ciao | "" (SIGPIPE)
+
+(DONE)
+echo ciao | ciao| ciap
+
+(DONE)
+./minishell 123 (2 errori)
+
+(DONE)
+unset PAHT
+clear
+(leaks)
+
+(DONE)
+ls |
+> asdasda
+leaks after command not found
+
+(DONE)
+unset HOME
+cd: OLDPWD not set ( ...=_=... )
+
+(DONE)
+exit -10 (should loop)
+
+(DONE)
+ls +100 arguments ( ! ! ! CRAHS ! ! ! )
+
 ======================== DONE-ish =======================
 
 ( ? ? ? LOT'S OF INVALID READS ? ? ? )
@@ -376,22 +408,8 @@ ls |
 (BUT should exit with Exit Code 2)
 
 (DONE)
-echo ciao | "" (SIGPIPE)
-
-(DONE)
-echo ciao | ciao| ciap
-
-(DONE)
-./minishell 123 (2 errori)
-
-(DONE)
-unset PAHT
-clear
-(leaks)
-
-(DONE)
 ls > file1 > file2 > file3 > file4
-non crea i file nel mezzo
+non crea i file nel mezzo (UPDATE: FORESE LI TRONCA quando nn dovrebbe)
 
 ======================== ONGOING =======================
 
@@ -411,24 +429,11 @@ main.c		(DONE)
 
 update $_
 
-ls |
-> asdasda
-leaks after command not found
-
-echo hi";"hihi (still treats ';' as a special char)
-
-unset HOME
-cd: OLDPWD not set ( ...=_=... )
-
-ls +100 arguments ( ! ! ! CRAHS ! ! ! )
-
-exit -10 (should loop)
-
-riorrganizzazione librerie (libft, mtx, readline)
-
 echo "ciao main* siete dei bei file"
 (INVALID READS e stuck in read(3) call)
 (con la virgola (main*,) it get stuck)
+
+riorrganizzazione librerie (libft, mtx, readline)
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 

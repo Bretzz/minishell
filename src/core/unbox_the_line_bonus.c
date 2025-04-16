@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:30:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 16:55:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:26:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static void	badass_executioner(char *line,
 	{
 		exit_code = execute_command_bonus(line, bush, cmd_arr, vars);
 		if (exit_code < 0)
-			clean_exit(cmd_arr, line, vars, -1 * (exit_code + 1));
+			clean_exit_bonus(cmd_arr, bush, vars, -1 * (exit_code + 1));
 		mtx_setdata(exit_code, vars[0], 1);
 	}
 	else
 	{
 		exit_code = execute_pipeline_bonus(line, bush, cmd_arr, vars);
 		if (exit_code < 0)
-			clean_exit(cmd_arr, line, vars, -1 * (exit_code + 1));
+			clean_exit_bonus(cmd_arr, bush, vars, -1 * (exit_code + 1));
 		mtx_setdata(exit_code, vars[0], 1);
 	}
 	if (*((unsigned char *)vars[0] + 6) == 1)
@@ -60,6 +60,11 @@ static int	king_richard_the_third(char *line, char *exec_line,
 	if (line == NULL)
 		return (1);
 	cmd_arr = parse_tokens_bonus((char *)exec_line, (const char ***)vars);
+	if (cmd_arr == NULL)
+	{
+		mtx_setdata(1, vars[0], 1);
+		return (1);
+	}
 	if (g_last_sig != 0)
 	{
 		mtx_setdata(128 + g_last_sig, vars[0], 1);
@@ -86,6 +91,7 @@ static int	sir_bis(char *line, int skips, char ***vars)
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (0);
 	}
+	bush[0]->line = line;
 	bush[1] = bush[0];
 	while (bush[1])
 	{
@@ -104,12 +110,18 @@ static int	get_colon_count(char *line)
 {
 	size_t	i;
 	int		colon_count;
+	char	quotes;
 
 	colon_count = 0;
 	i = 0;
+	quotes = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] == ';')
+		if (quotes == 0 && (line[i] == '"' || line[i] == '\''))
+			quotes = line[i];
+		else if (line[i] == quotes)
+			quotes = 0;
+		if (!quotes && line[i] == ';')
 		{
 			line[i] = '\0';
 			colon_count++;
