@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 20:02:41 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 20:05:10 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:00:37 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ void	stdin_init(int argc, char **argv, char ***vars)
 	exit_code = 0;
 	if (ft_strlen(argv[1]) > MAX_PATH)
 		ft_perror(argv[1], "File name too long", &exit_code, 126);
-	if (access(argv[1], F_OK) != 0)
+	else if (access(argv[1], F_OK) != 0)
 		ft_perror(argv[1], "No such file or directory", &exit_code, 127);
-	if (access(argv[1], R_OK) != 0)
+	else if (access(argv[1], R_OK) != 0)
 		ft_perror(argv[1], "Permission denied", &exit_code, 126);
 	if (exit_code != 0)
 		clean_exit(NULL, NULL, vars, exit_code);

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 11:16:27 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 11:45:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:58:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	execute_command_bonus(char *line, t_bush *bush, t_cmd *cmd, char ***vars)
 	if (is_builtin(cmd->words[0]))
 	{
 		exit_code = exec_builtin(execfd, cmd[0], vars);
+		safeclose(cmd->close_me);
 		if (!ft_strncmp("exit", cmd->words[0], 5))
 			return (multicose(execfd), -1 * (exit_code + 1));
 		return (multicose(execfd), exit_code);

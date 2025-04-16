@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:30:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 11:45:03 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:55:42 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static int	sir_bis(char *line, int skips, char ***vars)
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (0);
 	}
-	print_bush(bush[0]);	//remove
 	bush[1] = bush[0];
 	while (bush[1])
 	{

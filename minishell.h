@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 14:36:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:58:03 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_cmd
 {
 	char	*words[MAX_ARGS];		// Array di argomenti (comando + parametri)
 	int		fd[2];
+	int		close_me;
 	char	infile[MAX_PATH + 1];	// File di input, se presente
 	char	outfile[MAX_PATH + 1];	// File di output, se presente
 	int		append;					// Flag: o_flag composete per ">>" o ">"

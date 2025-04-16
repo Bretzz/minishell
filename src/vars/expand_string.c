@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 22:18:07 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 12:32:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:56:41 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static char	*single_expand(size_t *i, char *str, const char ***vars)
 	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
 	ft_strlcat(new_str, &str[*i + var_len],
 		ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
-	(*i) += ft_strlen(exp_val) - 1;
+	(*i) += ft_strlen(exp_val);
 	return (free(exp_val), free(str), new_str);
 }
 

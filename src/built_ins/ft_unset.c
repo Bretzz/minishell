@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:31:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 15:30:23 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:42:30 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static void	mass_drop(char ***vars, char *var)
 		}
 		i--;
 	}
+	free(name);
 }
 
 int	ft_unset(int *fd, t_cmd cmd, char ***vars)

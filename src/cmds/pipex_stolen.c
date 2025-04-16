@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:37:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/09 18:46:17 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:02:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*find_env_path(char *cmd, char **env)
 		i++;
 	cmd = ft_strjoin("/", cmd);
 	if (env[i] == NULL)
-		return (NULL);
+		return (free(cmd), NULL);
 	paths = ft_split_tail(env[i] + 5, ':', cmd);
 	if (!paths || !cmd)
 		return (NULL);

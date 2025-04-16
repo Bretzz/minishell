@@ -347,6 +347,10 @@ HERE_DOC: Ctrl+Z conditional jumps
 echo -nnnnn -n
 echo -nm pippo
 
+(DONE)
+export ciao ciao2= ciao3="" ciao4=aaa
+echo $ciao $ciao2 $ciao3 $ciao4
+
 ======================== DONE-ish =======================
 
 ( ? ? ? LOT'S OF INVALID READS ? ? ? )
@@ -371,6 +375,24 @@ ls |
 > Ctrl+D
 (BUT should exit with Exit Code 2)
 
+(DONE)
+echo ciao | "" (SIGPIPE)
+
+(DONE)
+echo ciao | ciao| ciap
+
+(DONE)
+./minishell 123 (2 errori)
+
+(DONE)
+unset PAHT
+clear
+(leaks)
+
+(DONE)
+ls > file1 > file2 > file3 > file4
+non crea i file nel mezzo
+
 ======================== ONGOING =======================
 
 ======================= NORMINETTE ======================
@@ -389,6 +411,10 @@ main.c		(DONE)
 riorrganizzazione librerie (libft, mtx, readline)
 
 update $_
+
+ls |
+> asdasda
+leaks after command not found
 
 ----------------> EXCLUSIVELY PARSING PROBLEMS <----------------
 

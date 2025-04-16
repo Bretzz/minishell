@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:16:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 14:43:05 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:21:55 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ t_cmd	*parse_tokens_bonus(char *line, const char ***vars)
 		free_tokens(tokens);
 		return (NULL);
 	}
+	create_redir_out(tokens);
 	free_tokens(tokens);
 	raccattagarbage(cmd_array);
 	return (cmd_array);

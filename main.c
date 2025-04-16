@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:45 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 00:05:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:00:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char *argv[], char *__environ[])
 	ft_bzero(prompt, sizeof(prompt));
 	if (mtx_findval("USER", prompt, sizeof(prompt), vars[1]) == NULL
 		&& mtx_findval("LOGNAME", prompt, sizeof(prompt), vars[1]) == NULL)
-		ft_strlcpy(prompt, "pterodactylus_antiquus", sizeof(prompt));
+		ft_strlcpy(prompt, "pterodattilo!$_", sizeof(prompt));
 	ft_strlcat(prompt, "$ ", sizeof(prompt));
 	while (1)
 	{

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/15 21:27:57 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:09:19 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void			skip_spaces(const char *line, int *i);
 void			print_tokens(t_token *tokens);
 void			process_redirection(t_token **tokens,
 					t_cmd *current_cmd, const char ***vars);
+void			create_redir_out(t_token *tokens);
 
 void			free_cmd(t_cmd *cmd_arr);
 int				cmds_count(const t_token *tokens);

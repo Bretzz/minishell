@@ -6,12 +6,15 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:56:38 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 23:27:08 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:50:51 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
+
+void	print_tokens(t_token *tokens);
+void	print_cmd_array(t_cmd *cmd_array, size_t num_cmds);
 
 static void	first_print(t_token *tokens)
 {

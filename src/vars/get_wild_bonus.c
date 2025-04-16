@@ -6,13 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:34:35 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 15:04:43 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:56:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
-char	*get_wild_value(size_t i, char *str);
+char	*get_wild_value(size_t *i, char *str);
 
 // static void	swap_ptr(void **ptr1, void **ptr2)
 // {
@@ -140,7 +140,7 @@ static char	*get_pre_wild(char *str, size_t i)
 
 /* returns the wildcard expanded and 'covers' leading chars with
 the '*'. NOTE: $USER* expands to topiana-*. */
-char	*get_wild_value(size_t i, char *str)
+char	*get_wild_value(size_t *i, char *str)
 {
 	DIR		*dir;
 	char	*wild_value;
@@ -152,21 +152,21 @@ char	*get_wild_value(size_t i, char *str)
 	post = NULL;
 	dir = opendir(".");
 	if (dir == NULL)
-	{
-		write(STDERR_FILENO, "minishell: currdir: Permission denied\n", 38);
-		return (NULL);
-	}
-//	ft_printf("get_wild: '%s', %d\n", str, i);
-	if (str[i + 1] && !ft_isspace(str[i + 1]))
-		post = ft_substr(str, i + 1, ft_strlen_space(&str[i + 1]));
-	if (i && !ft_isspace(str[i - 1]))
-		pre = get_pre_wild(str, i);
+		return (write(STDERR_FILENO, "minishell: \
+currdir: Permission denied\n", 38), NULL);
+	if (str[*i + 1] && !ft_isspace(str[*i + 1]))
+		post = ft_substr(str, *i + 1, ft_strlen_space(&str[*i + 1]));
+	if (i && !ft_isspace(str[*i - 1]))
+		pre = get_pre_wild(str, *i);
 	wild_value = build_wild_value(dir, pre, post);
 	sort_value = sort_words(wild_value);
-	closedir(dir);
 	if (pre != NULL)
-		ft_memmove(str, str + ft_strlen(pre), ft_strlen(str + ft_strlen(pre)) + 1);
-//	ft_printf("get_wild: post str '%s'\n", str);
+	{
+		ft_memmove(&str[*i - ft_strlen(pre)],
+			&str[*i], ft_strlen(&str[*i]) + 1);
+		*i -= ft_strlen(pre);
+	}
+	closedir(dir);
 	return (free(pre), free(post), free(wild_value), sort_value);
 }
 

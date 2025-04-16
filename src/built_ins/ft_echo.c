@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:28:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 12:11:32 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:55:59 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	is_n_flag(char *arg)
 
 	i = 0;
 	if (arg[i++] != '-')
-		return (0); 
+		return (0);
 	while (arg[i] != '\0')
 	{
 		if (arg[i] != 'n')
