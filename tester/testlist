@@ -1,19 +1,84 @@
-export | grep SHELL #; echo $? 
-pwd #; echo $?
-ls | grepp a | cat #; echo $?
-error 127 #; echo $?
-| | | #; echo $?
-echo pippo | grep #; echo $?
-ls | > out #; echo $? #; cat out #; rm out
-ciao=pippo echo indeed #; echo $?
-echo qualcosa | rick=jonny | ls #; echo $?
-echo "ciao | ls" | grep '$ciao' | w"c" -l >out #; echo $? cat out #; rm -f out
+
+
+export | grep SHELL
+echo Exit Code: $? 
+
+
+
+pwd
+echo Exit Code: $?
+
+
+
+ls | grepp a | cat
+echo Exit Code: $?
+
+
+
+error 127
+echo Exit Code: $?
+
+
+
+| | |
+echo Exit Code: $?
+
+
+
+echo pippo | grep
+echo Exit Code: $?
+
+
+
+rm -f out
+ls | > out
+echo Exit Code: $?
+
+cat out ; rm out
+
+
+
+ciao=pippo echo indeed
+echo Exit Code: $?
+
+
+echo qualcosa | rick=jonny | ls
+echo Exit Code: $? 
+
+
+
+echo "ciao | ls" | grep '$ciao' | w"c" -l >out
+echo Exit code: $?
+
+cat out ; rm out
+
+
+
 export a=Paperon"de"Paperoni
-echo '"ciao doveri ieri sera $a?" - "non sono fatti tuoi"' #; echo $?
-echo "ciao dov'eri ieri sera $a?" - "non sono fatti tuoi" #; echo $?
-ls | grep out #; echo $?
+echo '"ciao doveri ieri sera $a?" - "non sono fatti tuoi"'
+echo Exit Code: $? 
+echo "ciao dov'eri ieri sera $a?" - "non sono fatti tuoi"
+echo Exit Code: $?
+
+
+
+ls | grep out
+echo Exit Code: $?
+
+
+
 ciao$"$ciao"$$'$ciao'
 ci$ao$"$ciao"$'$ciao'
-ls > out | <out cat #; rm -f out
+
+
+
+rm -f out
+ls > out | <out cat
+
+echo sometext > out
+ls > out | <out cat
+
+cat out ; rm out
+
 
 echo DONE

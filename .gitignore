@@ -15,6 +15,7 @@ here_docs/*
 .nfs*
 **/exec
 tester/expected_output
+tester/expc_output
 tester/mini_output
 tester/traces.diff
 **/*.h.gch

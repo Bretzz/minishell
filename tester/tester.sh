@@ -2,7 +2,7 @@
 
 # Paths and labels
 promprt="minishell% "
-expc="expected_output"
+expc="expc_output"
 mini="mini_output"
 outfile="test.diff"
 
