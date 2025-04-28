@@ -34,6 +34,7 @@ echo Exit Code: $?
 echo 'hello there' < r_block
 echo Exit Code: $?
 
+
 #unset
 unset
 echo Exit Code: $?
@@ -134,6 +135,9 @@ rm -f file1 file2 file3 file4
 ls > w_block | grep a | grep b | cat > w_block
 echo Exit Code: $?
 
+echo ciao > $novar
+echo Exit Code: $?
+
 rm -f w_block r_block
 
 ### QUOTES ###
@@ -207,12 +211,6 @@ ppapapa
 popoop
 X
 
-<< a << b | | << c cat >out
-a
-b
-<< $novar cat
-
-
 ### SYNTAX ERRORS ###
 
 | | |
@@ -228,6 +226,11 @@ echo Exit Code: $?
 <|>
 echo Exit Code: $?
 | echo
+echo Exit Code: $?
+
+<< a << b | | << c cat >out
+a
+b
 echo Exit Code: $?
 
 echo DONE
