@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Paths and labels
-promprt="minishell% "
+promprt="$USER$ "
 expc="expc_output"
 mini="mini_output"
 outfile="test.diff"
@@ -13,25 +13,19 @@ outfile="test.diff"
 #########################
 # 1. Output da Bash
 #########################
-while IFS= read -r line; do
-    echo "$ $line" >> $expc
-    bash -c "$line" >> $expc 2>&1
-done < testlist
+bash testlist >$expc 2>&1
 
 # Normalizza errori bash -> testlist
-sed -i 's/^bash: /testlist: /g' $expc
-sed -i 's/^bash: -c: line [0-9]*: /testlist: /g' $expc
+sed -i 's/^testlist: line [0-9]*: /testlist: /g' $expc
+sed -i 's/^testlist: -c: line [0-9]*: /testlist: /g' $expc
+sed -i 's/^testlist: /testlist: /g' $expc
 
 #########################
 # 2. Output da minishell
 #########################
-while IFS= read -r line; do
-    echo "$ $line" >> $mini
-    echo "$line" | ../minishell >> $mini 2>&1
-done < testlist
+../minishell testlist >$mini 2>&1
 
 # Rimuove prompt, clear screen e righe extra
-sed -i 's/\[H\[J//g' $mini              # Rimuove clear screen
 sed -i "s/^$promprt//g" $mini             # Rimuove prompt
 sed -i 's/^minishell% //' $mini           # Prompt alternativo
 sed -i '/^exit$/d' $mini                  # Rimuove righe "exit"

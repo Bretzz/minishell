@@ -1,5 +1,74 @@
 
 
+### BUILTINS ###
+
+#env
+env
+
+#export
+export var1 var2= var3="" var4="ciao"
+export 123asd="ciao" ?=123 var5?="gotcha" var____2!=7
+echo Exit Code: $?
+export
+
+#echo
+echo $var1 $var2 $var3 $var4 $?var4 $var5?
+echo just            one              space here!      !   -n      !       ! 
+echo -n -nnnnnnnnnnnnnnnnnnnnnnn -nnmn ciao
+echo -n -nnnnn n - nnn ciao
+
+#unset
+unset
+echo Exit Code: $?
+unset var1 var2 var3 var4 var5
+echo Exit Code: $?
+unset 123asd="ciao"
+echo Exit Code: $?
+
+# cd
+touch not_a_dir
+mkdir aaa
+mkdir aaa/no_perms_dir
+mkdir aaa/no_perms_dir/ccc
+chmod 000 aaa/no_perms_dir
+
+export home=$HOME
+unset HOME
+cd
+echo Exit Code: $?
+cd do_not_exist
+echo Exit Code: $?
+cd not_a_dir
+echo Exit Code: $?
+cd aaa/no_perms_dir/ccc
+echo Exit Code: $?
+
+chmod 777 aaa/no_perms_dir
+rm -rf not_a_dir aaa
+export HOME=$home
+
+# cd and pwd
+pwd
+env | grep PWD
+cd ..
+env | grep PWD
+unset PWD
+pwd
+cd $OLDPWD
+env | grep PWD
+cd ..
+
+export PWD
+
+#exit
+exit 1 | exit 2 | exit 3
+echo Exit Code: $?
+
+exit 10 | exit -10
+echo Exit Code: $?
+
+### PIPES ###
+
 export | grep SHELL
 echo Exit Code: $? 
 
@@ -20,11 +89,6 @@ echo Exit Code: $?
 
 
 
-| | |
-echo Exit Code: $?
-
-
-
 echo pippo | grep
 echo Exit Code: $?
 
@@ -34,7 +98,8 @@ rm -f out
 ls | > out
 echo Exit Code: $?
 
-cat out ; rm out
+cat out 
+rm out
 
 
 
@@ -50,7 +115,8 @@ echo Exit Code: $?
 echo "ciao | ls" | grep '$ciao' | w"c" -l >out
 echo Exit code: $?
 
-cat out ; rm out
+cat out 
+rm out
 
 
 
@@ -78,7 +144,23 @@ ls > out | <out cat
 echo sometext > out
 ls > out | <out cat
 
-cat out ; rm out
+cat out 
+rm out
 
+
+### SYNTAX ERRORS ###
+
+| | |
+echo Exit Code: $?
+>><
+echo Exit Code: $?
+<<>
+echo Exit Code: $?
+>><<
+echo Exit Code: $?
+<<>>
+echo Exit Code: $?
+<|>
+echo Exit Code: $?
 
 echo DONE

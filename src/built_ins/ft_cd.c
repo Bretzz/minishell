@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:29:28 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 21:59:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 13:57:57 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int	ft_cd(int *fd, t_cmd cmd, char ***vars)
 		ft_printfd(STDERR_FILENO, "minishell: cd: %s: %s\n", tar_dir,
 			strerror(errno));
 		free(oldpwd);
-		return (errno);
+		return (1);
 	}
 	pwd = getcwd(NULL, 0);
 	update_pwd(oldpwd, pwd, vars);
