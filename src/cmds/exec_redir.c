@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 15:35:27 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/16 16:20:42 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:39:16 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ int	pipeline_redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 {
 	if (index == (int)(len - 1))
 	{
-		if (cmd[index].redir[1] == FILE && cmd->fd[1] != -1)
+		if (cmd[index].redir[1] == FILE)
 		{
-			cmd[index].fd[1] = open(cmd[index].outfile,
-					cmd[index].append, 0644);
-			return (cmd[index].fd[1]);
+			return (open(cmd[index].outfile, cmd[index].append, 0644));
 		}
 		return (STDOUT_FILENO);
 	}
@@ -64,8 +62,7 @@ int	pipeline_redir_output(t_cmd *cmd, t_garb *garb, int index, size_t len)
 	}
 	if (cmd[index].redir[1] == FILE)
 	{
-		cmd[index].fd[1] = open(cmd[index].outfile, cmd[index].append, 0644);
-		return (cmd[index].fd[1]);
+		return (open(cmd[index].outfile, cmd[index].append, 0644));
 	}
 	return (garb[index].pipefd[1]);
 }
