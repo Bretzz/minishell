@@ -1,0 +1,27 @@
+
+### PIPES ###
+
+sleep 1 | sleep 2 | sleep 3
+
+cat | cat | cat | ls
+
+### HEREDOC ###
+
+- Ctrl+D
+<< X cat, close minishell, repeat, (check for old heredoc stuff)
+
+### SIGNALS ###
+
+cat (Ctrl+C) (Ctrl+D) (Ctrl+\)
+<< X (Ctrl+C) (Ctrl+D) (Ctrl+\)
+echo sleep 10 > infile
+<infile ./minishell (Ctrl+C midway)
+rm infile
+
+### LEAKS ###
+
+(just redo with valgrind (try catching invalid reads with quotes))
+
+### MALLOC ###
+
+hehehehhe..... :))))
