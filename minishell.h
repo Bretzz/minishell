@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 22:04:27 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:33:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		ft_cd(int *fd, t_cmd cmd, char ***vars);
 int		ft_pwd(int *fd, t_cmd cmd);
 int		ft_export(int *fd, t_cmd cmd, char ***vars);
 int		ft_unset(int *fd, t_cmd cmd, char ***vars);
-int		ft_env(int *fd, const char ***vars);
+int		ft_env(int *fd, t_cmd cmd, const char ***vars);
 int		ft_exit(int *fd, t_cmd cmd, char ***vars);
 
 /* SIGNALS */

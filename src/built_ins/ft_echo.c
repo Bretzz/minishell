@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:28:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 16:55:59 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:45:17 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ int	ft_echo(int *fd, t_cmd cmd)
 {
 	unsigned int	i;
 
+	if ((cmd.redir[1] == FILE && cmd.fd[1] < 0)
+		|| (cmd.redir[0] == FILE && cmd.fd[0] < 0))
+		return (safeclose(fd[1]), 1);
 	if (cmd.words[1] && is_n_flag(cmd.words[1]))
 	{
 		i = 2;

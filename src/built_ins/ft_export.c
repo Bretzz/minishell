@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:30:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/28 14:23:12 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:48:12 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,10 @@ static void	rank_up(char *varstr, char ***vars)
 	free(name);
 }
 
-//env no, shv no
-//env no, shv si
-//env si, shv no
-//env si, shv si
-int	ft_export(int *fd, t_cmd cmd, char ***vars)
+static void	loop_export(t_cmd cmd, int *exit_code, char ***vars)
 {
-	int		i;
-	int		exit_code;
+	int	i;
 
-	if (!cmd.words[1] || cmd.words[1][0] == '\0')
-	{
-		print_export(fd[1], vars[1]);
-		return (safeclose(fd[1]), 0);
-	}
-	safeclose(fd[1]);
-	exit_code = 0;
 	i = 1;
 	while (cmd.words[i] && cmd.words[i][0] != '\0')
 	{
@@ -89,7 +77,7 @@ int	ft_export(int *fd, t_cmd cmd, char ***vars)
 		{
 			ft_printfd(STDERR_FILENO, "minishell: export: `%s': not a \
 valid identifier\n", cmd.words[i]);
-			exit_code = 1;
+			*exit_code = 1;
 		}
 		else if (ft_strichr(cmd.words[i], '=') != 0)
 			overwrite(cmd.words[i], vars);
@@ -97,5 +85,26 @@ valid identifier\n", cmd.words[i]);
 			rank_up(cmd.words[i], vars);
 		i++;
 	}
+}
+
+//env no, shv no
+//env no, shv si
+//env si, shv no
+//env si, shv si
+int	ft_export(int *fd, t_cmd cmd, char ***vars)
+{
+	int	exit_code;
+
+	if ((cmd.redir[1] == FILE && cmd.fd[1] < 0)
+		|| (cmd.redir[0] == FILE && cmd.fd[0] < 0))
+		return (safeclose(fd[1]), 1);
+	if (!cmd.words[1] || cmd.words[1][0] == '\0')
+	{
+		print_export(fd[1], vars[1]);
+		return (safeclose(fd[1]), 0);
+	}
+	safeclose(fd[1]);
+	exit_code = 0;
+	loop_export(cmd, &exit_code, vars);
 	return (exit_code);
 }

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 17:30:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 22:13:01 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:47:59 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ static int	king_richard_the_third(char *line, char *exec_line, char ***vars)
 		return (free_cmd(cmd_arr), 1);
 	}
 	badass_executioner(line, cmd_arr, len, vars);
-	free_cmd(cmd_arr);
-	return (1);
+	return (free_cmd(cmd_arr), 1);
 }
 
 /* Well... */

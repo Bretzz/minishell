@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 19:04:34 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/14 20:29:53 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:33:34 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	exec_builtin(int *fd, t_cmd cmd, char ***vars)
 	else if (!ft_strncmp("unset", cmd.words[0], 6))
 		return (ft_unset(fd, cmd, vars));
 	else if (!ft_strncmp("env", cmd.words[0], 4))
-		return (ft_env(fd, (const char ***)vars));
+		return (ft_env(fd, cmd, (const char ***)vars));
 	else if (!ft_strncmp("exit", cmd.words[0], 5))
 		return (ft_exit(fd, cmd, vars));
 	return (0);

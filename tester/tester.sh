@@ -15,6 +15,8 @@ outfile="test.diff"
 #########################
 bash testlist >$expc 2>&1
 
+echo "BASH EXECUTED"
+
 # Normalizza errori bash -> testlist
 sed -i 's/^testlist: line [0-9]*: /testlist: /g' $expc
 sed -i 's/^testlist: -c: line [0-9]*: /testlist: /g' $expc
@@ -24,6 +26,8 @@ sed -i 's/^testlist: /testlist: /g' $expc
 # 2. Output da minishell
 #########################
 ../minishell testlist >$mini 2>&1
+
+echo "MINISHELL EXECUTED"
 
 # Rimuove prompt, clear screen e righe extra
 sed -i "s/^$promprt//g" $mini             # Rimuove prompt

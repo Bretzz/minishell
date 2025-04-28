@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:50:46 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/16 22:10:26 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:47:20 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static void	*commander(t_token *tokens, int	*cmd_index, const char ***vars)
 	while (tokens)
 	{
 		if (g_last_sig != 0)
-			break;
+			break ;
 		if (!kepler(&tokens, cmd_index, cmd_array, vars))
 			return (NULL);
 		tokens = tokens->next;
