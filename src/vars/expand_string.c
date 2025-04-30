@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 22:18:07 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/30 20:28:22 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:44:44 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 char	*expand_string(char *str, const char ***vars);
 char	*just_expand_string(char *str, const char ***vars);
-char	*single_expand(size_t *i, size_t *cut_here, char *str, const char ***vars);
+char	*single_expand(size_t *i, size_t *cut_here,
+			char *str, const char ***vars);
 char	skip_quotes(char *str, size_t i, char quote);
 
 static char	*set_exp_val(size_t *i, char *str, const char ***vars)
@@ -49,45 +50,12 @@ Allocates with malloc(3) a new string that's a copy of the imput string
 with the var_string '$var' replaced with it's value found in shv, exp or env,
 then frees the input string.
 RETURNS: A pointer to the new string, NULL on malloc failures. */
-// static char	*single_expand(size_t *i, char *str, const char ***vars)
-// {
-// 	char	*exp_val;
-// 	char	*new_str;
-// 	int		var_len;
-
-// 	exp_val = set_exp_val(i, str, vars);
-// 	if (exp_val == NULL)
-// 	{
-// 		if (str[*i] == '$' || str[*i] == '~')
-// 		{
-// 			new_str = drop_string(str, *i, ft_varlen(&str[*i]) + 1);
-// 			return (free(str), new_str);
-// 		}
-// 		return (str);
-// 	}
-// 	var_len = ft_varlen(&str[*i]) + 1;
-// 	new_str = (char *)ft_calloc(ft_strlen(str) - var_len
-// 			+ ft_strlen(exp_val) + 1, sizeof(char));
-// 	if (new_str == NULL)
-// 		return (free(exp_val), NULL);
-// 	ft_strlcpy(new_str, str, *i + 1);
-// 	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
-// 	ft_strlcat(new_str, &str[*i + var_len],
-// 		ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
-// 	(*i) += ft_strlen(exp_val);
-// 	return (free(exp_val), free(str), new_str);
-// }
-
-/* takes a string (to be free'd) and the index of the var found.
-Allocates with malloc(3) a new string that's a copy of the imput string
-with the var_string '$var' replaced with it's value found in shv, exp or env,
-then frees the input string.
-RETURNS: A pointer to the new string, NULL on malloc failures. */
-char	*single_expand(size_t *i, size_t *cut_here, char *str, const char ***vars)
+char	*single_expand(size_t *i, size_t *cut_here,
+	char *str, const char ***vars)
 {
 	char	*exp_val;
 	char	*new_str;
-	int		var_len;
+	size_t	var_len;
 
 	exp_val = set_exp_val(i, str, vars);
 	if (exp_val == NULL)

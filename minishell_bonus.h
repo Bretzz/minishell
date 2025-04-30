@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:10:16 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/30 20:24:51 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:40:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int		execute_command_bonus(char *line,
 int		execute_pipeline_bonus(char *line,
 			t_bush *bush, t_cmd *cmd, char ***vars);
 
-char	*expand_string_bonus(char *str, const char ***vars);
 char	*single_expand_bonus(size_t *i, size_t *cut_here, char *str, const char ***vars);
 // char	*just_expand_string_bonus(char *str, const char ***vars);
 char	*get_wild_value(size_t *i, char *str);

@@ -6,14 +6,14 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:19:02 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/30 20:28:35 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:44:23 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
-char	*expand_string_bonus(char *str, const char ***vars);
-char	*single_expand_bonus(size_t *i, size_t *cut_here, char *str, const char ***vars);
+char	*single_expand_bonus(size_t *i, size_t *cut_here,
+			char *str, const char ***vars);
 
 static char	*set_exp_val(size_t *i, char *str, const char ***vars)
 {
@@ -44,16 +44,36 @@ static char	*set_exp_val(size_t *i, char *str, const char ***vars)
 	return (wide_search(&str[*i + 1], vars));
 }
 
+static char	*string_assemble(char *str, char *exp_val, int i)
+{
+	size_t	var_len;
+	char	*new_str;
+
+	if (str[i] == '*')
+		var_len = ft_strlen_space(&str[i]);
+	else
+		var_len = ft_varlen(&str[i]) + 1;
+	new_str = (char *)ft_calloc(ft_strlen(str) - var_len
+			+ ft_strlen(exp_val) + 1, sizeof(char));
+	if (new_str == NULL)
+		return (NULL);
+	ft_strlcpy(new_str, str, i + 1);
+	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
+	ft_strlcat(new_str, &str[i + var_len],
+		ft_strlen(new_str) + ft_strlen(&str[i + var_len]) + 1);
+	return (new_str);
+}
+
 /* takes a string (to be free'd) and the index of the var found.
 Allocates with malloc(3) a new string that's a copy of the imput string
 with the var_string '$var' replaced with it's value found in shv, exp or env,
 then frees the input string.
 RETURNS: A pointer to the new string, NULL on malloc failures. */
-char	*single_expand_bonus(size_t *i, size_t *cut_here, char *str, const char ***vars)
+char	*single_expand_bonus(size_t *i, size_t *cut_here,
+	char *str, const char ***vars)
 {
 	char	*exp_val;
 	char	*new_str;
-	int		var_len;
 
 	exp_val = set_exp_val(i, str, vars);
 	if (exp_val == NULL)
@@ -62,18 +82,9 @@ char	*single_expand_bonus(size_t *i, size_t *cut_here, char *str, const char ***
 			return (free(str), drop_string(str, *i, ft_varlen(&str[*i]) + 1));
 		return (str);
 	}
-	if (str[*i] == '*')
-		var_len = ft_strlen_space(&str[*i]);
-	else
-		var_len = ft_varlen(&str[*i]) + 1;
-	new_str = (char *)ft_calloc(ft_strlen(str) - var_len
-			+ ft_strlen(exp_val) + 1, sizeof(char));
+	new_str = string_assemble(str, exp_val, *i);
 	if (new_str == NULL)
 		return (free(exp_val), NULL);
-	ft_strlcpy(new_str, str, *i + 1);
-	ft_strlcat(new_str, exp_val, ft_strlen(new_str) + ft_strlen(exp_val) + 1);
-	ft_strlcat(new_str, &str[*i + var_len],
-		ft_strlen(new_str) + ft_strlen(&str[*i + var_len]) + 1);
 	if (cut_here)
 		(*cut_here) = ft_strichr(exp_val, ' ');
 	(*i) += ft_strlen(exp_val) - 1;
@@ -105,33 +116,6 @@ char	skip_quotes(char *str, size_t i, char quote)
 		}
 	}
 	return (quote);
-}
-
-/* takes a string, the shv-vars and the env-vars as parameter.
-returns a mallocated string with the variables preceded by '$' expanded.
-(quotes are also handled properly)
-RETURNS: the expanded string, NULL on malloc error. */
-char	*expand_string_bonus(char *str, const char ***vars)
-{
-	char		*my_str;
-	static char	quote;
-	size_t		i;
-
-	(void)vars;
-	my_str = ft_strdup(str);
-	if (my_str == NULL)
-		return (NULL);
-	i = 0;
-	while (my_str && my_str[i] != '\0')
-	{
-		quote = skip_quotes(my_str, i, quote);
-		if ((my_str[i] == '$' || my_str[i] == '~' || my_str[i] == '*')
-			&& quote != '\'')
-			my_str = single_expand_bonus(&i, NULL, my_str, vars);
-		else
-			i++;
-	}
-	return (my_str);
 }
 
 /* expands every variable found */
