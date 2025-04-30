@@ -6,52 +6,13 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:34:35 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 16:56:57 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:34:55 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
 char	*get_wild_value(size_t *i, char *str);
-
-// static void	swap_ptr(void **ptr1, void **ptr2)
-// {
-// 	void	*tmp;
-
-// 	tmp = *ptr1;
-// 	*ptr1 = *ptr2;
-// 	*ptr2 = tmp;
-// }
-
-// static int	ft_strcmp_nocase(const char *s1, const char *s2)
-// {
-// 	size_t	i;
-
-// 	i = 0;
-// 	while (s1[i] && s2[i] && ft_toupper(s1[i]) == ft_toupper(s2[i]))
-// 		i++;
-// 	return ((unsigned char)(ft_toupper(s1[i]))
-// 		- (unsigned char)(ft_toupper(s2[i])));
-// }
-
-// static int	ft_strbcmp(const char *s1, const char *s2, size_t n)
-// {
-// 	size_t	i[3];
-
-// 	if (n == 0)
-// 		return (0);
-// 	i[0] = ft_strlen(s1);
-// 	i[1] = ft_strlen(s2);
-// 	i[2] = 0;
-// 	while (i[0] && i[1] && s1[i[0]] == s2[i[1]] && i[2] < n)
-// 	{
-// 		i[0]--;
-// 		i[1]--;
-// 		i[2]++;
-// 	}
-// 	return ((unsigned char)(s1[i[0]])
-// 		- (unsigned char)(s2[i[1]]));
-// }
 
 static char	*rebuild_string(char **split, int c)
 {
@@ -156,7 +117,7 @@ char	*get_wild_value(size_t *i, char *str)
 currdir: Permission denied\n", 38), NULL);
 	if (str[*i + 1] && !ft_isspace(str[*i + 1]))
 		post = ft_substr(str, *i + 1, ft_strlen_space(&str[*i + 1]));
-	if (i && !ft_isspace(str[*i - 1]))
+	if (*i != 0 && !ft_isspace(str[*i - 1]))
 		pre = get_pre_wild(str, *i);
 	wild_value = build_wild_value(dir, pre, post);
 	sort_value = sort_words(wild_value);

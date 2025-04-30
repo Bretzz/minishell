@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 21:58:13 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/12 22:04:28 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:15:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ size_t	ft_varlen(const char *s);
 size_t	ft_mtxlen(const void **mtx);
 size_t	ft_strlen_nl(const char *s);
 size_t	ft_strlen_space(const char *s);
+size_t	ft_int_nonzero_len(const int *arr);
+
+size_t	ft_int_nonzero_len(const int *arr)
+{
+	size_t	i;
+
+	i = 0;
+	while (arr[i] != 0)
+		i++;
+	return (i);
+}
 
 /* both ab123 and $ab123 returns 5 as length. */
 size_t	ft_varlen(const char *s)

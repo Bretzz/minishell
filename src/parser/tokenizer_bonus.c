@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:45:53 by mapascal          #+#    #+#             */
-/*   Updated: 2025/04/15 23:34:47 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:54:25 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	add_token(t_token **tokens, t_token_type type, char *value)
 	new = ft_calloc(1, sizeof(t_token));
 	if (new == NULL)
 	{
-		write(STDERR_FILENO, "minishell: malloc failure\n", 15);
+		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (0);
 	}
 	new->type = type;

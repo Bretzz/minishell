@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:05:55 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/28 17:33:12 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:24:56 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ int		handle_vars(t_cmd cmd, char ***vars);
 char	*expand_string(char *str, const char ***vars);
 char	*just_expand_string(char *str, const char ***vars);
 
+//expand abuse
+
+char	*single_expand(size_t *i, size_t *cut_here, char *str, const char ***vars);
+char	skip_quotes(char *str, size_t i, char quote);
+
 char	*wide_search(char *str, const char ***vars);
 
 //here_doc.c
@@ -137,6 +142,7 @@ size_t	ft_varlen(const char *s);
 size_t	ft_mtxlen(const void **mtx);
 size_t	ft_strlen_nl(const char *s);
 size_t	ft_strlen_space(const char *s);
+size_t	ft_int_nonzero_len(const int *arr);
 
 //strjoin
 char	*ft_strjoin_free_space(char *s1, char *s2);

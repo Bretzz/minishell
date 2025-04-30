@@ -56,7 +56,7 @@ SRC_FILES		= main.c \
 				\
 				parser.c tokenizer.c \
 				parser_tiny.c parser_redirectors.c create_redir_out.c \
-				token_utils.c print_tokens.c \
+				token_utils.c expand_tokens.c print_tokens.c \
 				syntax_tokens.c syntax_line.c syntax_checks.c \
 				append_line.c stray_docs.c syntax_utils.c \
 				free_struct.c token_tiny.c \
@@ -85,7 +85,7 @@ B_SRC_FILES		= main_bonus.c \
 				bush_is_real.c bush_manage.c bush_pioneers.c \
 				handle_line_bonus.c unbox_the_line_bonus.c \
 				\
-				parser_bonus.c stray_docs_bonus.c \
+				parser_bonus.c expand_tokens_bonus.c stray_docs_bonus.c \
 				syntax_tokens_bonus.c syntax_line_bonus.c \
 				tokenizer_bonus.c token_utils_bonus.c \
 				\

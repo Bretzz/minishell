@@ -1,4 +1,9 @@
 
+### VARS ###
+
+c="echo ciao pippo"sono' un figo'della"         madonna  "
+$c
+
 ### PIPES ###
 
 sleep 1 | sleep 2 | sleep 3

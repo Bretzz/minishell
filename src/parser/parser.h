@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 14:57:25 by totommi           #+#    #+#             */
-/*   Updated: 2025/04/16 16:09:19 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:28:22 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ char			colon_pipe_check(t_token *colonipe, t_token *prev);
 char			redir_check(t_token *redir);
 char			word_check(t_token *word, t_token *prev);
 char			is_error(char *err_code);
+
+//token expansion
+
+int				expand_tokens(t_token *tokens, const char ***vars);
 
 //closer of pipes and quotes
 

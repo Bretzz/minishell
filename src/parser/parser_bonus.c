@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:16:38 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/28 17:47:07 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:26:47 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,36 +52,6 @@ static int	process_word(t_token *token, t_cmd *current_cmd)
 	{
 		write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 		return (0);
-	}
-	return (1);
-}
-
-/* Takes a token list and the vars as parameter.
-Expands every TOKEN_WORD's value with env or shell variables inside,
-then removes quotes.
-RETURNS: 0 on malloc failure, 1 on successful expansion. */
-static int	expand_tokens(t_token *tokens, const char ***vars)
-{
-	char	*exp_value;
-	t_token	*prev;
-
-	prev = NULL;
-	while (tokens)
-	{
-		if (tokens->type == TOKEN_WORD
-			&& (!prev || prev->type != TOKEN_HERE_DOC))
-		{
-			exp_value = expand_string_bonus(tokens->value, vars);
-			if (exp_value == NULL)
-			{
-				write(STDERR_FILENO, "minishell: malloc failure\n", 26);
-				return (0);
-			}
-			tokens->not_expanded = tokens->value;
-			tokens->value = exp_value;
-		}
-		prev = tokens;
-		tokens = tokens->next;
 	}
 	return (1);
 }
