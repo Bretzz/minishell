@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:32:32 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/28 18:43:36 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:15:30 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,9 @@ int	ft_execve(int *fd, t_cmd cmd, char **env)
 	safeclose(fd[0]);
 	safeclose(fd[1]);
 	execve(path, cmd.words, env);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 	free(path);
 	return (EXIT_FAILURE);
 }
