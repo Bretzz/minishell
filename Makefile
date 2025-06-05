@@ -176,7 +176,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --quiet
 
 $(NAME): $(LIBFT) $(OBJS) $(HERE_DOCS_DIR)
-	@sl -le
+#	@sl -le
 	@rm -rf $(addprefix $(OBJS_DIR), $(B_SRC_FILES:.c=.o));
 	@echo "${BOLD}compiling $(NAME)...${RESET}"
 	@$(CC) $(CFLAGS) $(OBJS_DIR)* $(LIBFT) $(LINKS) -o $(NAME) \
