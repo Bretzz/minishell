@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:09:35 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/30 20:17:38 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:01:21 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ int	expand_tokens(t_token *tokens, const char ***vars)
 				write(STDERR_FILENO, "minishell: malloc failure\n", 26);
 				return (0);
 			}
-			prev = tokens;
-			tokens = tokens->next;
 		}
+		prev = tokens;
+		tokens = tokens->next;
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:16:05 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/16 11:43:13 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:42:56 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_operator_bonus(const char *line, int i)
 		|| line[i] == ';'
 		|| line[i] == '<'
 		|| line[i] == '>'
-		|| line[i] == '&'
+		|| (line[i] == '&' && line[i + 1] == '&')
 		|| line[i] == '('
 		|| line[i] == ')')
 		return (1);
@@ -34,7 +34,7 @@ static t_token_type	brakets_or_die(const char *line, int *i)
 	if (line[*i] == '&' && line[*i + 1] == '&')
 	{
 		(*i) += 2;
-		return (TOKEN_OR_OP);
+		return (TOKEN_AND_OP);
 	}
 	else if (line[*i] == '(')
 	{

@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 16:50:57 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/30 20:26:33 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:33:54 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	colon_pipe_check(t_token *colonipe, t_token *prev)
 			|| colonipe->next->type == TOKEN_SEMICOL
 			|| colonipe->next->type == TOKEN_AND_OP
 			|| colonipe->next->type == TOKEN_OR_OP))
-		return (*colonipe->value);
+		return (*colonipe->next->value);
 	return (0);
 }
 

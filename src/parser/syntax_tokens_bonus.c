@@ -6,7 +6,7 @@
 /*   By: topiana- <topiana-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:51:23 by topiana-          #+#    #+#             */
-/*   Updated: 2025/04/15 23:54:18 by topiana-         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:54:50 by topiana-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ char	braket_check(t_token *braket, t_token *prev, int is_open)
 		return (*braket->value);
 	else if (braket->type == TOKEN_OPEN_BR)
 	{
-		if (!prev || prev->type != TOKEN_AND_OP
-			|| prev->type != TOKEN_OR_OP)
+		if (!prev || (prev->type != TOKEN_AND_OP
+				&& prev->type != TOKEN_OR_OP))
 			return (*braket->value);
 		else if (braket->next == NULL)
 			return (1);
@@ -85,14 +85,14 @@ char	is_error_bonus(char *err_code)
 	return (0);
 }
 
-/* somehow this function set's tokens' content tu NULL */
+/* somehow this function sets tokens' content tu NULL */
 static t_token	*error_fill(void *err_code2,
 	t_token *tokens, t_token *prev,
 	int brakets)
 {
-	int	*err_code;
+	char	*err_code;
 
-	err_code = (int *)err_code2;
+	err_code = (char *)err_code2;
 	err_code[0] = redir_check(tokens);
 	err_code[1] = colon_pipe_check(tokens, prev);
 	err_code[2] = braket_check(tokens, prev, brakets);
